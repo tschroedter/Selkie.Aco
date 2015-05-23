@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{33C99558-D63B-4406-A292-B9CE186F40CF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Selkie.Aco.Anthill</RootNamespace>
+    <AssemblyName>Selkie.Aco.Anthill</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="BestTrailChangedEventArgs.cs" />
+    <Compile Include="BestTrailFinder.cs" />
+    <Compile Include="ColonyLogger.cs" />
+    <Compile Include="FinishedEventArgs.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="LogTrailBuilderInformation.cs" />
+    <Compile Include="PheromonesInformation.cs" />
+    <Compile Include="TypedFactories\IBestTrailFinderFactory.cs" />
+    <Compile Include="TypedFactories\IColonyFactory.cs" />
+    <Compile Include="IColonyLogger.cs" />
+    <Compile Include="TypedFactories\IDistanceGraphFactory.cs" />
+    <Compile Include="INaturalSelection.cs" />
+    <Compile Include="TypedFactories\INaturalSelectionFactory.cs" />
+    <Compile Include="TypedFactories\IPheromonesTrackerFactory.cs" />
+    <Compile Include="ISquad.cs" />
+    <Compile Include="TypedFactories\ISquadFactory.cs" />
+    <Compile Include="Installer.cs" />
+    <Compile Include="IBestTrailFinder.cs" />
+    <Compile Include="TypedFactories\IQueenFactory.cs" />
+    <Compile Include="NaturalSelection.cs" />
+    <Compile Include="Squad.cs" />
+    <Compile Include="Colony.cs" />
+    <Compile Include="IColony.cs" />
+    <Compile Include="IQueen.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queen.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.Logging, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Castle.LoggingFacility.3.3.0\lib\net45\Castle.Facilities.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Services.Logging.NLogIntegration">
+      <HintPath>..\packages\Castle.Core-NLog.3.3.3\lib\net45\Castle.Services.Logging.NLogIntegration.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations">
+      <HintPath>..\packages\JetBrains.Annotations.Redist.7.1\lib\net40\JetBrains.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.3.1.0.0\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="Selkie.Common, Version=0.6.116.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selkie.Common.0.6.116.0\lib\net45\Selkie.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Selkie.Windsor, Version=0.6.199.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selkie.Windsor.0.6.199.0\lib\net45\Selkie.Windsor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Selkie.Aco.Ants\Selkie.Aco.Ants.csproj">
+      <Project>{eceae1cc-4b01-416e-b0d6-c8740da8d5df}</Project>
+      <Name>Selkie.Aco.Ants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Selkie.Aco.Common\Selkie.Aco.Common.csproj">
+      <Project>{b54f394e-37fe-4c04-a821-1639035cd04e}</Project>
+      <Name>Selkie.Aco.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Selkie.Aco.Trails\Selkie.Aco.Trails.csproj">
+      <Project>{2ba5effe-ee53-4ca0-97d3-f31200ac71f3}</Project>
+      <Name>Selkie.Aco.Trails</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy $(TargetDir)Selkie.Aco.Anthill.dll $(SolutionDir)NuGet.Selkie.Aco\lib\net45 /Y /E</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
