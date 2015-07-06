@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using JetBrains.Annotations;
 using Selkie.Common;
 using Selkie.Windsor;
+using Selkie.Windsor.Extensions;
 
 namespace Selkie.Aco.Common
 {
@@ -55,6 +57,28 @@ namespace Selkie.Aco.Common
             {
                 return m_IsUnknown;
             }
+        }
+
+        public bool IsValid()
+        {
+            return IsValidCombinationOfCostMatrixAndCostPerLine(m_CostMatrix,
+                                                                m_CostPerLine);
+        }
+
+        // todo move this into separat class DistanceGraphValidator
+        internal bool IsValidCombinationOfCostMatrixAndCostPerLine([NotNull] int[][] costMatrix,
+                                                                   [NotNull] int[] costPerLine)
+        {
+            int numberOfNodes = costMatrix [ 0 ].Length;
+            int numberOfLines = costPerLine.Length;
+
+            if ( costMatrix.Any(matrix => matrix.Length != NumberOfNodes) )
+            {
+                return false;
+            }
+
+            return costMatrix.Length == numberOfNodes &&
+                   numberOfNodes == numberOfLines;
         }
 
         [NotNull]
@@ -166,6 +190,51 @@ namespace Selkie.Aco.Common
             return neighbours;
         }
 
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+
+            builder.AppendLine("CostMatrix");
+            builder.AppendLine(CostMatrixToString(m_CostMatrix));
+
+            builder.AppendLine("CostPerLine");
+            builder.AppendLine(CostPerLineToString(m_CostPerLine));
+
+            builder.AppendLine();
+
+            builder.AppendLine("NearestNeighbours");
+            builder.AppendLine(m_NearestNeighbours.ToString());
+
+            builder.AppendLine("IsValid? {0}".Inject(IsValid()));
+
+            return builder.ToString();
+        }
+
+        private string CostMatrixToString(int[][] costMatrix)
+        {
+            var builder = new StringBuilder();
+            var count = 0;
+
+            foreach ( int[] matrix in costMatrix )
+            {
+                string values = string.Join(", ",
+                                            matrix);
+
+                builder.AppendLine("[{0}] {1}".Inject(count++,
+                                                      values));
+            }
+
+            return builder.ToString();
+        }
+
+        private string CostPerLineToString(int[] costPerLine)
+        {
+            string values = string.Join(", ",
+                                        costPerLine);
+
+            return values;
+        }
+
         #region IDistanceGraph Members
 
         public double AverageDistance
@@ -200,7 +269,37 @@ namespace Selkie.Aco.Common
         public int GetCost(int fromIndex,
                            int toIndex)
         {
+            CanExecuteGetCost(fromIndex,
+                              toIndex);
+
             return m_CostMatrix [ fromIndex ] [ toIndex ];
+        }
+
+        private void CanExecuteGetCost(int fromIndex,
+                                       int toIndex)
+        {
+            if ( m_CostMatrix.Length == 0 ||
+                 m_CostMatrix [ 0 ].Length == 0 )
+            {
+                throw new ArgumentException("CostMatrix not set! - fromIndex: {0} toIndex: {1}]".Inject(fromIndex,
+                                                                                                        toIndex));
+            }
+
+            if ( fromIndex < 0 ||
+                 fromIndex >= m_CostMatrix.Length )
+            {
+                throw new ArgumentException("fromIndex {0} out of bounds [0-{1}]".Inject(fromIndex,
+                                                                                         m_CostMatrix.Length),
+                                            "fromIndex");
+            }
+
+            if ( toIndex < 0 ||
+                 toIndex >= m_CostMatrix [ 0 ].Length )
+            {
+                throw new ArgumentException("fromIndex {0} out of bounds [0-{1}]".Inject(fromIndex,
+                                                                                         m_CostMatrix.Length),
+                                            "fromIndex");
+            }
         }
 
         public int NumberOfNodes
@@ -237,8 +336,11 @@ namespace Selkie.Aco.Common
 
             for ( var i = 0 ; i < trailArray.Length - 1 ; ++i )
             {
-                int cost = GetCost(trailArray [ i ],
-                                   trailArray [ i + 1 ]);
+                int fromIndex = trailArray [ i ];
+                int toIndex = trailArray [ i + 1 ];
+
+                int cost = GetCost(fromIndex,
+                                   toIndex);
 
                 if ( cost <= 0.0 )
                 {
@@ -248,7 +350,9 @@ namespace Selkie.Aco.Common
                 result += cost;
             }
 
-            result += m_CostPerLine [ trailArray.Last() ];
+            int last = trailArray.Last();
+
+            result += m_CostPerLine [ last ];
 
             return result;
         }

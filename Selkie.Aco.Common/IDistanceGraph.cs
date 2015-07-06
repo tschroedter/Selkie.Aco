@@ -21,5 +21,7 @@ namespace Selkie.Aco.Common
         IEnumerable <int> GetNeighbours(int node);
 
         bool IsValidPath([NotNull] IEnumerable <int> trail);
+
+        bool IsValid();
     }
 }

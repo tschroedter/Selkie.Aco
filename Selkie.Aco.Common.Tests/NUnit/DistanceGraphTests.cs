@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
@@ -12,6 +13,27 @@ namespace Selkie.Aco.Common.Tests.NUnit
     {
         [SetUp]
         public void Setup()
+        {
+            int[][] costmatrix = CreateCostmatrixForSetup();
+            int[] costPerLine = CreateCostPerLineSetuo();
+
+            m_Graph = CreateGraph(costmatrix,
+                                  costPerLine);
+        }
+
+        private static int[] CreateCostPerLineSetuo()
+        {
+            int[] costPerLine =
+            {
+                1,
+                1,
+                2,
+                2
+            };
+            return costPerLine;
+        }
+
+        private static int[][] CreateCostmatrixForSetup()
         {
             int[][] costmatrix =
             {
@@ -44,7 +66,70 @@ namespace Selkie.Aco.Common.Tests.NUnit
                     5
                 }
             };
+            return costmatrix;
+        }
 
+        private DistanceGraph CreateGraph(int[][] costmatrix,
+                                          int[] costPerLine)
+        {
+            return new DistanceGraph(new SelkieRandom(),
+                                     new NearestNeighbours(),
+                                     costmatrix,
+                                     costPerLine);
+        }
+
+        private DistanceGraph m_Graph;
+
+        private static int[] CreateTrail()
+        {
+            int[] trail =
+            {
+                0,
+                1,
+                1,
+                3
+            };
+            return trail;
+        }
+
+        private static int[][] CreateCostmatrix()
+        {
+            int[][] costmatrix =
+            {
+                new[]
+                {
+                    0,
+                    1,
+                    1,
+                    1
+                },
+                new[]
+                {
+                    1,
+                    0,
+                    1,
+                    1
+                },
+                new[]
+                {
+                    1,
+                    1,
+                    0,
+                    1
+                },
+                new[]
+                {
+                    1,
+                    1,
+                    1,
+                    0
+                }
+            };
+            return costmatrix;
+        }
+
+        private static int[] CreateCostPerLine()
+        {
             int[] costPerLine =
             {
                 1,
@@ -52,14 +137,8 @@ namespace Selkie.Aco.Common.Tests.NUnit
                 2,
                 2
             };
-
-            m_Graph = new DistanceGraph(new SelkieRandom(),
-                                        new NearestNeighbours(),
-                                        costmatrix,
-                                        costPerLine);
+            return costPerLine;
         }
-
-        private DistanceGraph m_Graph;
 
         [Test]
         public void AverageDistanceTest()
@@ -71,6 +150,7 @@ namespace Selkie.Aco.Common.Tests.NUnit
         [Test]
         public void CalculateNearestNeighboursTest()
         {
+            // Arrange
             int[][] expected =
             {
                 new[]
@@ -99,8 +179,10 @@ namespace Selkie.Aco.Common.Tests.NUnit
                 }
             };
 
+            // Act
             int[][] actual = m_Graph.CalculateNearestNeighbours();
 
+            // Assert
             Assert.True(expected [ 0 ].SequenceEqual(actual [ 0 ]),
                         "actual[0]");
             Assert.True(expected [ 1 ].SequenceEqual(actual [ 1 ]),
@@ -114,8 +196,11 @@ namespace Selkie.Aco.Common.Tests.NUnit
         [Test]
         public void CostMatrixLengthTest()
         {
+            // Arrange
+            // Act
             int[][] actual = m_Graph.CreateRandom(3);
 
+            // Assert
             Assert.AreEqual(3,
                             actual.GetLength(0),
                             "GetLength(0)");
@@ -133,6 +218,7 @@ namespace Selkie.Aco.Common.Tests.NUnit
         [Test]
         public void CreateNearestNeighboursTest()
         {
+            // Arrange
             int[][] expected =
             {
                 new[]
@@ -161,6 +247,8 @@ namespace Selkie.Aco.Common.Tests.NUnit
                 }
             };
 
+            // Act
+            // Assert
             Assert.True(expected [ 0 ].SequenceEqual(m_Graph.GetNeighbours(0)),
                         "actual[0]");
             Assert.True(expected [ 1 ].SequenceEqual(m_Graph.GetNeighbours(1)),
@@ -193,6 +281,64 @@ namespace Selkie.Aco.Common.Tests.NUnit
         }
 
         [Test]
+        public void GetCostThrowsForCostMatrixIsEmptyTest()
+        {
+            var doesnotMatter = new[]
+                                {
+                                    1,
+                                    2
+                                };
+
+            DistanceGraph sut = CreateGraph(new int[0][],
+                                            doesnotMatter);
+
+            Assert.Throws <ArgumentException>(() => sut.GetCost(1,
+                                                                3));
+        }
+
+        [Test]
+        public void GetCostThrowsForFromIndexFarToBigTest()
+        {
+            Assert.Throws <ArgumentException>(() => m_Graph.GetCost(4000,
+                                                                    0));
+        }
+
+        [Test]
+        public void GetCostThrowsForFromIndexNegativeTest()
+        {
+            Assert.Throws <ArgumentException>(() => m_Graph.GetCost(-1,
+                                                                    0));
+        }
+
+        [Test]
+        public void GetCostThrowsForFromIndexToBigTest()
+        {
+            Assert.Throws <ArgumentException>(() => m_Graph.GetCost(4,
+                                                                    0));
+        }
+
+        [Test]
+        public void GetCostThrowsForToIndexFarToBigTest()
+        {
+            Assert.Throws <ArgumentException>(() => m_Graph.GetCost(0,
+                                                                    4000));
+        }
+
+        [Test]
+        public void GetCostThrowsForToIndexNegativeTest()
+        {
+            Assert.Throws <ArgumentException>(() => m_Graph.GetCost(0,
+                                                                    -1));
+        }
+
+        [Test]
+        public void GetCostThrowsForToIndexToBigTest()
+        {
+            Assert.Throws <ArgumentException>(() => m_Graph.GetCost(0,
+                                                                    4));
+        }
+
+        [Test]
         public void IsUnknownReturnsFalseForKnownTest()
         {
             Assert.False(m_Graph.IsUnknown);
@@ -207,8 +353,86 @@ namespace Selkie.Aco.Common.Tests.NUnit
         }
 
         [Test]
+        public void IsValidCombinationOfCostMatrixAndCostPerLineReturnsFalseForInvalidCostMatrixTest()
+        {
+            // Arrange
+            int[][] costmatrix =
+            {
+                new[]
+                {
+                    1,
+                    2
+                },
+                new[]
+                {
+                    3
+                }
+            };
+
+            int[] costPerLine =
+            {
+                1,
+                1
+            };
+
+            // Act
+            bool actual = m_Graph.IsValidCombinationOfCostMatrixAndCostPerLine(costmatrix,
+                                                                               costPerLine);
+
+            // Assert
+            Assert.False(actual);
+        }
+
+        [Test]
+        public void IsValidCombinationOfCostMatrixAndCostPerLineReturnsFalseForInvalidDataTest()
+        {
+            // Arrange
+            int[][] costmatrix =
+            {
+                new[]
+                {
+                    1,
+                    2
+                },
+                new[]
+                {
+                    3,
+                    4
+                }
+            };
+
+            int[] costPerLine =
+            {
+                12345
+            };
+
+            // Act
+            bool actual = m_Graph.IsValidCombinationOfCostMatrixAndCostPerLine(costmatrix,
+                                                                               costPerLine);
+
+            // Assert
+            Assert.False(actual);
+        }
+
+        [Test]
+        public void IsValidCombinationOfCostMatrixAndCostPerLineReturnsTrueForValidDataTest()
+        {
+            // Arrange
+            int[][] costmatrix = CreateCostmatrix();
+            int[] costPerLine = CreateCostPerLine();
+
+            // Act
+            bool actual = m_Graph.IsValidCombinationOfCostMatrixAndCostPerLine(costmatrix,
+                                                                               costPerLine);
+
+            // Assert
+            Assert.True(actual);
+        }
+
+        [Test]
         public void IsValidPathReturnsFalseForDuplicateTest()
         {
+            // Arrange
             int[][] costmatrix =
             {
                 new[]
@@ -249,90 +473,58 @@ namespace Selkie.Aco.Common.Tests.NUnit
                 2
             };
 
-            var graph = new DistanceGraph(new SelkieRandom(),
-                                          new NearestNeighbours(),
-                                          costmatrix,
-                                          costPerLine);
+            DistanceGraph graph = CreateGraph(costmatrix,
+                                              costPerLine);
+
             int[] trail =
             {
                 0,
                 0
             };
 
-            Assert.False(graph.IsValidPath(trail));
+            // Act
+            bool actual = graph.IsValidPath(trail);
+
+            // Assert
+            Assert.False(actual);
         }
 
         [Test]
         public void IsValidPathReturnsFalseForEmptyTest()
         {
+            // Arrange
             int[] trail =
             {
             };
 
-            Assert.False(m_Graph.IsValidPath(trail));
+            // Act
+            bool actual = m_Graph.IsValidPath(trail);
+
+            // Assert
+            Assert.False(actual);
         }
 
         [Test]
         public void IsValidPathReturnsFalseTest()
         {
-            int[][] costmatrix =
-            {
-                new[]
-                {
-                    0,
-                    1,
-                    1,
-                    1
-                },
-                new[]
-                {
-                    1,
-                    0,
-                    1,
-                    1
-                },
-                new[]
-                {
-                    1,
-                    1,
-                    0,
-                    1
-                },
-                new[]
-                {
-                    1,
-                    1,
-                    1,
-                    0
-                }
-            };
+            // Arrange
+            int[][] costmatrix = CreateCostmatrix();
+            int[] costPerLine = CreateCostPerLine();
+            int[] trail = CreateTrail();
+            DistanceGraph graph = CreateGraph(costmatrix,
+                                              costPerLine);
 
-            int[] costPerLine =
-            {
-                1,
-                1,
-                2,
-                2
-            };
+            // Act
+            bool actual = graph.IsValidPath(trail);
 
-            var graph = new DistanceGraph(new SelkieRandom(),
-                                          new NearestNeighbours(),
-                                          costmatrix,
-                                          costPerLine);
-            int[] trail =
-            {
-                0,
-                1,
-                1,
-                3
-            };
-
-            Assert.False(graph.IsValidPath(trail));
+            // Assert
+            Assert.False(actual);
         }
 
         [Test]
         public void IsValidPathReturnsTrueTest()
         {
+            // Arrange
             int[] trail =
             {
                 0,
@@ -341,7 +533,17 @@ namespace Selkie.Aco.Common.Tests.NUnit
                 3
             };
 
-            Assert.True(m_Graph.IsValidPath(trail));
+            // Act
+            bool actual = m_Graph.IsValidPath(trail);
+
+            // Assert
+            Assert.True(actual);
+        }
+
+        [Test]
+        public void IsValidReturnsTrueForValidDataTest()
+        {
+            Assert.True(m_Graph.IsValid());
         }
 
         [Test]
@@ -354,6 +556,7 @@ namespace Selkie.Aco.Common.Tests.NUnit
         [Test]
         public void LengthForTrailBuilderTest()
         {
+            // Arrange
             var builder = Substitute.For <ITrailBuilder>();
             builder.Trail.Returns(new[]
                                   {
@@ -363,13 +566,18 @@ namespace Selkie.Aco.Common.Tests.NUnit
                                       3
                                   });
 
+            // Act
+            double actual = m_Graph.Length(builder);
+
+            // Assert
             Assert.AreEqual(18.0,
-                            m_Graph.Length(builder));
+                            actual);
         }
 
         [Test]
         public void LengthForTrailTest()
         {
+            // Arrange
             var builder = Substitute.For <ITrailBuilder>();
             builder.Trail.Returns(new[]
                                   {
@@ -379,8 +587,12 @@ namespace Selkie.Aco.Common.Tests.NUnit
                                       3
                                   });
 
+            // Act
+            double length = m_Graph.Length(builder);
+
+            // Assert
             Assert.AreEqual(18.0,
-                            m_Graph.Length(builder));
+                            length);
         }
 
         [Test]
@@ -402,6 +614,33 @@ namespace Selkie.Aco.Common.Tests.NUnit
         {
             Assert.AreEqual(4,
                             m_Graph.NumberOfNodes);
+        }
+
+        [Test]
+        public void ToStringReturnsStringTest()
+        {
+            // Arrange
+            string expected = "CostMatrix\r\n" +
+                              "[0] 3, 2, 1, 0\r\n" +
+                              "[1] 2, 4, 6, 5\r\n" +
+                              "[2] 9, 6, 7, 8\r\n" +
+                              "[3] 1, 2, 3, 5\r\n\r\n" +
+                              "CostPerLine\r\n" +
+                              "1, 1, 2, 2\r\n\r\n" +
+                              "NearestNeighbours\r\n" +
+                              "[0] 3, 2, 1\r\n" +
+                              "[1] 0, 3, 2\r\n" +
+                              "[2] 1, 3, 0\r\n" +
+                              "[3] 0, 1, 2\r\n\r\n" +
+                              "IsValid? True\r\n";
+
+            // Act
+            string actual = m_Graph.ToString();
+
+            // Assert
+            Assert.True(string.Compare(expected,
+                                       actual,
+                                       StringComparison.InvariantCulture) == 0);
         }
     }
 }

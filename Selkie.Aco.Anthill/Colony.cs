@@ -34,7 +34,7 @@ namespace Selkie.Aco.Anthill
         private DateTime m_StartTime = DateTime.Now;
         private int m_TurnsBeforeSelection = DefaultTurnsBeforeSelection;
         private int m_TurnsSinceNewBestTrailFound = DefaultTurnsBeforeSelection * 2;
-        // ReSharper disable TooManyDependencies
+        // ReSharper disable TooManyDependencies 
         public Colony([NotNull] IColonyLogger logger,
                       [NotNull] IDateTime systemTime,
                       [NotNull] IQueenFactory queenFactory,
@@ -63,6 +63,8 @@ namespace Selkie.Aco.Anthill
                                           m_Optimizer);
 
             m_NaturalSelection = naturalSelectionFactory.Create(m_Queen);
+
+            m_Logger.Info("Colony created with Distance Graph:\r\n{0}".Inject(m_Graph));
         }
 
         // ReSharper restore TooManyDependencies
@@ -178,10 +180,12 @@ namespace Selkie.Aco.Anthill
             if ( IsRequestedToStop )
             {
                 OnStopped();
+                m_Logger.Info("Colony Stopped!");
             }
             else
             {
                 RaiseFinishedEvent();
+                m_Logger.Info("Colony Finished!");
             }
         }
 

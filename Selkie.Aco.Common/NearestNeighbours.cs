@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using JetBrains.Annotations;
 using Selkie.Windsor;
+using Selkie.Windsor.Extensions;
 
 namespace Selkie.Aco.Common
 {
@@ -70,6 +72,23 @@ namespace Selkie.Aco.Common
             }
 
             return neighbours;
+        }
+
+        public override string ToString()
+        {
+            var builder = new StringBuilder();
+            var count = 0;
+
+            foreach ( int[] matrix in m_NearestNeighbours )
+            {
+                string values = string.Join(", ",
+                                            matrix);
+
+                builder.AppendLine("[{0}] {1}".Inject(count++,
+                                                      values));
+            }
+
+            return builder.ToString();
         }
     }
 }
