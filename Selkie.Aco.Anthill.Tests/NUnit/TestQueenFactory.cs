@@ -1,11 +1,11 @@
 using System.Diagnostics.CodeAnalysis;
-using Castle.Core.Logging;
 using NSubstitute;
 using Selkie.Aco.Anthill.TypedFactories;
 using Selkie.Aco.Ants;
 using Selkie.Aco.Common;
 using Selkie.Aco.Common.TypedFactories;
 using Selkie.Common;
+using Selkie.Windsor;
 
 namespace Selkie.Aco.Anthill.Tests.NUnit
 {
@@ -16,7 +16,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         private readonly IBestTrailFinderFactory m_BestTrailFinderFactory;
         private readonly TestChromosomeFactory m_ChromosomeFactory;
         private readonly ICrossover m_Crossover;
-        private readonly ILogger m_Logger;
+        private readonly ISelkieLogger m_Logger;
         private readonly IRandom m_Random;
         private readonly ISquadFactory m_SquadFactory;
 
@@ -27,7 +27,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
             m_AntFactory = new TestAntFactory();
             m_ChromosomeFactory = new TestChromosomeFactory();
             m_BestTrailFinderFactory = new TestBestTrailFinderFactory();
-            m_Logger = Substitute.For <ILogger>();
+            m_Logger = Substitute.For <ISelkieLogger>();
             m_SquadFactory = Substitute.For <ISquadFactory>();
 
             m_Crossover = new Crossover(disposer,

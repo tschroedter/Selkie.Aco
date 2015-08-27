@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Castle.Core.Logging;
 using JetBrains.Annotations;
 using Selkie.Aco.Ants;
 using Selkie.Aco.Common;
@@ -20,13 +19,13 @@ namespace Selkie.Aco.Anthill
         private readonly IList <IAnt> m_BestAnts = new List <IAnt>();
         private readonly IDisposer m_Disposer;
         private readonly IDistanceGraph m_Graph;
-        private readonly ILogger m_Logger;
+        private readonly ISelkieLogger m_Logger;
         private readonly IOptimizer m_Optimizer;
         private readonly IRandom m_Random;
         private readonly IPheromonesTracker m_Tracker;
         // ReSharper disable TooManyDependencies
         public Squad([NotNull] IDisposer disposer,
-                     [NotNull] ILogger logger,
+                     [NotNull] ISelkieLogger logger,
                      [NotNull] IRandom random,
                      [NotNull] IAntFactory antFactory,
                      [NotNull] IDistanceGraph graph,

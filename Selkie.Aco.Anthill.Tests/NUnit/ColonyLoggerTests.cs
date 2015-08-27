@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Castle.Core.Logging;
 using NSubstitute;
 using NUnit.Framework;
 using Selkie.Aco.Common;
 using Selkie.Aco.Trails;
+using Selkie.Windsor;
 
 namespace Selkie.Aco.Anthill.Tests.NUnit
 {
@@ -15,7 +15,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [SetUp]
         public void Setup()
         {
-            m_Logger = Substitute.For <ILogger>();
+            m_Logger = Substitute.For <ISelkieLogger>();
             m_TrailHistory = Substitute.For <ITrailHistory>();
 
             m_ColonyLogger = new ColonyLogger(m_Logger,
@@ -23,7 +23,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         }
 
         private ColonyLogger m_ColonyLogger;
-        private ILogger m_Logger;
+        private ISelkieLogger m_Logger;
         private ITrailHistory m_TrailHistory;
 
         [Test]

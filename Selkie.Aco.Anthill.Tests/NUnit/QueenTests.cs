@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Castle.Core.Logging;
 using JetBrains.Annotations;
 using NSubstitute;
 using NUnit.Framework;
@@ -11,6 +10,7 @@ using Selkie.Aco.Common.TypedFactories;
 using Selkie.Aco.Trails;
 using Selkie.Aco.Trails.Optimizers;
 using Selkie.Common;
+using Selkie.Windsor;
 
 namespace Selkie.Aco.Anthill.Tests.NUnit
 {
@@ -27,7 +27,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         private ICrossover m_Crossover;
         private IDisposer m_Disposer;
         private IDistanceGraph m_Graph;
-        private ILogger m_Logger;
+        private ISelkieLogger m_Logger;
         private int[][] m_Neighbours;
         private IOptimizer m_Optimizer;
         private Queen m_Queen;
@@ -599,7 +599,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         {
             m_Disposer = Substitute.For <IDisposer>();
             m_Neighbours = CreateNeighbours();
-            m_Logger = Substitute.For <ILogger>();
+            m_Logger = Substitute.For <ISelkieLogger>();
             m_Random = new SelkieRandom();
             m_ChromosomeFactory = new TestChromosomeFactory();
             m_AntFactory = new TestAntFactory();

@@ -453,11 +453,11 @@ using System.Diagnostics.CodeAnalysis;
         Target = "Aco.Ants.NUnit.ChromosomeTests.#RangeTest()")]
 [assembly :
     SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters",
-        MessageId = "Castle.Core.Logging.ILogger.Info(System.String)", Scope = "member",
+        MessageId = "Castle.Core.Logging.ISelkieLogger.Info(System.String)", Scope = "member",
         Target = "Aco.Colony.#Start(System.Int32)")]
 [assembly :
     SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters",
-        MessageId = "Castle.Core.Logging.ILogger.Info(System.String)", Scope = "member",
+        MessageId = "Castle.Core.Logging.ISelkieLogger.Info(System.String)", Scope = "member",
         Target = "Aco.Colony.#LogResult()")]
 [assembly :
     SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters",
@@ -897,7 +897,7 @@ using System.Diagnostics.CodeAnalysis;
 [assembly :
     SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "2", Scope = "member",
         Target =
-            "Aco.Queen.#.ctor(Castle.Core.Logging.ILogger,Aco.Ants.IAntFactory,Aco.IBestTrailFinderFactory,Aco.Interfaces.IDistanceGraph,Aco.Interfaces.IPheromonesTracker,Aco.Trails.Optimizers.IOptimizer,Aco.Interfaces.ICrossover)"
+            "Aco.Queen.#.ctor(Castle.Core.Logging.ISelkieLogger,Aco.Ants.IAntFactory,Aco.IBestTrailFinderFactory,Aco.Interfaces.IDistanceGraph,Aco.Interfaces.IPheromonesTracker,Aco.Trails.Optimizers.IOptimizer,Aco.Interfaces.ICrossover)"
         )]
 [assembly :
     SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId = "GetLength",
@@ -1040,12 +1040,12 @@ using System.Diagnostics.CodeAnalysis;
 [assembly :
     SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "1", Scope = "member",
         Target =
-            "Aco.Colony.#.ctor(Castle.Core.Logging.ILogger,Aco.IQueenFactory,Aco.Trails.Builders.ITrailBuilderFactory,Aco.Interfaces.IPheromonesTracker,Aco.Interfaces.IDistanceGraph,Aco.Trails.Optimizers.IOptimizer,Aco.Trails.ITrailHistory)"
+            "Aco.Colony.#.ctor(Castle.Core.Logging.ISelkieLogger,Aco.IQueenFactory,Aco.Trails.Builders.ITrailBuilderFactory,Aco.Interfaces.IPheromonesTracker,Aco.Interfaces.IDistanceGraph,Aco.Trails.Optimizers.IOptimizer,Aco.Trails.ITrailHistory)"
         )]
 [assembly :
     SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "5", Scope = "member",
         Target =
-            "Aco.Colony.#.ctor(Castle.Core.Logging.ILogger,Aco.IQueenFactory,Aco.Trails.Builders.ITrailBuilderFactory,Aco.Interfaces.IPheromonesTracker,Aco.Interfaces.IDistanceGraph,Aco.Trails.Optimizers.IOptimizer,Aco.Trails.ITrailHistory)"
+            "Aco.Colony.#.ctor(Castle.Core.Logging.ISelkieLogger,Aco.IQueenFactory,Aco.Trails.Builders.ITrailBuilderFactory,Aco.Interfaces.IPheromonesTracker,Aco.Interfaces.IDistanceGraph,Aco.Trails.Optimizers.IOptimizer,Aco.Trails.ITrailHistory)"
         )]
 [assembly :
     SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Scope = "member",
@@ -1480,12 +1480,12 @@ using System.Diagnostics.CodeAnalysis;
 [assembly :
     SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "6", Scope = "member",
         Target =
-            "Aco.Colony.#.ctor(Castle.Core.Logging.ILogger,Common.IRandom,Aco.IQueenFactory,Aco.Trails.Builders.ITrailBuilderFactory,Aco.Interfaces.IPheromonesTracker,Aco.Interfaces.IDistanceGraph,Aco.Trails.Optimizers.IOptimizer,Aco.Trails.ITrailHistory)"
+            "Aco.Colony.#.ctor(Castle.Core.Logging.ISelkieLogger,Common.IRandom,Aco.IQueenFactory,Aco.Trails.Builders.ITrailBuilderFactory,Aco.Interfaces.IPheromonesTracker,Aco.Interfaces.IDistanceGraph,Aco.Trails.Optimizers.IOptimizer,Aco.Trails.ITrailHistory)"
         )]
 [assembly :
     SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "2", Scope = "member",
         Target =
-            "Aco.Colony.#.ctor(Castle.Core.Logging.ILogger,Common.IRandom,Aco.IQueenFactory,Aco.Trails.Builders.ITrailBuilderFactory,Aco.Interfaces.IPheromonesTracker,Aco.Interfaces.IDistanceGraph,Aco.Trails.Optimizers.IOptimizer,Aco.Trails.ITrailHistory)"
+            "Aco.Colony.#.ctor(Castle.Core.Logging.ISelkieLogger,Common.IRandom,Aco.IQueenFactory,Aco.Trails.Builders.ITrailBuilderFactory,Aco.Interfaces.IPheromonesTracker,Aco.Interfaces.IDistanceGraph,Aco.Trails.Optimizers.IOptimizer,Aco.Trails.ITrailHistory)"
         )]
 [assembly :
     SuppressMessage("Microsoft.Design", "CA1063:ImplementIDisposableCorrectly", Scope = "member",
@@ -1593,12 +1593,12 @@ using System.Diagnostics.CodeAnalysis;
 [assembly :
     SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "3", Scope = "member",
         Target =
-            "Selkie.Aco.Anthill.Queen.#.ctor(Castle.Core.Logging.ILogger,Selkie.Aco.Common.IAntFactory,Selkie.Aco.Common.TypedFactories.IChromosomeFactory,Selkie.Aco.Anthill.TypedFactories.IBestTrailFinderFactory,Selkie.Aco.Common.IDistanceGraph,Selkie.Aco.Common.IPheromonesTracker,Selkie.Aco.Common.IOptimizer,Selkie.Aco.Ants.ICrossover,Selkie.Aco.Anthill.TypedFactories.ISquadFactory)"
+            "Selkie.Aco.Anthill.Queen.#.ctor(Castle.Core.Logging.ISelkieLogger,Selkie.Aco.Common.IAntFactory,Selkie.Aco.Common.TypedFactories.IChromosomeFactory,Selkie.Aco.Anthill.TypedFactories.IBestTrailFinderFactory,Selkie.Aco.Common.IDistanceGraph,Selkie.Aco.Common.IPheromonesTracker,Selkie.Aco.Common.IOptimizer,Selkie.Aco.Ants.ICrossover,Selkie.Aco.Anthill.TypedFactories.ISquadFactory)"
         )]
 [assembly :
     SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "8", Scope = "member",
         Target =
-            "Selkie.Aco.Anthill.Queen.#.ctor(Castle.Core.Logging.ILogger,Selkie.Aco.Common.IAntFactory,Selkie.Aco.Common.TypedFactories.IChromosomeFactory,Selkie.Aco.Anthill.TypedFactories.IBestTrailFinderFactory,Selkie.Aco.Common.IDistanceGraph,Selkie.Aco.Common.IPheromonesTracker,Selkie.Aco.Common.IOptimizer,Selkie.Aco.Ants.ICrossover,Selkie.Aco.Anthill.TypedFactories.ISquadFactory)"
+            "Selkie.Aco.Anthill.Queen.#.ctor(Castle.Core.Logging.ISelkieLogger,Selkie.Aco.Common.IAntFactory,Selkie.Aco.Common.TypedFactories.IChromosomeFactory,Selkie.Aco.Anthill.TypedFactories.IBestTrailFinderFactory,Selkie.Aco.Common.IDistanceGraph,Selkie.Aco.Common.IPheromonesTracker,Selkie.Aco.Common.IOptimizer,Selkie.Aco.Ants.ICrossover,Selkie.Aco.Anthill.TypedFactories.ISquadFactory)"
         )]
 [assembly :
     SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays", Scope = "member",
@@ -1611,7 +1611,7 @@ using System.Diagnostics.CodeAnalysis;
         Target = "Selkie.Aco.Anthill.IColony.#Stop()")]
 [assembly :
     SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters",
-        MessageId = "Castle.Core.Logging.ILogger.Info(System.String)", Scope = "member",
+        MessageId = "Castle.Core.Logging.ISelkieLogger.Info(System.String)", Scope = "member",
         Target = "Selkie.Aco.Anthill.ColonyLogger.#LogResultForTrailFound(System.TimeSpan)")]
 [assembly :
     SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0", Scope = "member",
@@ -1642,7 +1642,7 @@ using System.Diagnostics.CodeAnalysis;
         )]
 [assembly :
     SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters",
-        MessageId = "Castle.Core.Logging.ILogger.Info(System.String)", Scope = "member",
+        MessageId = "Castle.Core.Logging.ISelkieLogger.Info(System.String)", Scope = "member",
         Target = "Selkie.Aco.Anthill.ColonyLogger.#LogResultNoTrailFound()")]
 [assembly :
     SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "Aco",

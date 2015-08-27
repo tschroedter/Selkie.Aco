@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Castle.Core.Logging;
 using JetBrains.Annotations;
 using NSubstitute;
 using NUnit.Framework;
@@ -10,6 +9,7 @@ using Selkie.Aco.Ants;
 using Selkie.Aco.Common;
 using Selkie.Aco.Trails.Optimizers;
 using Selkie.Common;
+using Selkie.Windsor;
 using Selkie.Windsor.Extensions;
 
 namespace Selkie.Aco.Anthill.Tests.NUnit
@@ -23,7 +23,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         public void Setup()
         {
             m_Disposer = Substitute.For <IDisposer>();
-            m_Logger = Substitute.For <ILogger>();
+            m_Logger = Substitute.For <ISelkieLogger>();
             m_Random = Substitute.For <IRandom>();
             m_AntFactory = new TestAntFactory();
 
@@ -83,7 +83,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         private int[][] m_CostMatrix;
         private IDisposer m_Disposer;
         private IDistanceGraph m_Graph;
-        private ILogger m_Logger;
+        private ISelkieLogger m_Logger;
         private IOptimizer m_Optimizer;
         private IPheromones m_Pheromones;
         private IRandom m_Random;

@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using Castle.Core.Logging;
 using JetBrains.Annotations;
 using Selkie.Aco.Common;
 using Selkie.Aco.Trails;
@@ -13,9 +12,9 @@ namespace Selkie.Aco.Anthill
     [ProjectComponent(Lifestyle.Transient)]
     public class ColonyLogger : IColonyLogger
     {
-        private readonly ILogger m_Logger;
+        private readonly ISelkieLogger m_Logger;
 
-        public ColonyLogger([NotNull] ILogger logger,
+        public ColonyLogger([NotNull] ISelkieLogger logger,
                             [NotNull] ITrailHistory trailHistory)
         {
             m_Logger = logger;

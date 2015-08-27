@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core.Logging;
 using JetBrains.Annotations;
 using Selkie.Aco.Anthill.TypedFactories;
 using Selkie.Aco.Ants;
@@ -19,12 +18,12 @@ namespace Selkie.Aco.Anthill
         private readonly IChromosomeFactory m_ChromosomeFactory;
         private readonly ICrossover m_Crossover;
         private readonly IDistanceGraph m_Graph;
-        private readonly ILogger m_Logger;
+        private readonly ISelkieLogger m_Logger;
         private readonly IOptimizer m_Optimizer;
         private readonly ISquad m_Squad;
         private readonly IPheromonesTracker m_Tracker;
         // ReSharper disable TooManyDependencies
-        public Queen([NotNull] ILogger logger,
+        public Queen([NotNull] ISelkieLogger logger,
                      [NotNull] IAntFactory antFactory,
                      [NotNull] IChromosomeFactory chromosomeFactory,
                      [NotNull] IBestTrailFinderFactory bestTrailFinderFactory,

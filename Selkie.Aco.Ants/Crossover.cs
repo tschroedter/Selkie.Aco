@@ -1,5 +1,4 @@
 ﻿using System;
-using Castle.Core.Logging;
 using JetBrains.Annotations;
 using Selkie.Aco.Common;
 using Selkie.Aco.Common.TypedFactories;
@@ -16,11 +15,11 @@ namespace Selkie.Aco.Ants
         public const bool FromFather = true;
         public const bool FromMother = false;
         private readonly IChromosomeFactory m_Factory;
-        private readonly ILogger m_Logger;
+        private readonly ISelkieLogger m_Logger;
         private readonly IRandom m_Random;
 
         public Crossover([NotNull] IDisposer disposer,
-                         [NotNull] ILogger logger,
+                         [NotNull] ISelkieLogger logger,
                          [NotNull] IRandom random,
                          [NotNull] IChromosomeFactory factory)
         {

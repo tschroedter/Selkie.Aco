@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Castle.Core.Logging;
 using NSubstitute;
 using NUnit.Framework;
 using Selkie.Aco.Common;
 using Selkie.Aco.Common.TypedFactories;
 using Selkie.Common;
 using Selkie.NUnit.Extensions;
+using Selkie.Windsor;
 
 namespace Selkie.Aco.Ants.Tests.NUnit
 {
@@ -29,7 +29,7 @@ namespace Selkie.Aco.Ants.Tests.NUnit
             m_Mother.Beta.Returns(-2.0);
             m_Mother.Gamma.Returns(-3.0);
 
-            m_Logger = Substitute.For <ILogger>();
+            m_Logger = Substitute.For <ISelkieLogger>();
             m_Random = Substitute.For <IRandom>();
             m_Random.NextDouble().Returns(1.0,
                                           2.0,
@@ -92,7 +92,7 @@ namespace Selkie.Aco.Ants.Tests.NUnit
         private IChromosome m_Father;
         private IChromosome m_Mother;
         private IRandom m_Random;
-        private ILogger m_Logger;
+        private ISelkieLogger m_Logger;
         private TestChromosomeFactory m_Factory;
         private IDisposer m_Disposer;
 
