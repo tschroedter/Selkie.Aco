@@ -10,5 +10,9 @@ namespace Selkie.Aco.Example
         : BasicConsoleInstaller,
           IWindsorInstaller
     {
+        public override string GetPrefixOfDllsToInstall()
+        {
+            return "Selkie.";
+        }
     }
 }
