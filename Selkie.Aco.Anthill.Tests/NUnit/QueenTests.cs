@@ -30,7 +30,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         private ISelkieLogger m_Logger;
         private int[][] m_Neighbours;
         private IOptimizer m_Optimizer;
-        private Queen m_Queen;
+        private Queen m_Sut;
         private IRandom m_Random;
         private ISquad m_Squad;
         private ISquadFactory m_SquadFactory;
@@ -94,20 +94,29 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void BestAntDefaultTest()
         {
+            // Arrange
+            // Act
+            // Assert
             Assert.AreEqual(typeof ( IUnknownAnt ).Name,
-                            m_Queen.BestAnt.Type);
+                            m_Sut.BestAnt.Type);
         }
 
         [Test]
         public void BestTrailBuilderDefaultTest()
         {
+            // Arrange
+            // Act
+            // Assert
             Assert.AreEqual(typeof ( IUnknownTrailBuilder ).Name,
-                            m_Queen.BestTrailBuilder.Type);
+                            m_Sut.BestTrailBuilder.Type);
         }
 
         [Test]
         public void BestTrailDefaultTest()
         {
+            // Arrange
+            // Act
+            // Assert
             var builder = Substitute.For <ITrailBuilder>();
             var finder = Substitute.For <IBestTrailFinder>();
             finder.BestTrailBuilder.Returns(builder);
@@ -135,6 +144,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void ClearTest()
         {
+            // Arrange
+            // Act
+            // Assert
             var finder = Substitute.For <IBestTrailFinder>();
             var factory = Substitute.For <IBestTrailFinderFactory>();
             factory.Create(m_Graph,
@@ -161,15 +173,18 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void NaturalSelectionTest()
         {
-            IChromosome[] old = m_Queen.Ants.Select(x => x.Chromosome).ToArray();
+            // Arrange
+            // Act
+            // Assert
+            IChromosome[] old = m_Sut.Ants.Select(x => x.Chromosome).ToArray();
 
-            m_Queen.NaturalSelection(new Chromosome(m_Random),
+            m_Sut.NaturalSelection(new Chromosome(m_Random),
                                      new Chromosome(m_Random));
 
-            IChromosome[] actual = m_Queen.Ants.Select(x => x.Chromosome).ToArray();
+            IChromosome[] actual = m_Sut.Ants.Select(x => x.Chromosome).ToArray();
 
             Assert.AreEqual(10,
-                            m_Queen.NumberOfAnts,
+                            m_Sut.NumberOfAnts,
                             "NumberOfAnts");
 
             // add least one chromosome should be different
@@ -190,28 +205,37 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void NumberOfAntsDefaulTest()
         {
+            // Arrange
+            // Act
+            // Assert
             Assert.AreEqual(10,
-                            m_Queen.NumberOfAnts);
+                            m_Sut.NumberOfAnts);
         }
 
         [Test]
         public void NumberOfNodesDefaulTest()
         {
+            // Arrange
+            // Act
+            // Assert
             Assert.AreEqual(4,
-                            m_Queen.NumberOfNodes);
+                            m_Sut.NumberOfNodes);
         }
 
         [Test]
         public void RandomSelectionTest()
         {
-            IChromosome[] old = m_Queen.Ants.Select(x => x.Chromosome.Clone(m_ChromosomeFactory)).ToArray();
+            // Arrange
+            // Act
+            // Assert
+            IChromosome[] old = m_Sut.Ants.Select(x => x.Chromosome.Clone(m_ChromosomeFactory)).ToArray();
 
-            m_Queen.RandomSelection();
+            m_Sut.RandomSelection();
 
-            IChromosome[] actual = m_Queen.Ants.Select(x => x.Chromosome).ToArray();
+            IChromosome[] actual = m_Sut.Ants.Select(x => x.Chromosome).ToArray();
 
             Assert.AreEqual(10,
-                            m_Queen.NumberOfAnts,
+                            m_Sut.NumberOfAnts,
                             "NumberOfAnts");
 
             for ( var i = 0 ; i < old.Count() ; i++ )
@@ -231,6 +255,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void UpdateAntsCallsFindBestTrailTest()
         {
+            // Arrange
+            // Act
+            // Assert
             var finder = Substitute.For <IBestTrailFinder>();
             var factory = Substitute.For <IBestTrailFinderFactory>();
             factory.Create(m_Graph,
@@ -255,6 +282,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void UpdateAntsCallsTrackerUpdateTest()
         {
+            // Arrange
+            // Act
+            // Assert
             var tracker = Substitute.For <IPheromonesTracker>();
 
             var bestAnt = Substitute.For <IAnt>();
@@ -290,6 +320,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void UpdateAntsCallsUpdateOnAntTest()
         {
+            // Arrange
+            // Act
+            // Assert
             var ant1 = Substitute.For <IAnt>();
             ant1.Id.Returns(1);
             var ant2 = Substitute.For <IAnt>();
@@ -300,7 +333,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                 ant2
             };
 
-            m_Queen.UpdateAnts(ants);
+            m_Sut.UpdateAnts(ants);
 
             ant1.Received().Update();
             ant2.Received().Update();
@@ -309,6 +342,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void UpdateAntsCallsUpdateOnTrackerTest()
         {
+            // Arrange
+            // Act
+            // Assert
             var ant1 = Substitute.For <IAnt>();
             ant1.Id.Returns(1);
             var ant2 = Substitute.For <IAnt>();
@@ -319,7 +355,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                 ant2
             };
 
-            m_Queen.UpdateAnts(ants);
+            m_Sut.UpdateAnts(ants);
 
             m_Tracker.ReceivedWithAnyArgs().Update(Substitute.For <IAnt>());
         }
@@ -327,7 +363,10 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void UpdateAntsCallsUpdateTest()
         {
-            m_Queen.UpdateAnts();
+            // Arrange
+            // Act
+            // Assert
+            m_Sut.UpdateAnts();
 
             m_Tracker.ReceivedWithAnyArgs().Update(Substitute.For <IAnt>());
         }
@@ -335,6 +374,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void UpdateAntsUpdatesBestAntTest()
         {
+            // Arrange
+            // Act
+            // Assert
             var tracker = Substitute.For <IPheromonesTracker>();
 
             var bestAnt = Substitute.For <IAnt>();
@@ -370,6 +412,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void UpdateAntsUsingOffspringCallsMutationTest()
         {
+            // Arrange
+            // Act
+            // Assert
             var male = new Chromosome(m_Random);
             var female = new Chromosome(m_Random);
             var crossover = Substitute.For <ICrossover>();
@@ -395,6 +440,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void UpdateAntsUsingOffspringCallsOffspringTest()
         {
+            // Arrange
+            // Act
+            // Assert
             var male = new Chromosome(m_Random);
             var female = new Chromosome(m_Random);
             var crossover = Substitute.For <ICrossover>();
@@ -421,7 +469,10 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void UpdateBestAntCallsUpdateOnTrackerTest()
         {
-            m_Queen.UpdateBestAnt();
+            // Arrange
+            // Act
+            // Assert
+            m_Sut.UpdateBestAnt();
 
             m_Tracker.ReceivedWithAnyArgs().Update(Substitute.For <IAnt>());
         }
@@ -430,6 +481,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         // ReSharper disable MethodTooLong
         public void UpdateBestAntDoesNotSetsNewBestWhenNewIsLongerTest()
         {
+            // Arrange
+            // Act
+            // Assert
             var builderOne = Substitute.For <ITrailBuilder>();
             builderOne.Length.Returns(1111.0);
             var bestAnt = Substitute.For <IAnt>();
@@ -484,6 +538,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         // ReSharper disable MethodTooLong
         public void UpdateBestAntSetsNewBestWhenNewIsShorterTest()
         {
+            // Arrange
+            // Act
+            // Assert
             var bestAnt = Substitute.For <IAnt>();
             bestAnt.Type.Returns("IStandardAnt");
             bestAnt.Id.Returns(1111);
@@ -534,6 +591,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void UpdateBestAntSetsNewBestWhenStillUnknownTest()
         {
+            // Arrange
+            // Act
+            // Assert
             var bestAnt = Substitute.For <IAnt>();
             bestAnt.Type.Returns("IStandardAnt");
             bestAnt.Id.Returns(1111);
@@ -568,14 +628,17 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         [Test]
         public void UpdateChromosomesTest()
         {
-            IChromosome[] old = m_Queen.Ants.Select(x => x.Chromosome).ToArray();
+            // Arrange
+            // Act
+            // Assert
+            IChromosome[] old = m_Sut.Ants.Select(x => x.Chromosome).ToArray();
 
-            m_Queen.UpdateChromosomes(new Chromosome(m_Random));
+            m_Sut.UpdateChromosomes(new Chromosome(m_Random));
 
-            IChromosome[] actual = m_Queen.Ants.Select(x => x.Chromosome).ToArray();
+            IChromosome[] actual = m_Sut.Ants.Select(x => x.Chromosome).ToArray();
 
             Assert.AreEqual(10,
-                            m_Queen.NumberOfAnts,
+                            m_Sut.NumberOfAnts,
                             "NumberOfAnts");
 
             // add least one chromosome should be different
@@ -644,7 +707,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                                   Arg.Any <IPheromonesTracker>(),
                                   Arg.Any <IOptimizer>()).Returns(m_Squad);
 
-            m_Queen = new Queen(m_Logger,
+            m_Sut = new Queen(m_Logger,
                                 m_AntFactory,
                                 m_ChromosomeFactory,
                                 m_BestTrailFinderFactory,

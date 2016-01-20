@@ -20,14 +20,14 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
             m_Queen = Substitute.For <IQueen>();
             m_TrailHistory = Substitute.For <ITrailHistory>();
 
-            m_Selection = new NaturalSelection(m_Random,
-                                               m_TrailHistory,
-                                               m_Queen);
+            m_Sut = new NaturalSelection(m_Random,
+                                         m_TrailHistory,
+                                         m_Queen);
         }
 
         private IQueen m_Queen;
         private IRandom m_Random;
-        private NaturalSelection m_Selection;
+        private NaturalSelection m_Sut;
         private ITrailHistory m_TrailHistory;
 
         [NotNull]
@@ -163,36 +163,80 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         }
 
         [Test]
-        public void FindBestChromosomePairForOneElementForFemaleTest()
+        public void DoSelection_CallsNaturalSelection_ForThreeElementsCallsNaturalSelection()
         {
-            ITrailHistory trailHistory = CreateTrailHistoryWithOneElement();
+            // Arrange
+            ITrailHistory trailHistory = CreateTrailHistoryWithThreeElements();
 
             var selection = new NaturalSelection(m_Random,
                                                  trailHistory,
                                                  m_Queen);
 
-            IChromosome actual = selection.FindBestChromosomePair().Item2;
+            // Act
+            selection.DoSelection();
 
-            NUnitHelper.AssertIsEquivalent(1.0,
-                                           actual.Alpha,
-                                           "Alpha");
-            NUnitHelper.AssertIsEquivalent(2.0,
-                                           actual.Beta,
-                                           "Beta");
-            NUnitHelper.AssertIsEquivalent(3.0,
-                                           actual.Gamma,
-                                           "Gamma");
+            // Assert
+            m_Queen.Received(1).NaturalSelection(Arg.Any <IChromosome>(),
+                                                 Arg.Any <IChromosome>());
         }
 
         [Test]
-        public void FindBestChromosomePairForOneElementForMaleTest()
+        public void DoSelection_CallsRandomSelection_ForTrailHistoryCountOne()
         {
+            // Arrange
             ITrailHistory trailHistory = CreateTrailHistoryWithOneElement();
 
             var selection = new NaturalSelection(m_Random,
                                                  trailHistory,
                                                  m_Queen);
 
+            // Act
+            selection.DoSelection();
+
+            // Assert
+            m_Queen.Received(1).RandomSelection();
+        }
+
+        [Test]
+        public void DoSelection_CallsRandomSelection_ForTrailHistoryCountTwoAndChromosomeSame()
+        {
+            // Arrange
+            ITrailHistory trailHistory = CreateTrailHistoryWithTwoElementsSameChromosomes();
+
+            var selection = new NaturalSelection(m_Random,
+                                                 trailHistory,
+                                                 m_Queen);
+
+            // Act
+            selection.DoSelection();
+
+            // Assert
+            m_Queen.Received(1).RandomSelection();
+        }
+
+        [Test]
+        public void DoSelection_CallsRandomSelection_ForTrailHistoryCountZero()
+        {
+            // Arrange
+            // Act
+            m_Sut.DoSelection();
+
+            // Assert
+            m_Queen.Received(1).RandomSelection();
+        }
+
+        [Test]
+        public void FindBestChromosomePair_ReturnsChromosomeItem1_ForOneElementForMale()
+        {
+            // Arrange
+            ITrailHistory trailHistory = CreateTrailHistoryWithOneElement();
+
+            // Act
+            var selection = new NaturalSelection(m_Random,
+                                                 trailHistory,
+                                                 m_Queen);
+
+            // Assert
             IChromosome actual = selection.FindBestChromosomePair().Item1;
 
             NUnitHelper.AssertIsEquivalent(1.0,
@@ -207,14 +251,67 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         }
 
         [Test]
-        public void FindBestChromosomePairForThreeElementsForFemaleTest()
+        public void FindBestChromosomePair_ReturnsChromosomeItem1_ForThreeElementsForMaleTest()
         {
+            // Arrange
             ITrailHistory trailHistory = CreateTrailHistoryWithThreeElements();
 
+            // Act
             var selection = new NaturalSelection(m_Random,
                                                  trailHistory,
                                                  m_Queen);
 
+            // Assert
+            IChromosome actual = selection.FindBestChromosomePair().Item1;
+
+            NUnitHelper.AssertIsEquivalent(1.0,
+                                           actual.Alpha,
+                                           "Alpha");
+            NUnitHelper.AssertIsEquivalent(2.0,
+                                           actual.Beta,
+                                           "Beta");
+            NUnitHelper.AssertIsEquivalent(3.0,
+                                           actual.Gamma,
+                                           "Gamma");
+        }
+
+        [Test]
+        public void FindBestChromosomePair_ReturnsChromosomeItem2_ForOneElementForFemale()
+        {
+            // Arrange
+            ITrailHistory trailHistory = CreateTrailHistoryWithOneElement();
+
+            // Act
+            var selection = new NaturalSelection(m_Random,
+                                                 trailHistory,
+                                                 m_Queen);
+
+            // Assert
+            IChromosome actual = selection.FindBestChromosomePair().Item2;
+
+            NUnitHelper.AssertIsEquivalent(1.0,
+                                           actual.Alpha,
+                                           "Alpha");
+            NUnitHelper.AssertIsEquivalent(2.0,
+                                           actual.Beta,
+                                           "Beta");
+            NUnitHelper.AssertIsEquivalent(3.0,
+                                           actual.Gamma,
+                                           "Gamma");
+        }
+
+        [Test]
+        public void FindBestChromosomePair_ReturnsChromosomeItem2_ForThreeElementsForFemale()
+        {
+            // Arrange
+            ITrailHistory trailHistory = CreateTrailHistoryWithThreeElements();
+
+            // Act
+            var selection = new NaturalSelection(m_Random,
+                                                 trailHistory,
+                                                 m_Queen);
+
+            // Assert
             IChromosome actual = selection.FindBestChromosomePair().Item2;
 
             NUnitHelper.AssertIsEquivalent(10.0,
@@ -229,95 +326,28 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         }
 
         [Test]
-        public void FindBestChromosomePairForThreeElementsForMaleTest()
+        public void Queen_ReturnsDefault_WhenCalled()
         {
-            ITrailHistory trailHistory = CreateTrailHistoryWithThreeElements();
-
-            var selection = new NaturalSelection(m_Random,
-                                                 trailHistory,
-                                                 m_Queen);
-
-            IChromosome actual = selection.FindBestChromosomePair().Item1;
-
-            NUnitHelper.AssertIsEquivalent(1.0,
-                                           actual.Alpha,
-                                           "Alpha");
-            NUnitHelper.AssertIsEquivalent(2.0,
-                                           actual.Beta,
-                                           "Beta");
-            NUnitHelper.AssertIsEquivalent(3.0,
-                                           actual.Gamma,
-                                           "Gamma");
-        }
-
-        [Test]
-        public void QueenDefaultTest()
-        {
+            // Arrange
+            // Act
+            // Assert
             Assert.AreEqual(m_Queen,
-                            m_Selection.Queen);
+                            m_Sut.Queen);
         }
 
         [Test]
-        public void SelectCallsRandomSelectionForTrailHistoryCountOneTest()
+        public void SettingsToChromosome_ReturnsDefault_WhenCalled()
         {
-            ITrailHistory trailHistory = CreateTrailHistoryWithOneElement();
-
-            var selection = new NaturalSelection(m_Random,
-                                                 trailHistory,
-                                                 m_Queen);
-
-            selection.DoSelection();
-
-            m_Queen.Received(1).RandomSelection();
-        }
-
-        [Test]
-        public void SelectCallsRandomSelectionForTrailHistoryCountTwoAndChromosomeSameTest()
-        {
-            ITrailHistory trailHistory = CreateTrailHistoryWithTwoElementsSameChromosomes();
-
-            var selection = new NaturalSelection(m_Random,
-                                                 trailHistory,
-                                                 m_Queen);
-
-            selection.DoSelection();
-
-            m_Queen.Received(1).RandomSelection();
-        }
-
-        [Test]
-        public void SelectCallsRandomSelectionForTrailHistoryCountZeroTest()
-        {
-            m_Selection.DoSelection();
-
-            m_Queen.Received(1).RandomSelection();
-        }
-
-        [Test]
-        public void SelectrForThreeElementsCallsNaturalSelectionTest()
-        {
-            ITrailHistory trailHistory = CreateTrailHistoryWithThreeElements();
-
-            var selection = new NaturalSelection(m_Random,
-                                                 trailHistory,
-                                                 m_Queen);
-
-            selection.DoSelection();
-
-            m_Queen.Received(1).NaturalSelection(Arg.Any <IChromosome>(),
-                                                 Arg.Any <IChromosome>());
-        }
-
-        [Test]
-        public void SettingsToChromosomeTest()
-        {
+            // Arrange
             var settings = Substitute.For <ISettings>();
             settings.Alpha.Returns(1.0);
             settings.Beta.Returns(2.0);
             settings.Gamma.Returns(3.0);
 
-            IChromosome actual = m_Selection.SettingsToChromosome(settings);
+            // Act
+            IChromosome actual = m_Sut.SettingsToChromosome(settings);
 
+            // Assert
             Assert.AreEqual(settings.Alpha,
                             actual.Alpha,
                             "Alpha");
@@ -330,10 +360,13 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         }
 
         [Test]
-        public void TrailHistoryDefaultTest()
+        public void TrailHistory_ReturnsDefault_WhenCalled()
         {
+            // Arrange
+            // Act
+            // Assert
             Assert.AreEqual(m_TrailHistory,
-                            m_Selection.TrailHistory);
+                            m_Sut.TrailHistory);
         }
     }
 }

@@ -5,19 +5,14 @@ using Castle.Windsor;
 using JetBrains.Annotations;
 using Selkie.Aco.Common;
 using Selkie.Aco.Trails.Optimizers;
-using Selkie.Windsor;
+using Selkie.Common;
 
 namespace Selkie.Aco.Trails
 {
     // ReSharper disable MaximumChainedReferences
     [UsedImplicitly]
-    public class Installer : BaseInstaller <Installer>
+    public class Installer : SelkieInstaller <Installer>
     {
-        public override string GetPrefixOfDllsToInstall()
-        {
-            return "Selkie.";
-        }
-
         protected override void InstallComponents(IWindsorContainer container,
                                                   IConfigurationStore store)
         {

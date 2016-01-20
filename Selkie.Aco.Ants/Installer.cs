@@ -5,7 +5,7 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using JetBrains.Annotations;
 using Selkie.Aco.Common;
-using Selkie.Windsor;
+using Selkie.Common;
 
 namespace Selkie.Aco.Ants
 {
@@ -13,13 +13,8 @@ namespace Selkie.Aco.Ants
     //ncrunch: no coverage start
     [ExcludeFromCodeCoverage]
     [UsedImplicitly]
-    public class Installer : BaseInstaller <Installer>
+    public class Installer : SelkieInstaller <Installer>
     {
-        public override string GetPrefixOfDllsToInstall()
-        {
-            return "Selkie.";
-        }
-
         protected override void InstallComponents(IWindsorContainer container,
                                                   IConfigurationStore store)
         {

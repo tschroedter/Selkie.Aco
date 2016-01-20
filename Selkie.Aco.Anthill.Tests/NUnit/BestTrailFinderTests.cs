@@ -29,22 +29,22 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                               DistanceGraph = m_Graph
                           };
 
-            m_Finder = new BestTrailFinder(Substitute.For <IDisposer>(),
-                                           m_AntFactory,
-                                           m_Graph,
-                                           m_Tracker,
-                                           m_Optimizer,
-                                           m_TrailAlternatives);
+            m_Sut = new BestTrailFinder(Substitute.For <IDisposer>(),
+                                        m_AntFactory,
+                                        m_Graph,
+                                        m_Tracker,
+                                        m_Optimizer,
+                                        m_TrailAlternatives);
         }
 
         [TearDown]
         public void Teardown()
         {
-            m_Finder.Dispose();
+            m_Sut.Dispose();
         }
 
         private IAntFactory m_AntFactory;
-        private BestTrailFinder m_Finder;
+        private BestTrailFinder m_Sut;
         private IDistanceGraph m_Graph;
         private IOptimizer m_Optimizer;
         private IPheromonesTracker m_Tracker;
@@ -137,8 +137,15 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
             return chromosome;
         }
 
-        [Test]
-        public void ClearTest()
+        private static IAnt CreateAnt(ITrailBuilder trail1)
+        {
+            var ant1 = Substitute.For <IAnt>();
+            ant1.Id.Returns(0);
+            ant1.TrailBuilder.Returns(trail1);
+            return ant1;
+        }
+
+        private static ITrailBuilder CreateTrailBuilder()
         {
             var trail1 = Substitute.For <ITrailBuilder>();
             trail1.Trail.Returns(new[]
@@ -150,52 +157,93 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
             trail1.Length.Returns(10.0);
             trail1.Clone(Arg.Any <ITrailBuilderFactory>(),
                          Arg.Any <IChromosomeFactory>()).Returns(trail1);
-            var ant1 = Substitute.For <IAnt>();
-            ant1.Id.Returns(0);
-            ant1.TrailBuilder.Returns(trail1);
+            return trail1;
+        }
+
+        [Test]
+        public void Clear_SetsAlternativeTrailsToEmpty_WhenCalled()
+        {
+            // Arrange
+            ITrailBuilder trail = CreateTrailBuilder();
+            IAnt ant = CreateAnt(trail);
             IAnt[] ants =
             {
-                ant1
+                ant
             };
 
-            m_Finder.FindBestTrail(ants);
+            m_Sut.FindBestTrail(ants);
 
-            Assert.AreEqual(trail1,
-                            m_Finder.BestTrailBuilder,
+            Assert.AreEqual(trail,
+                            m_Sut.BestTrailBuilder,
                             "BestTrailBuilder");
             Assert.AreEqual(1,
-                            m_Finder.AlternativeTrails.Count(),
+                            m_Sut.AlternativeTrails.Count(),
                             "Count");
 
-            m_Finder.Clear();
+            // Act
+            m_Sut.Clear();
 
-            Assert.True(m_Finder.BestTrailBuilder.IsUnknown,
-                        "BestTrailBuilder");
+            // Assert
             Assert.AreEqual(0,
-                            m_Finder.AlternativeTrails.Count(),
+                            m_Sut.AlternativeTrails.Count(),
                             "Count");
         }
 
         [Test]
-        public void DisposeCallsDisposerTest()
+        public void Clear_SetsBestTrailBuilderToUnknown_WhenCalled()
         {
+            // Arrange
+            ITrailBuilder trail = CreateTrailBuilder();
+            IAnt ant = CreateAnt(trail);
+            IAnt[] ants =
+            {
+                ant
+            };
+
+            m_Sut.FindBestTrail(ants);
+
+            Assert.AreEqual(trail,
+                            m_Sut.BestTrailBuilder,
+                            "BestTrailBuilder");
+            Assert.AreEqual(1,
+                            m_Sut.AlternativeTrails.Count(),
+                            "Count");
+
+            // Act
+            m_Sut.Clear();
+
+            // Assert
+            Assert.True(m_Sut.BestTrailBuilder.IsUnknown,
+                        "BestTrailBuilder");
+            Assert.AreEqual(0,
+                            m_Sut.AlternativeTrails.Count(),
+                            "Count");
+        }
+
+        [Test]
+        public void Dispose_CallsDisposer_WhenCalled()
+        {
+            // Arrange
             var disposer = Substitute.For <IDisposer>();
 
-            var finder = new BestTrailFinder(disposer,
-                                             m_AntFactory,
-                                             m_Graph,
-                                             m_Tracker,
-                                             m_Optimizer,
-                                             m_TrailAlternatives);
+            var sut = new BestTrailFinder(disposer,
+                                          m_AntFactory,
+                                          m_Graph,
+                                          m_Tracker,
+                                          m_Optimizer,
+                                          m_TrailAlternatives);
 
-            finder.Dispose();
+            // Act
+            sut.Dispose();
 
+            // Assert
             disposer.Received().Dispose();
         }
 
         [Test]
-        public void FindBestTrailForFirstIsBestTest()
+        public void FindBestTrail_SetsAlternativeTrails_ForFirstIsBest()
         {
+            // Arrange
             ITrailBuilder builder1 = CreateTrailBuilder(new[]
                                                         {
                                                             0,
@@ -222,22 +270,22 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                 ant2
             };
 
-            m_Finder.FindBestTrail(ants);
+            // Act
+            m_Sut.FindBestTrail(ants);
 
-            Assert.AreEqual(builder1,
-                            m_Finder.BestTrailBuilder,
-                            "BestTrail");
+            // Assert
             Assert.AreEqual(1,
-                            m_Finder.AlternativeTrails.Count(),
+                            m_Sut.AlternativeTrails.Count(),
                             "AlternativeTrails Count");
             Assert.AreEqual(builder1,
-                            m_Finder.AlternativeTrails.First(),
+                            m_Sut.AlternativeTrails.First(),
                             "AlternativeTrails");
         }
 
         [Test]
-        public void FindBestTrailForSecondIsBestTest()
+        public void FindBestTrail_SetsAlternativeTrails_ForSecondIsBest()
         {
+            // Arrange
             ITrailBuilder builder1 = CreateTrailBuilder(new[]
                                                         {
                                                             0,
@@ -264,22 +312,22 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                 ant2
             };
 
-            m_Finder.FindBestTrail(ants);
+            // Act
+            m_Sut.FindBestTrail(ants);
 
-            Assert.AreEqual(builder2,
-                            m_Finder.BestTrailBuilder,
-                            "BestTrail");
+            // Assert
             Assert.AreEqual(1,
-                            m_Finder.AlternativeTrails.Count(),
+                            m_Sut.AlternativeTrails.Count(),
                             "AlternativeTrails Count");
             Assert.AreEqual(builder2,
-                            m_Finder.AlternativeTrails.First(),
+                            m_Sut.AlternativeTrails.First(),
                             "AlternativeTrails");
         }
 
         [Test]
-        public void FindBestTrailForTwoBestTrailsTest()
+        public void FindBestTrail_SetsAlternativeTrails_ForTwoBestTrails()
         {
+            // Arrange
             ITrailBuilder trail1 = CreateTrailBuilder(new[]
                                                       {
                                                           0,
@@ -306,25 +354,142 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                 ant2
             };
 
-            m_Finder.FindBestTrail(ants);
+            // Act
+            m_Sut.FindBestTrail(ants);
 
-            Assert.AreEqual(trail1,
-                            m_Finder.BestTrailBuilder,
-                            "BestTrail");
+            // Assert
             Assert.AreEqual(2,
-                            m_Finder.AlternativeTrails.Count(),
+                            m_Sut.AlternativeTrails.Count(),
                             "AlternativeTrails Count");
             Assert.AreEqual(trail1,
-                            m_Finder.AlternativeTrails.First(),
+                            m_Sut.AlternativeTrails.First(),
                             "AlternativeTrails First");
             Assert.AreEqual(trail2,
-                            m_Finder.AlternativeTrails.Last(),
+                            m_Sut.AlternativeTrails.Last(),
                             "AlternativeTrails Last");
         }
 
         [Test]
-        public void SettingsTest()
+        public void FindBestTrail_SetsBestTrailBuilder_ForFirstIsBest()
         {
+            // Arrange
+            ITrailBuilder builder1 = CreateTrailBuilder(new[]
+                                                        {
+                                                            0,
+                                                            1,
+                                                            2
+                                                        },
+                                                        10.0);
+            IAnt ant1 = CreateAnt(0,
+                                  builder1);
+
+            ITrailBuilder builder2 = CreateTrailBuilder(new[]
+                                                        {
+                                                            2,
+                                                            1,
+                                                            0
+                                                        },
+                                                        20.0);
+            IAnt ant2 = CreateAnt(1,
+                                  builder2);
+
+            IAnt[] ants =
+            {
+                ant1,
+                ant2
+            };
+
+            // Act
+            m_Sut.FindBestTrail(ants);
+
+            // Assert
+            Assert.AreEqual(builder1,
+                            m_Sut.BestTrailBuilder,
+                            "BestTrail");
+        }
+
+        [Test]
+        public void FindBestTrail_SetsBestTrailBuilder_ForSecondIsBest()
+        {
+            // Arrange
+            ITrailBuilder builder1 = CreateTrailBuilder(new[]
+                                                        {
+                                                            0,
+                                                            1,
+                                                            2
+                                                        },
+                                                        20.0);
+            IAnt ant1 = CreateAnt(0,
+                                  builder1);
+
+            ITrailBuilder builder2 = CreateTrailBuilder(new[]
+                                                        {
+                                                            2,
+                                                            1,
+                                                            0
+                                                        },
+                                                        10.0);
+            IAnt ant2 = CreateAnt(1,
+                                  builder2);
+
+            IAnt[] ants =
+            {
+                ant1,
+                ant2
+            };
+
+            // Act
+            m_Sut.FindBestTrail(ants);
+
+            // Assert
+            Assert.AreEqual(builder2,
+                            m_Sut.BestTrailBuilder,
+                            "BestTrail");
+        }
+
+        [Test]
+        public void FindBestTrail_SetsBestTrailBuilder_ForTwoBestTrails()
+        {
+            // Arrange
+            ITrailBuilder trail1 = CreateTrailBuilder(new[]
+                                                      {
+                                                          0,
+                                                          1,
+                                                          2
+                                                      },
+                                                      10.0);
+            IAnt ant1 = CreateAnt(0,
+                                  trail1);
+
+            ITrailBuilder trail2 = CreateTrailBuilder(new[]
+                                                      {
+                                                          2,
+                                                          1,
+                                                          0
+                                                      },
+                                                      10.0);
+            IAnt ant2 = CreateAnt(1,
+                                  trail2);
+
+            IAnt[] ants =
+            {
+                ant1,
+                ant2
+            };
+
+            // Act
+            m_Sut.FindBestTrail(ants);
+
+            // Assert
+            Assert.AreEqual(trail1,
+                            m_Sut.BestTrailBuilder,
+                            "BestTrail");
+        }
+
+        [Test]
+        public void FindBestTrail_SetsSettings_WhenCalled()
+        {
+            // Arrange
             ITrailBuilder trail1 = CreateTrailBuilder(new[]
                                                       {
                                                           0,
@@ -347,9 +512,11 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                 ant1
             };
 
-            m_Finder.FindBestTrail(ants);
+            // Act
+            m_Sut.FindBestTrail(ants);
 
-            ISettings actual = m_Finder.Settings;
+            // Assert
+            ISettings actual = m_Sut.Settings;
 
             Assert.AreEqual(chromosome.Alpha,
                             actual.Alpha,

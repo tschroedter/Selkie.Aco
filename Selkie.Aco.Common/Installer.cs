@@ -1,14 +1,10 @@
 ﻿using JetBrains.Annotations;
-using Selkie.Windsor;
+using Selkie.Common;
 
 namespace Selkie.Aco.Common
 {
     [UsedImplicitly]
-    public class Installer : BaseInstaller <Installer>
+    public class Installer : SelkieInstaller <Installer>
     {
-        public override string GetPrefixOfDllsToInstall()
-        {
-            return "Selkie.";
-        }
     }
 }

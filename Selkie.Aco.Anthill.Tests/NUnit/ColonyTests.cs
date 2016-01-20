@@ -445,28 +445,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         }
 
         [Test]
-        public void BestTrailsTest()
+        public void Constructor_ForThreeAntsAndThreeNode()
         {
-            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
-            DistanceGraph graph = CreateDistanceGraph(costPerLine);
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-            colony.TurnsBeforeSelection = 10;
-
-            colony.Start(100);
-
-            ITrailHistory trailHistory = colony.TrailHistory;
-
-            Assert.NotNull(trailHistory);
-            Assert.True(trailHistory.Information.Any(),
-                        "Information.Count()");
-        }
-
-        [Test]
-        public void ConstructorForThreeAntsAndThreeNodeTest()
-        {
+            // Arrange
             int[][] costMatrix = CreateCostMatrix();
 
             int[] costPerLine =
@@ -484,28 +465,31 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
 
             PheromonesTracker tracker = CreatePheromonesTracker();
 
-            Colony colony = CreateColony(tracker,
-                                         graph);
+            // Act
+            Colony sut = CreateColony(tracker,
+                                      graph);
 
+            // Assert
             Assert.AreEqual(10,
-                            colony.NumberOfAnts,
+                            sut.NumberOfAnts,
                             "NumberOfAnts");
             Assert.AreEqual(4,
-                            colony.NumberOfNodes,
+                            sut.NumberOfNodes,
                             "NumberOfNodes");
             Assert.AreEqual(10,
-                            colony.Ants.Count(),
+                            sut.Ants.Count(),
                             "Ants");
-            Assert.True(colony.BestTrailBuilder.IsUnknown,
+            Assert.True(sut.BestTrailBuilder.IsUnknown,
                         "BestTrail");
             Assert.AreEqual(0,
-                            colony.Alternatives.Count(),
+                            sut.Alternatives.Count(),
                             "AlternativeTrails");
         }
 
         [Test]
-        public void ConstructorForTwoAntsAndTwoNodesTest()
+        public void Constructor_ForTwoAntsAndTwoNodes()
         {
+            // Arrange
             var costMatrix = new int[2][];
 
             costMatrix [ 0 ] = new[]
@@ -533,231 +517,78 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                                           costPerLine);
             PheromonesTracker tracker = CreatePheromonesTracker();
 
-            Colony colony = CreateColony(tracker,
-                                         graph);
+            // Act
+            Colony sut = CreateColony(tracker,
+                                      graph);
 
+            // Assert
             Assert.AreEqual(10,
-                            colony.NumberOfAnts,
+                            sut.NumberOfAnts,
                             "NumberOfAnts");
             Assert.AreEqual(2,
-                            colony.NumberOfNodes,
+                            sut.NumberOfNodes,
                             "NumberOfNodes");
             Assert.AreEqual(10,
-                            colony.Ants.Count(),
+                            sut.Ants.Count(),
                             "Ants");
-            Assert.True(colony.BestTrailBuilder.IsUnknown,
+            Assert.True(sut.BestTrailBuilder.IsUnknown,
                         "BestTrail");
             Assert.AreEqual(0,
-                            colony.Alternatives.Count(),
+                            sut.Alternatives.Count(),
                             "AlternativeTrails");
         }
 
         [Test]
-        public void CostMatricAllSameAlternativesTest()
+        public void Cycle_CallsDoCycle_WhenCalled()
         {
-            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
-            DistanceGraph graph = CreateDistanceGraph(costPerLine);
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+            // Arrange
+            Colony sut = CreateColonyWithCostMatrixAllSame();
 
-            Colony colony = CreateColony(tracker,
-                                         graph);
+            // Act
+            sut.Cycle(1);
 
-            colony.Start(100);
-
-            Assert.True(colony.BestTrailBuilder.Length > 0.0,
-                        "BestTrailBuilder.Length");
-            Assert.True(colony.Alternatives.Any(),
-                        "AlternativeTrails.Count()");
+            // Assert
+            Assert.True(1 == sut.Time);
         }
 
         [Test]
-        public void CostMatricAllSameBestTrailTest()
+        public void Cycle_CallsPostCycle_WhenCalledt()
         {
-            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
-            DistanceGraph graph = CreateDistanceGraph(costPerLine);
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-
-            colony.Start(100);
-
-            ITrailBuilder actual = colony.BestTrailBuilder;
-
-            NUnitHelper.AssertIsEquivalent(150.0,
-                                           actual.Length,
-                                           Colony.Epsilon,
-                                           actual.ToString());
-        }
-
-        [Test]
-        public void CostMatricTwoPathsAlternativesTest()
-        {
-            int[] costPerLine = CreateCostPerLine(m_CostMatricTwoPaths);
-            DistanceGraph graph = CreateDistanceGraph(new NearestNeighbours(),
-                                                      m_CostMatricTwoPaths,
-                                                      costPerLine);
-
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-
-            colony.Start(100);
-
-            Assert.True(colony.BestTrailBuilder.Length > 0.0,
-                        "BestTrailBuilder.Length");
-            Assert.True(colony.Alternatives.Any(),
-                        "AlternativeTrails.Count()");
-        }
-
-        [Test]
-        public void CostMatricTwoPathsBestTrailTest()
-        {
-            int[] costPerLine = CreateCostPerLine(m_CostMatricTwoPaths);
-            DistanceGraph graph = CreateDistanceGraph(new NearestNeighbours(),
-                                                      m_CostMatricTwoPaths,
-                                                      costPerLine);
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-
-            colony.Start(100);
-
-            ITrailBuilder actual = colony.BestTrailBuilder;
-
-            NUnitHelper.AssertIsEquivalent(110.0,
-                                           actual.Length,
-                                           Colony.Epsilon,
-                                           actual.ToString());
-        }
-
-        [Test]
-        public void CostMatrixSimpleAlternativesTest()
-        {
-            int[] costPerLine = CreateCostPerLine(m_CostMatrixSimple);
-            DistanceGraph graph = CreateDistanceGraph(new NearestNeighbours(),
-                                                      m_CostMatrixSimple,
-                                                      costPerLine);
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-
-            colony.Start(100);
-
-            Assert.True(colony.BestTrailBuilder.Length > 0.0,
-                        "BestTrailBuilder.Length");
-            Assert.True(colony.Alternatives.Any(),
-                        "AlternativeTrails.Count()");
-        }
-
-        [Test]
-        public void CostMatrixSimpleBestTrailTest()
-        {
-            int[] costPerLine = CreateCostPerLine(m_CostMatrixSimple);
-            DistanceGraph graph = CreateDistanceGraph(new NearestNeighbours(),
-                                                      m_CostMatrixSimple,
-                                                      costPerLine);
-
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-
-            colony.Start(100);
-
-            int[] expected =
-            {
-                0,
-                3
-            };
-            IEnumerable <int> actual = colony.BestTrailBuilder.Trail;
-
-            Assert.True(expected.SequenceEqual(actual));
-        }
-
-        [Test]
-        public void CostMatrixThreeLinesAlternativesTest()
-        {
-            int[] costPerLine = CreateCostPerLine(m_CostMatrixThreeLines);
-            DistanceGraph graph = CreateDistanceGraph(m_CostMatrixThreeLines,
-                                                      costPerLine);
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-
-            colony.Start(10);
-
-            double bestLength = colony.BestTrailBuilder.Length;
-
-            Assert.True(bestLength > 0.0,
-                        "BestTrailBuilder.Length");
-            Assert.True(colony.Alternatives.Any(),
-                        "AlternativeTrails.Count");
-        }
-
-        [Test]
-        public void CostMatrixThreeLinesBestTrailTest()
-        {
-            int[] costPerLine = CreateCostPerLine(m_CostMatrixThreeLines);
-            DistanceGraph graph = CreateDistanceGraph(m_CostMatrixThreeLines,
-                                                      costPerLine);
-
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-
-            colony.Start(100);
-
-            ITrailBuilder actual = colony.BestTrailBuilder;
-
-            Assert.IsNotNull(actual);
-            Assert.False(colony.BestTrailBuilder.IsUnknown);
-        }
-
-        [Test]
-        public void CycleCallsDoCycleTest()
-        {
-            Colony colony = CreateColonyWithCostMatrixAllSame();
-
-            colony.Cycle(1);
-
-            Assert.True(1 == colony.Time);
-        }
-
-        [Test]
-        public void CycleCallsPostCycleTest()
-        {
+            // Arrange
             FinishedEventArgs eventArgs = null;
 
-            Colony colony = CreateColonyWithCostMatrixAllSame();
-            colony.Finished += ( (sender,
-                                  args) => eventArgs = args );
-            colony.Cycle(1);
+            Colony sut = CreateColonyWithCostMatrixAllSame();
+            sut.Finished += (sender,
+                             args) => eventArgs = args;
 
+            // Act
+            sut.Cycle(1);
+
+            // Assert
             Assert.NotNull(eventArgs);
         }
 
         [Test]
-        public void CycleCallsPreCycleTest()
+        public void Cycle_CallsPreCycle_WhenCalled()
         {
+            // Arrange
             EventArgs eventArgs = null;
 
-            Colony colony = CreateColonyWithCostMatrixAllSame();
-            colony.Started += ( (sender,
-                                 args) => eventArgs = args );
-            colony.Cycle(1);
+            Colony sut = CreateColonyWithCostMatrixAllSame();
+            sut.Started += (sender,
+                            args) => eventArgs = args;
 
+            // Act
+            sut.Cycle(1);
+
+            // Assert
             Assert.NotNull(eventArgs);
         }
 
         [Test]
-        public void CycleInitializeSetBestTrailBuilderTest()
+        public void Cycle_InitializeSetBestTrailBuilder_WhenCalled()
         {
+            // Arrange
             var trailBuilder = Substitute.For <IUnknownTrailBuilder>();
             trailBuilder.Clone(Arg.Any <ITrailBuilderFactory>(),
                                Arg.Any <IChromosomeFactory>()).Returns(trailBuilder);
@@ -776,160 +607,119 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                                                                       Arg.Any <IEnumerable <int>>());
             factoryCreate.ReturnsForAnyArgs(trailBuilder);
 
-            Colony colony = CreateColony(factory,
-                                         m_Tracker,
-                                         m_Graph);
+            Colony sut = CreateColony(factory,
+                                      m_Tracker,
+                                      m_Graph);
 
-            colony.CycleInitialize();
+            // Act
+            sut.CycleInitialize();
 
+            // Assert
             Assert.AreEqual(trailBuilder,
-                            colony.ColonyBestTrailBuilder);
+                            sut.ColonyBestTrailBuilder);
         }
 
         [Test]
-        public void CycleSetFinishTimeTest()
+        public void Cycle_SetFinishTime_WhenCalled()
         {
-            Colony colony = CreateColonyWithCostMatrixAllSame();
+            // Arrange
 
-            colony.Cycle(1);
+            Colony sut = CreateColonyWithCostMatrixAllSame();
 
+            // Act
+            sut.Cycle(1);
+
+            // Assert
             Assert.AreEqual(m_FinishTime,
-                            colony.FinishTime);
+                            sut.FinishTime);
         }
 
         [Test]
-        public void CycleSetStartTimeTest()
+        public void Cycle_SetStartTime_WhenCalled()
         {
-            Colony colony = CreateColonyWithCostMatrixAllSame();
+            // Arrange
+            Colony sut = CreateColonyWithCostMatrixAllSame();
 
-            colony.Cycle(1);
+            // Act
+            sut.Cycle(1);
 
+            // Assert
             Assert.AreEqual(m_StartTime,
-                            colony.StartTime);
+                            sut.StartTime);
         }
 
         [Test]
-        public void DefaultPheromonesMaximumTest()
+        public void EvolveRestartFromBestTrail_CallsRestart_WhenCalled()
         {
-            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
-            DistanceGraph graph = CreateDistanceGraph(costPerLine);
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-
-            NUnitHelper.AssertIsEquivalent(0.02,
-                                           colony.PheromonesMaximum);
-        }
-
-        [Test]
-        public void DefaultPheromonesMinimumTest()
-        {
-            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
-            DistanceGraph graph = CreateDistanceGraph(costPerLine);
-
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-
-            NUnitHelper.AssertIsEquivalent(0.02,
-                                           colony.PheromonesMinimum);
-        }
-
-        [Test]
-        public void DefaultTurnsBeforeSelectionTest()
-        {
-            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
-            DistanceGraph graph = CreateDistanceGraph(costPerLine);
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-
-            Assert.AreEqual(Colony.DefaultTurnsBeforeSelection,
-                            colony.TurnsBeforeSelection);
-        }
-
-        [Test]
-        public void DefaultTurnsRemainingTest()
-        {
-            Colony colony = CreateColony(m_Tracker,
-                                         m_Graph);
-
-            Assert.AreEqual(2,
-                            colony.TurnsRemaining);
-        }
-
-        [Test]
-        public void DefaultTurnsSinceNewBestTrailFoundTest()
-        {
-            Colony colony = CreateColony(m_Tracker,
-                                         m_Graph);
-
-            Assert.AreEqual(200,
-                            colony.TurnsSinceNewBestTrailFound);
-        }
-
-        [Test]
-        public void EvolveRestartFromBestTrailCallsRestartTest()
-        {
+            // Arrange
             var queen = Substitute.For <IQueen>();
 
-            Colony colony = CreateColony(m_Tracker,
-                                         m_Graph);
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
 
-            colony.EvolveRestartFromBestTrail(queen);
+            // Act
+            sut.EvolveRestartFromBestTrail(queen);
 
+            // Assert
             queen.Received().RestartFromTrail(Arg.Any <IEnumerable <int>>());
         }
 
         [Test]
-        public void EvolveRestartFromBestTrailUpdatesTurnsRemainingTest()
+        public void EvolveRestartFromBestTrailUpdatesTurnsRemaining_ReturnsDefault_WhenCalled()
         {
+            // Arrange
             var queen = Substitute.For <IQueen>();
 
-            Colony colony = CreateColony(m_Tracker,
-                                         m_Graph);
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
 
-            colony.EvolveRestartFromBestTrail(queen);
+            // Act
+            sut.EvolveRestartFromBestTrail(queen);
 
+            // Assert
             Assert.AreEqual(100,
-                            colony.TurnsRemaining);
+                            sut.TurnsRemaining);
         }
 
         [Test]
-        public void EvolveRestartFromBestTrailUpdatesTurnsSinceNewBestTrailFoundTest()
+        public void EvolveRestartFromBestTrailUpdatesTurnsSinceNewBestTrailFound_ReturnsDefault_WhenCalled()
         {
+            // Arrange
             var queen = Substitute.For <IQueen>();
 
-            Colony colony = CreateColony(m_Tracker,
-                                         m_Graph);
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
 
-            colony.EvolveRestartFromBestTrail(queen);
+            // Act
+            sut.EvolveRestartFromBestTrail(queen);
 
+            // Assert
             Assert.AreEqual(100 * 2,
-                            colony.TurnsSinceNewBestTrailFound);
+                            sut.TurnsSinceNewBestTrailFound);
         }
 
         [Test]
-        public void FindCallColonyLoggerTest()
+        public void Find_CallsColonyLogger_WhenCalled()
         {
+            // Arrange
             int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
             DistanceGraph graph = CreateDistanceGraph(costPerLine);
             PheromonesTracker tracker = CreatePheromonesTracker(graph);
 
-            Colony colony = CreateColony(tracker,
-                                         graph);
+            Colony sut = CreateColony(tracker,
+                                      graph);
 
-            colony.Start(0);
+            // Act
+            sut.Start(0);
 
+            // Assert
             m_ColonyLogger.Received().LogResult(Arg.Any <TimeSpan>());
         }
 
         [Test]
-        public void IsInvalidTrailReturnsTrueForInvalidTest()
+        public void IsInvalidTrail_ReturnsTrue_ForInvalid()
         {
+            // Arrange
             var builder = Substitute.For <IUnknownTrailBuilder>();
             builder.IsUnknown.Returns(false);
             builder.Trail.Returns(new[]
@@ -938,142 +728,158 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                                       2
                                   });
 
-            Colony colony = CreateColonyWithCostMatrixAllSame();
+            // Act
+            Colony sut = CreateColonyWithCostMatrixAllSame();
 
-            bool actual = colony.IsInvalidTrail(builder);
-
-            Assert.True(actual);
+            // Assert
+            Assert.True(sut.IsInvalidTrail(builder));
         }
 
         [Test]
-        public void IsInvalidTrailReturnsTrueForUnknownTest()
+        public void IsInvalidTrail_ReturnsTrue_ForUnknown()
         {
+            // Arrange
+            // Act
             var builder = Substitute.For <IUnknownTrailBuilder>();
             builder.IsUnknown.Returns(true);
 
-            Colony colony = CreateColonyWithCostMatrixAllSame();
+            Colony sut = CreateColonyWithCostMatrixAllSame();
 
-            bool actual = colony.IsInvalidTrail(builder);
-
-            Assert.True(actual);
+            // Assert
+            Assert.True(sut.IsInvalidTrail(builder));
         }
 
         [Test]
-        public void NewBestTrailIsInvalidLogsErrorTest()
+        public void NewBestTrailIsInvalid_LogsError_ForInvalidTrail()
         {
+            // Arrange
             var builder = Substitute.For <IUnknownTrailBuilder>();
             builder.IsUnknown.Returns(true);
 
-            Colony colony = CreateColonyWithCostMatrixAllSame();
+            Colony sut = CreateColonyWithCostMatrixAllSame();
 
             m_ColonyLogger.ClearReceivedCalls();
 
-            colony.NewBestTrailIsInvalid(builder);
+            // Act
+            sut.NewBestTrailIsInvalid(builder);
 
+            // Assert
             m_ColonyLogger.Received().Error(Arg.Is <string>(x => x.StartsWith("Found invalid trail")));
         }
 
         [Test]
-        public void PheromonesAverageTest()
+        public void Pheromones_ReturnsDefault_WhenCalled()
         {
+            // Arrange
+
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
+            DistanceGraph graph = CreateDistanceGraph(costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            // Act
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Assert
+            NUnitHelper.AssertIsEquivalent(0.02,
+                                           sut.PheromonesMaximum);
+        }
+
+        [Test]
+        public void PheromonesInformation_ReturnsInformation_WhenCalled()
+        {
+            // Arrange
+            // Act
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
+
+            // Assert
+            Assert.NotNull(sut.PheromonesInformation());
+        }
+
+        [Test]
+        public void PheromonesMinimum_ReturnsDefault_WhenCalled()
+        {
+            // Arrange
             int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
             DistanceGraph graph = CreateDistanceGraph(costPerLine);
 
             PheromonesTracker tracker = CreatePheromonesTracker(graph);
 
-            Colony colony = CreateColony(tracker,
-                                         graph);
+            // Act
+            Colony sut = CreateColony(tracker,
+                                      graph);
 
-            colony.Start(10);
-
-            Assert.True(colony.PheromonesMinimum < colony.PheromonesAverage);
+            // Assert
+            NUnitHelper.AssertIsEquivalent(0.02,
+                                           sut.PheromonesMinimum);
         }
 
         [Test]
-        public void PheromonesInformationReturnsInformationTest()
+        public void PostCycle_SendsBestTrailMessage_WhenCalled()
         {
-            Colony colony = CreateColony(m_Tracker,
-                                         m_Graph);
-
-            PheromonesInformation actual = colony.PheromonesInformation();
-
-            Assert.NotNull(actual);
-        }
-
-        [Test]
-        public void PheromonesTest()
-        {
-            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
-            DistanceGraph graph = CreateDistanceGraph(costPerLine);
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-
-            colony.Start(100);
-
-            double[][] actual = colony.PheromonesToArray();
-
-            Assert.AreEqual(4,
-                            actual.GetLength(0),
-                            ".GetLength(0)");
-            Assert.AreEqual(4,
-                            actual [ 0 ].Length,
-                            "Length");
-        }
-
-        [Test]
-        public void PostCycleSendsBestTrailMessageTest()
-        {
+            // Arrange
             BestTrailChangedEventArgs eventArgs = null;
 
-            Colony colony = CreateColony(m_Tracker,
-                                         m_Graph);
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
 
-            colony.BestTrailChanged += ( (sender,
-                                          args) => eventArgs = args );
-            colony.CycleInitialize();
-            colony.PostCycle();
+            sut.BestTrailChanged += (sender,
+                                     args) => eventArgs = args;
+            sut.CycleInitialize();
 
+            // Act
+            sut.PostCycle();
+
+            // Assert
             Assert.NotNull(eventArgs);
         }
 
         [Test]
-        public void PostCycleSendsFinishedMessageTest()
+        public void PostCycle_SendsFinishedMessage_WhenCalled()
         {
+            // Arrange
             FinishedEventArgs eventArgs = null;
 
-            Colony colony = CreateColony(m_Tracker,
-                                         m_Graph);
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
 
-            colony.Finished += ( (sender,
-                                  args) => eventArgs = args );
+            sut.Finished += (sender,
+                             args) => eventArgs = args;
 
-            colony.CycleInitialize();
-            colony.PostCycle();
+            sut.CycleInitialize();
 
+            // Act
+            sut.PostCycle();
+
+            // Assert
             Assert.NotNull(eventArgs);
         }
 
         [Test]
-        public void PostCycleSendsStoppedMessageTest()
+        public void PostCycle_SendsStoppedMessage_WhenCalled()
         {
+            // Arrange
             EventArgs eventArgs = null;
 
-            Colony colony = CreateColonyWithCostMatrixAllSame();
-            colony.Stopped += ( (sender,
-                                 args) => eventArgs = args );
+            Colony sut = CreateColonyWithCostMatrixAllSame();
+            sut.Stopped += (sender,
+                            args) => eventArgs = args;
 
-            colony.CycleInitialize();
-            colony.Stop();
-            colony.PostCycle();
+            sut.CycleInitialize();
+            sut.Stop();
 
+            // Act
+            sut.PostCycle();
+
+            // Assert
             Assert.NotNull(eventArgs);
         }
 
         [Test]
-        public void PreCycleCallsCycleInitializeTest()
+        public void PreCycle_CallsCycleInitialize_WhenCalled()
         {
+            // Arrange
             var trailBuilder = Substitute.For <IUnknownTrailBuilder>();
             trailBuilder.Clone(Arg.Any <ITrailBuilderFactory>(),
                                Arg.Any <IChromosomeFactory>()).Returns(trailBuilder);
@@ -1092,33 +898,22 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                                                                       Arg.Any <IEnumerable <int>>());
             factoryCreate.ReturnsForAnyArgs(trailBuilder);
 
-            Colony colony = CreateColony(factory,
-                                         m_Tracker,
-                                         m_Graph);
+            Colony sut = CreateColony(factory,
+                                      m_Tracker,
+                                      m_Graph);
 
-            colony.PreCycle();
+            // Act
+            sut.PreCycle();
 
+            // Assert
             Assert.AreEqual(trailBuilder,
-                            colony.ColonyBestTrailBuilder);
+                            sut.ColonyBestTrailBuilder);
         }
 
         [Test]
-        public void RoundTripTurnsBeforeSelectionTest()
+        public void RunTime_ReturnsDateTime_WhenCalled()
         {
-            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
-            DistanceGraph graph = CreateDistanceGraph(costPerLine);
-            PheromonesTracker tracker = CreatePheromonesTracker(graph);
-
-            Colony colony = CreateColony(tracker,
-                                         graph);
-
-            Assert.AreEqual(100,
-                            colony.TurnsBeforeSelection);
-        }
-
-        [Test]
-        public void RunTimeTest()
-        {
+            // Arrange
             var costMatrix = new int[4][];
 
             costMatrix [ 0 ] = new[]
@@ -1163,59 +958,460 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
 
             PheromonesTracker tracker = CreatePheromonesTracker(m_Graph);
 
-            Colony colony = CreateColony(tracker,
-                                         graph);
+            // Act
+            Colony sut = CreateColony(tracker,
+                                      graph);
 
-            TimeSpan actual = colony.Runtime;
-
-            Assert.NotNull(actual);
+            // Assert
+            Assert.NotNull(sut.Runtime);
         }
 
         [Test]
-        public void SendBestTrailMessageRaisesEventTest()
+        public void SendBestTrailMessage_RaisesEvent_WhenCalled()
         {
+            // Arrange
             var trailBuilder = Substitute.For <ITrailBuilder>();
             BestTrailChangedEventArgs args = null;
 
-            Colony colony = CreateColony(m_Tracker,
-                                         m_Graph);
-            colony.BestTrailChanged += ( (sender,
-                                          eventArgs) => args = eventArgs );
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
+            sut.BestTrailChanged += (sender,
+                                     eventArgs) => args = eventArgs;
 
-            colony.SendBestTrailMessage(trailBuilder);
+            // Act
+            sut.SendBestTrailMessage(trailBuilder);
 
+            // Assert
             Assert.NotNull(args);
         }
 
         [Test]
-        public void StoppedHandlerSetsFlagToTrueTest()
+        public void Start_PopulatesTrailHistory_WhenCalled()
         {
-            Colony colony = CreateColony(m_Tracker,
-                                         m_Graph);
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
+            DistanceGraph graph = CreateDistanceGraph(costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
 
-            colony.Stop();
+            Colony sut = CreateColony(tracker,
+                                      graph);
+            sut.TurnsBeforeSelection = 10;
 
-            Assert.True(colony.IsRequestedToStop);
+            // Act
+            sut.Start(100);
+
+            // Assert
+            ITrailHistory actual = sut.TrailHistory;
+
+            Assert.NotNull(actual);
+            Assert.True(actual.Information.Any(),
+                        "Information.Count()");
         }
 
         [Test]
-        public void TimeDefaultTest()
+        public void Start_SetsAlternatives_CostMatrixSimpleAlternatives()
         {
-            Colony colony = CreateColonyWithCostMatrixAllSame();
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixSimple);
+            DistanceGraph graph = CreateDistanceGraph(new NearestNeighbours(),
+                                                      m_CostMatrixSimple,
+                                                      costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
 
-            Assert.AreEqual(0,
-                            colony.Time);
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            Assert.True(sut.Alternatives.Any(),
+                        "AlternativeTrails.Count()");
         }
 
         [Test]
-        public void TimeTest()
+        public void Start_SetsAlternatives_CostMatrixThreeLinesAlternativesTest()
         {
-            Colony colony = CreateColonyWithCostMatrixAllSame();
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixThreeLines);
+            DistanceGraph graph = CreateDistanceGraph(m_CostMatrixThreeLines,
+                                                      costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
 
-            colony.Start(10);
+            Colony sut = CreateColony(tracker,
+                                      graph);
 
+            // Act
+            sut.Start(10);
+
+            // Assert
+            Assert.True(sut.Alternatives.Any(),
+                        "AlternativeTrails.Count");
+        }
+
+        [Test]
+        public void Start_SetsAlternatives_ForCostMatricAllSameAlternatives()
+        {
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
+            DistanceGraph graph = CreateDistanceGraph(costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            Assert.True(sut.Alternatives.Any(),
+                        "AlternativeTrails.Count()");
+        }
+
+        [Test]
+        public void Start_SetsAlternatives_ForCostMatricTwoPathsAlternatives()
+        {
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatricTwoPaths);
+            DistanceGraph graph = CreateDistanceGraph(new NearestNeighbours(),
+                                                      m_CostMatricTwoPaths,
+                                                      costPerLine);
+
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            Assert.True(sut.Alternatives.Any(),
+                        "AlternativeTrails.Count()");
+        }
+
+        [Test]
+        public void Start_SetsBestTrailBuilder_CostMatricTwoPathsBestTrail()
+        {
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatricTwoPaths);
+            DistanceGraph graph = CreateDistanceGraph(new NearestNeighbours(),
+                                                      m_CostMatricTwoPaths,
+                                                      costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            ITrailBuilder actual = sut.BestTrailBuilder;
+
+            NUnitHelper.AssertIsEquivalent(110.0,
+                                           actual.Length,
+                                           Colony.Epsilon,
+                                           actual.ToString());
+        }
+
+        [Test]
+        public void Start_SetsBestTrailBuilder_CostMatrixSimpleAlternatives()
+        {
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixSimple);
+            DistanceGraph graph = CreateDistanceGraph(new NearestNeighbours(),
+                                                      m_CostMatrixSimple,
+                                                      costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            Assert.True(sut.BestTrailBuilder.Length > 0.0,
+                        "BestTrailBuilder.Length");
+        }
+
+        [Test]
+        public void Start_SetsBestTrailBuilder_CostMatrixThreeLinesAlternativesTest()
+        {
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixThreeLines);
+            DistanceGraph graph = CreateDistanceGraph(m_CostMatrixThreeLines,
+                                                      costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(10);
+
+            // Assert
+            double bestLength = sut.BestTrailBuilder.Length;
+
+            Assert.True(bestLength > 0.0,
+                        "BestTrailBuilder.Length");
+        }
+
+        [Test]
+        public void Start_SetsBestTrailBuilder_CostMatrixThreeLinesBestTrailTest()
+        {
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixThreeLines);
+            DistanceGraph graph = CreateDistanceGraph(m_CostMatrixThreeLines,
+                                                      costPerLine);
+
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            Assert.False(sut.BestTrailBuilder.IsUnknown);
+        }
+
+        [Test]
+        public void Start_SetsBestTrailBuilder_ForCostMatricAllSameAlternatives()
+        {
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
+            DistanceGraph graph = CreateDistanceGraph(costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            Assert.True(sut.BestTrailBuilder.Length > 0.0,
+                        "BestTrailBuilder.Length");
+        }
+
+        [Test]
+        public void Start_SetsBestTrailBuilder_ForCostMatricAllSameBestTrail()
+        {
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
+            DistanceGraph graph = CreateDistanceGraph(costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            ITrailBuilder actual = sut.BestTrailBuilder;
+
+            NUnitHelper.AssertIsEquivalent(150.0,
+                                           actual.Length,
+                                           Colony.Epsilon,
+                                           actual.ToString());
+        }
+
+        [Test]
+        public void Start_SetsBestTrailBuilder_ForCostMatricTwoPathsAlternatives()
+        {
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatricTwoPaths);
+            DistanceGraph graph = CreateDistanceGraph(new NearestNeighbours(),
+                                                      m_CostMatricTwoPaths,
+                                                      costPerLine);
+
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            Assert.True(sut.BestTrailBuilder.Length > 0.0,
+                        "BestTrailBuilder.Length");
+        }
+
+        [Test]
+        public void Start_SetsBestTrailBuilderTrail_SetsCostMatrixSimpleBestTrailTest()
+        {
+            // Arrange
+            int[] expected =
+            {
+                0,
+                3
+            };
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixSimple);
+            DistanceGraph graph = CreateDistanceGraph(new NearestNeighbours(),
+                                                      m_CostMatrixSimple,
+                                                      costPerLine);
+
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            IEnumerable <int> actual = sut.BestTrailBuilder.Trail;
+
+            Assert.True(expected.SequenceEqual(actual));
+        }
+
+        [Test]
+        public void Start_SetsPheromones_WhenCalled()
+        {
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
+            DistanceGraph graph = CreateDistanceGraph(costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            double[][] actual = sut.PheromonesToArray();
+
+            Assert.AreEqual(4,
+                            actual.GetLength(0),
+                            ".GetLength(0)");
+            Assert.AreEqual(4,
+                            actual [ 0 ].Length,
+                            "Length");
+        }
+
+        [Test]
+        public void Start_SetsStartTime_WhenCalled()
+        {
+            // Arrange
+            Colony sut = CreateColonyWithCostMatrixAllSame();
+
+            // Act
+            sut.Start(10);
+
+            // Assert
             Assert.AreEqual(10,
-                            colony.Time);
+                            sut.Time);
+        }
+
+        [Test]
+        public void Start_UpdatesPheromonesAverage_WhenCalled()
+        {
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
+            DistanceGraph graph = CreateDistanceGraph(costPerLine);
+
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Act
+            sut.Start(10);
+
+            // Assert
+            Assert.True(sut.PheromonesMinimum < sut.PheromonesAverage);
+        }
+
+        [Test]
+        public void Stop_SetsIsRequestedToStopToTrue_WhenCalled()
+        {
+            // Arrange
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
+
+            // Act
+            sut.Stop();
+
+            // Assert
+            Assert.True(sut.IsRequestedToStop);
+        }
+
+        [Test]
+        public void Time_ReturnsDefault_WhenCalled()
+        {
+            // Arrange
+            // Act
+            Colony sut = CreateColonyWithCostMatrixAllSame();
+
+            // Assert
+            Assert.AreEqual(0,
+                            sut.Time);
+        }
+
+        [Test]
+        public void TurnsBeforeSelection_ReturnsDefault_WhenCalled()
+        {
+            // Arrang
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
+            DistanceGraph graph = CreateDistanceGraph(costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            // Act
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Assert
+            Assert.AreEqual(Colony.DefaultTurnsBeforeSelection,
+                            sut.TurnsBeforeSelection);
+        }
+
+        [Test]
+        public void TurnsBeforeSelection_RoundTrip()
+        {
+            // Arrange
+            int[] costPerLine = CreateCostPerLine(m_CostMatrixAllSame);
+            DistanceGraph graph = CreateDistanceGraph(costPerLine);
+            PheromonesTracker tracker = CreatePheromonesTracker(graph);
+
+            // Act
+            Colony sut = CreateColony(tracker,
+                                      graph);
+
+            // Assert
+            Assert.AreEqual(100,
+                            sut.TurnsBeforeSelection);
+        }
+
+        [Test]
+        public void TurnsRemaining_ReturnsDefault_WhenCalled()
+        {
+            // Arrange
+            // Act
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
+
+            // Assert
+            Assert.AreEqual(2,
+                            sut.TurnsRemaining);
+        }
+
+        [Test]
+        public void TurnsSinceNewBestTrailFound_ReturnsDefault_WhenCalled()
+        {
+            // Arrange
+            // Act
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
+
+            // Assert
+            Assert.AreEqual(200,
+                            sut.TurnsSinceNewBestTrailFound);
         }
     }
 }
