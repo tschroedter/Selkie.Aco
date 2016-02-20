@@ -51,14 +51,14 @@ namespace Selkie.Aco.Ants
                           double beta,
                           double gamma)
         {
-            m_AlphaMinValue = alpha - ( alpha * 0.1 );
-            m_AlphaMaxValue = alpha + ( alpha * 0.1 );
+            m_AlphaMinValue = alpha - alpha * 0.1;
+            m_AlphaMaxValue = alpha + alpha * 0.1;
 
-            m_BetaMinValue = beta - ( beta * 0.1 );
-            m_BetaMaxValue = beta + ( beta * 0.1 );
+            m_BetaMinValue = beta - beta * 0.1;
+            m_BetaMaxValue = beta + beta * 0.1;
 
-            m_GammaMinValue = gamma - ( gamma * 0.1 );
-            m_GammaMaxValue = gamma + ( gamma * 0.1 );
+            m_GammaMinValue = gamma - gamma * 0.1;
+            m_GammaMaxValue = gamma + gamma * 0.1;
 
             InitializeFactors();
 
@@ -130,9 +130,9 @@ namespace Selkie.Aco.Ants
                 return;
             }
 
-            m_AlphaRange = ( m_AlphaMaxValue - m_AlphaMinValue );
-            m_BetaRange = ( m_BetaMaxValue - m_BetaMinValue );
-            m_GammaRange = ( m_GammaMaxValue - m_GammaMinValue );
+            m_AlphaRange = m_AlphaMaxValue - m_AlphaMinValue;
+            m_BetaRange = m_BetaMaxValue - m_BetaMinValue;
+            m_GammaRange = m_GammaMaxValue - m_GammaMinValue;
         }
 
         public override string ToString()
@@ -295,9 +295,9 @@ namespace Selkie.Aco.Ants
 
         public IChromosome Randomize()
         {
-            double alpha = ( m_Random.NextDouble() * m_AlphaRange ) + m_AlphaMinValue;
-            double beta = ( m_Random.NextDouble() * m_BetaRange ) + m_BetaMinValue;
-            double gamma = ( m_Random.NextDouble() * m_GammaRange ) + m_GammaMinValue;
+            double alpha = m_Random.NextDouble() * m_AlphaRange + m_AlphaMinValue;
+            double beta = m_Random.NextDouble() * m_BetaRange + m_BetaMinValue;
+            double gamma = m_Random.NextDouble() * m_GammaRange + m_GammaMinValue;
 
             var chromosome = new Chromosome(m_Random,
                                             alpha,
@@ -315,21 +315,21 @@ namespace Selkie.Aco.Ants
 
         internal double RandomizeAlpha()
         {
-            double alpha = ( m_Random.NextDouble() * m_AlphaRange ) + m_AlphaMinValue;
+            double alpha = m_Random.NextDouble() * m_AlphaRange + m_AlphaMinValue;
 
             return alpha;
         }
 
         internal double RandomizeBeta()
         {
-            double beta = ( m_Random.NextDouble() * m_BetaRange ) + m_BetaMinValue;
+            double beta = m_Random.NextDouble() * m_BetaRange + m_BetaMinValue;
 
             return beta;
         }
 
         internal double RandomizeGamma()
         {
-            double gamma = ( m_Random.NextDouble() * m_GammaRange ) + m_GammaMinValue;
+            double gamma = m_Random.NextDouble() * m_GammaRange + m_GammaMinValue;
 
             return gamma;
         }

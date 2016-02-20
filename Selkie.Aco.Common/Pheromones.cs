@@ -140,7 +140,7 @@ namespace Selkie.Aco.Common
 
             if ( edgeInTrail )
             {
-                increase = ( m_Q / ant.TrailBuilder.Length );
+                increase = m_Q / ant.TrailBuilder.Length;
             }
 
             double newValue = decrease + increase;

@@ -51,9 +51,9 @@ namespace Selkie.Aco.Example
 
         private readonly int[] m_CostPerLine =
         {
+            2000,
             20,
-            20,
-            20,
+            2000,
             20
         };
 

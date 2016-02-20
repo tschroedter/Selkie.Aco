@@ -190,7 +190,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
             // add least one chromosome should be different
             var count = 0;
 
-            for ( var i = 0 ; i < old.Count() ; i++ )
+            for ( var i = 0 ; i < old.Length ; i++ )
             {
                 if ( !old [ i ].Equals(actual [ i ]) )
                 {
@@ -238,7 +238,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                             m_Sut.NumberOfAnts,
                             "NumberOfAnts");
 
-            for ( var i = 0 ; i < old.Count() ; i++ )
+            for ( var i = 0 ; i < old.Length ; i++ )
             {
                 Assert.AreNotEqual(old [ i ].Alpha,
                                    actual [ i ].Alpha,
@@ -644,7 +644,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
             // add least one chromosome should be different
             var count = 0;
 
-            for ( var i = 0 ; i < old.Count() ; i++ )
+            for ( var i = 0 ; i < old.Length ; i++ )
             {
                 if ( !old [ i ].Equals(actual [ i ]) )
                 {

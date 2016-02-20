@@ -54,7 +54,7 @@ namespace Selkie.Aco.Trails
 
             m_TendencyMinimum = Math.Pow(m_Tracker.MinimumValue,
                                          m_Chromosome.Alpha) *
-                                Math.Pow(( m_Chromosome.Gamma / m_Graph.MaximumDistance ),
+                                Math.Pow(m_Chromosome.Gamma / m_Graph.MaximumDistance,
                                          m_Chromosome.Beta);
             m_TendencyMaximum = double.MaxValue / ( graph.MinimumDistance * 100.0 );
 
@@ -150,7 +150,7 @@ namespace Selkie.Aco.Trails
 
         public static int FindRelatedCity(int cityIndex)
         {
-            bool isEndPoint = ( cityIndex % 2 == 1 );
+            bool isEndPoint = cityIndex % 2 == 1;
 
             if ( isEndPoint )
             {
@@ -245,8 +245,8 @@ namespace Selkie.Aco.Trails
             // moving to an unvisited node
             double tendencyOther = Math.Pow(m_Tracker.GetValue(cityX,
                                                                cityOther),
-                                            m_Chromosome.Alpha) * Math.Pow(( m_Chromosome.Gamma / m_Graph.GetCost(cityX,
-                                                                                                                  cityOther) ),
+                                            m_Chromosome.Alpha) * Math.Pow(m_Chromosome.Gamma / m_Graph.GetCost(cityX,
+                                                                                                                cityOther),
                                                                            m_Chromosome.Beta);
 
             if ( tendencyOther < m_TendencyMinimum ||

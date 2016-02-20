@@ -189,8 +189,8 @@ namespace Selkie.Aco.Common
 
         public void Randomize()
         {
-            m_Rho = ( m_Random.NextDouble() * RhoRandomFactor ) + RhoMinimumValue;
-            m_Q = ( m_Random.NextDouble() * QRandomFactor ) + QMinimumValue;
+            m_Rho = m_Random.NextDouble() * RhoRandomFactor + RhoMinimumValue;
+            m_Q = m_Random.NextDouble() * QRandomFactor + QMinimumValue;
         }
     }
 }

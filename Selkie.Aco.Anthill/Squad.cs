@@ -119,7 +119,7 @@ namespace Selkie.Aco.Anthill
 
             for ( var i = 0 ; i < numberOfAnts ; i++ )
             {
-                IAnt ant = ( i % 2 == 0 )
+                IAnt ant = i % 2 == 0
                                ? m_AntFactory.Create <IStandardAnt>(new Chromosome(m_Random),
                                                                     m_Tracker,
                                                                     m_Graph,

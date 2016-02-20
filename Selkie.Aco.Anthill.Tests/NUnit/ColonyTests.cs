@@ -79,9 +79,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                                         m_CostMatrix,
                                         new[]
                                         {
+                                            1000,
                                             1,
-                                            1,
-                                            1,
+                                            1000,
                                             1
                                         });
 
@@ -548,7 +548,8 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
             sut.Cycle(1);
 
             // Assert
-            Assert.True(1 == sut.Time);
+            Assert.AreEqual(1,
+                            sut.Time);
         }
 
         [Test]
@@ -911,6 +912,32 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         }
 
         [Test]
+        public void PreCycle_SetsColonyBestTrailBuilderToDefault_WhenCalled()
+        {
+            // Arrange
+            var expected = new[]
+                           {
+                               0,
+                               2
+                           };
+
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
+
+            // Act
+            sut.PreCycle();
+
+            // Assert
+            ITrailBuilder actual = sut.TrailHistory.Information.First().TrailBuilder;
+
+            Assert.True(actual is IFixedTrailBuilder,
+                        "First builder should be IFixedTrailBuilder");
+
+            Assert.True(expected.SequenceEqual(actual.Trail),
+                        "Default trail is wrong!");
+        }
+
+        [Test]
         public void RunTime_ReturnsDateTime_WhenCalled()
         {
             // Arrange
@@ -1006,6 +1033,65 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
             Assert.NotNull(actual);
             Assert.True(actual.Information.Any(),
                         "Information.Count()");
+        }
+
+        [Test]
+        public void Start_PopulatesTrailHistoryWithDefaultTrailFirst_WhenCalled()
+        {
+            // Arrange
+            var expected = new[]
+                           {
+                               0,
+                               2
+                           };
+
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
+            sut.TurnsBeforeSelection = 10;
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            ITrailBuilder actual = sut.TrailHistory.Information.First().TrailBuilder;
+
+            Assert.True(expected.SequenceEqual(actual.Trail),
+                        "Expected: {0} Actual: {1}".Inject(string.Join(",",
+                                                                       expected),
+                                                           string.Join(",",
+                                                                       actual)));
+        }
+
+        [Test]
+        public void Start_PopulatesTrailHistoryWithOtherTrailSecond_WhenCalled()
+        {
+            // Arrange
+            var expected = new[]
+                           {
+                               1,
+                               3
+                           };
+
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
+            sut.TurnsBeforeSelection = 10;
+
+            // Act
+            sut.Start(100);
+
+            // Assert
+            int[] actual = sut.TrailHistory
+                              .Information
+                              .Skip(1)
+                              .First()
+                              .TrailBuilder
+                              .Trail.ToArray();
+
+            Assert.True(expected.SequenceEqual(actual),
+                        "Expected: {0} Actual: {1}".Inject(string.Join(",",
+                                                                       expected),
+                                                           string.Join(",",
+                                                                       actual)));
         }
 
         [Test]
@@ -1268,6 +1354,32 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
             IEnumerable <int> actual = sut.BestTrailBuilder.Trail;
 
             Assert.True(expected.SequenceEqual(actual));
+        }
+
+        [Test]
+        public void Start_SetsColonyBestTrailBuilderToDefault_WhenCalled()
+        {
+            // Arrange
+            var expected = new[]
+                           {
+                               0,
+                               2
+                           };
+
+            Colony sut = CreateColony(m_Tracker,
+                                      m_Graph);
+
+            // Act
+            sut.Start(2);
+
+            // Assert
+            ITrailBuilder actual = sut.TrailHistory.Information.First().TrailBuilder;
+
+            Assert.True(actual is IFixedTrailBuilder,
+                        "First builder should be IFixedTrailBuilder");
+
+            Assert.True(expected.SequenceEqual(actual.Trail),
+                        "Default trail is wrong!");
         }
 
         [Test]
