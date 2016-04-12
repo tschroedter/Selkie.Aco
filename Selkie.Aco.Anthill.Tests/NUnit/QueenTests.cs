@@ -36,6 +36,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         private ISquadFactory m_SquadFactory;
         private IPheromonesTracker m_Tracker;
         private ITrailAlternatives m_TrailAlternatives;
+        private IAntSettings m_AntSettings;
 
         [NotNull]
         private IDistanceGraph CreateGraph()
@@ -91,6 +92,52 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                    };
         }
 
+        private Queen CreateQueen([NotNull] IBestTrailFinderFactory factory,
+                                  [NotNull] IPheromonesTracker tracker,
+                                  [NotNull] ICrossover crossover)
+        {
+            var queen = new Queen(m_Logger,
+                                  m_AntFactory,
+                                  m_ChromosomeFactory,
+                                  factory,
+                                  m_Graph,
+                                  tracker,
+                                  m_Optimizer,
+                                  crossover,
+                                  m_AntSettings,
+                                  m_SquadFactory);
+            return queen;
+        }
+
+        private Queen CreateQueen([NotNull] IBestTrailFinderFactory factory,
+                                  [NotNull] IPheromonesTracker tracker)
+        {
+            return CreateQueen(factory,
+                               tracker,
+                               m_Crossover);
+        }
+
+        private Queen CreateQueen([NotNull] IBestTrailFinderFactory factory)
+        {
+            return CreateQueen(factory,
+                               m_Tracker,
+                               m_Crossover);
+        }
+
+        private Queen CreateQueen([NotNull] ICrossover crossover)
+        {
+            return CreateQueen(m_BestTrailFinderFactory,
+                               m_Tracker,
+                               crossover);
+        }
+
+        private Queen CreateQueen()
+        {
+            return CreateQueen(m_BestTrailFinderFactory,
+                               m_Tracker,
+                               m_Crossover);
+        }
+
         [Test]
         public void BestAntDefaultTest()
         {
@@ -125,15 +172,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                            m_Tracker,
                            m_Optimizer).ReturnsForAnyArgs(finder);
 
-            var queen = new Queen(m_Logger,
-                                  m_AntFactory,
-                                  m_ChromosomeFactory,
-                                  factory,
-                                  m_Graph,
-                                  m_Tracker,
-                                  m_Optimizer,
-                                  m_Crossover,
-                                  m_SquadFactory);
+            Queen queen = CreateQueen(factory);
 
             ITrailBuilder actual = queen.BestTrailBuilder;
 
@@ -153,15 +192,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                            m_Tracker,
                            m_Optimizer).Returns(finder);
 
-            var queen = new Queen(m_Logger,
-                                  m_AntFactory,
-                                  m_ChromosomeFactory,
-                                  factory,
-                                  m_Graph,
-                                  m_Tracker,
-                                  m_Optimizer,
-                                  m_Crossover,
-                                  m_SquadFactory);
+            Queen queen = CreateQueen(factory);
 
             queen.UpdateAnts();
             queen.Clear();
@@ -179,7 +210,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
             IChromosome[] old = m_Sut.Ants.Select(x => x.Chromosome).ToArray();
 
             m_Sut.NaturalSelection(new Chromosome(m_Random),
-                                     new Chromosome(m_Random));
+                                   new Chromosome(m_Random));
 
             IChromosome[] actual = m_Sut.Ants.Select(x => x.Chromosome).ToArray();
 
@@ -264,15 +295,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                            m_Tracker,
                            m_Optimizer).Returns(finder);
 
-            var queen = new Queen(m_Logger,
-                                  m_AntFactory,
-                                  m_ChromosomeFactory,
-                                  factory,
-                                  m_Graph,
-                                  m_Tracker,
-                                  m_Optimizer,
-                                  m_Crossover,
-                                  m_SquadFactory);
+            Queen queen = CreateQueen(factory);
 
             queen.UpdateAnts();
 
@@ -302,15 +325,8 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                            tracker,
                            m_Optimizer).ReturnsForAnyArgs(finder);
 
-            var queen = new Queen(m_Logger,
-                                  m_AntFactory,
-                                  m_ChromosomeFactory,
-                                  factory,
-                                  m_Graph,
-                                  tracker,
-                                  m_Optimizer,
-                                  m_Crossover,
-                                  m_SquadFactory);
+            Queen queen = CreateQueen(factory,
+                                      tracker);
 
             queen.UpdateAnts(queen.Ants);
 
@@ -393,15 +409,8 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                            tracker,
                            m_Optimizer).ReturnsForAnyArgs(finder);
 
-            var queen = new Queen(m_Logger,
-                                  m_AntFactory,
-                                  m_ChromosomeFactory,
-                                  factory,
-                                  m_Graph,
-                                  tracker,
-                                  m_Optimizer,
-                                  m_Crossover,
-                                  m_SquadFactory);
+            Queen queen = CreateQueen(factory,
+                                      tracker);
 
             queen.UpdateAnts(queen.Ants);
 
@@ -419,15 +428,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
             var female = new Chromosome(m_Random);
             var crossover = Substitute.For <ICrossover>();
 
-            var queen = new Queen(m_Logger,
-                                  m_AntFactory,
-                                  m_ChromosomeFactory,
-                                  m_BestTrailFinderFactory,
-                                  m_Graph,
-                                  m_Tracker,
-                                  m_Optimizer,
-                                  crossover,
-                                  m_SquadFactory);
+            Queen queen = CreateQueen(crossover);
 
             crossover.ClearReceivedCalls();
 
@@ -447,15 +448,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
             var female = new Chromosome(m_Random);
             var crossover = Substitute.For <ICrossover>();
 
-            var queen = new Queen(m_Logger,
-                                  m_AntFactory,
-                                  m_ChromosomeFactory,
-                                  m_BestTrailFinderFactory,
-                                  m_Graph,
-                                  m_Tracker,
-                                  m_Optimizer,
-                                  crossover,
-                                  m_SquadFactory);
+            Queen queen = CreateQueen(crossover);
 
             crossover.ClearReceivedCalls();
 
@@ -501,15 +494,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                            m_Tracker,
                            m_Optimizer).ReturnsForAnyArgs(finder);
 
-            var queen = new Queen(m_Logger,
-                                  m_AntFactory,
-                                  m_ChromosomeFactory,
-                                  factory,
-                                  m_Graph,
-                                  m_Tracker,
-                                  m_Optimizer,
-                                  m_Crossover,
-                                  m_SquadFactory);
+            Queen queen = CreateQueen(factory);
 
             queen.UpdateBestAnt();
 
@@ -556,15 +541,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                            m_Tracker,
                            m_Optimizer).ReturnsForAnyArgs(finder);
 
-            var queen = new Queen(m_Logger,
-                                  m_AntFactory,
-                                  m_ChromosomeFactory,
-                                  factory,
-                                  m_Graph,
-                                  m_Tracker,
-                                  m_Optimizer,
-                                  m_Crossover,
-                                  m_SquadFactory);
+            Queen queen = CreateQueen(factory);
 
             queen.UpdateBestAnt();
 
@@ -609,15 +586,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                            m_Tracker,
                            m_Optimizer).ReturnsForAnyArgs(finder);
 
-            var queen = new Queen(m_Logger,
-                                  m_AntFactory,
-                                  m_ChromosomeFactory,
-                                  factory,
-                                  m_Graph,
-                                  m_Tracker,
-                                  m_Optimizer,
-                                  m_Crossover,
-                                  m_SquadFactory);
+            Queen queen = CreateQueen(factory);
 
             queen.UpdateBestAnt();
 
@@ -694,28 +663,24 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                                         m_Random,
                                         m_ChromosomeFactory);
 
+            m_AntSettings = Substitute.For <IAntSettings>();
+
             m_Squad = new Squad(m_Disposer,
                                 m_Logger,
                                 m_Random,
                                 m_AntFactory,
                                 m_Graph,
                                 m_Tracker,
-                                m_Optimizer);
+                                m_Optimizer,
+                                m_AntSettings);
 
             m_SquadFactory = Substitute.For <ISquadFactory>();
             m_SquadFactory.Create(Arg.Any <IDistanceGraph>(),
                                   Arg.Any <IPheromonesTracker>(),
-                                  Arg.Any <IOptimizer>()).Returns(m_Squad);
+                                  Arg.Any <IOptimizer>(),
+                                  Arg.Any <IAntSettings>()).Returns(m_Squad);
 
-            m_Sut = new Queen(m_Logger,
-                                m_AntFactory,
-                                m_ChromosomeFactory,
-                                m_BestTrailFinderFactory,
-                                m_Graph,
-                                m_Tracker,
-                                m_Optimizer,
-                                m_Crossover,
-                                m_SquadFactory);
+            m_Sut = CreateQueen();
         }
 
         [TearDown]

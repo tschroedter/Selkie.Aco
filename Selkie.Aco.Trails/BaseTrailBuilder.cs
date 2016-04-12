@@ -113,7 +113,7 @@ namespace Selkie.Aco.Trails
 
         #endregion
 
-        public abstract void BuildTrail(int start);
+        internal abstract void BuildTrail(int startNode);
 
         protected void BuildDictionaryIndexOfTarget([NotNull] IEnumerable <int> trail)
         {
@@ -169,17 +169,8 @@ namespace Selkie.Aco.Trails
             sb.Append(value);
             sb.Append(" [");
 
-            for ( var i = 0 ; i < m_Trail.Length ; ++i )
-            {
-                if ( i < m_Trail.Length - 1 )
-                {
-                    sb.Append(m_Trail [ i ] + " ");
-                }
-                else
-                {
-                    sb.Append(m_Trail [ i ]);
-                }
-            }
+            sb.Append(string.Join(" ",
+                                  m_Trail));
 
             sb.Append("]");
 
@@ -326,13 +317,35 @@ namespace Selkie.Aco.Trails
 
         #region ITrailBuilder Members
 
-        public void Build(int start)
+        public void Build(int startNode)
         {
-            BuildTrail(start);
+            ValidateStartNode(startNode);
+            BuildTrail(startNode); // todo better m_Trail =...
+
+            Optimize(); // todo better m_Trail =...
+            BuildIndexOfTarget(); // todo better m_Trail =...
+        }
+
+        private void Optimize()
+        {
             IEnumerable <int> optimizedTrail = m_Optimizer.Optimize(m_Trail);
             m_Trail = optimizedTrail.ToArray();
             m_Length = CalculateLength(m_Trail);
-            BuildIndexOfTarget();
+        }
+
+        private void ValidateStartNode(int startNode)
+        {
+            if ( startNode < 0 )
+            {
+                throw new ArgumentException("startNode '{0}' is less than zero!".Inject(startNode));
+            }
+
+            if ( startNode >= DistanceGraph.NumberOfNodes )
+            {
+                throw new ArgumentException("startNode '{0}' is equal or greater than " +
+                                            "number of graph nodes '{1}'!".Inject(startNode,
+                                                                                  DistanceGraph.NumberOfNodes));
+            }
         }
 
         private void BuildIndexOfTarget()

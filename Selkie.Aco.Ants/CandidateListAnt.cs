@@ -18,6 +18,7 @@ namespace Selkie.Aco.Ants
                                 [NotNull] IPheromonesTracker tracker,
                                 [NotNull] IDistanceGraph graph,
                                 [NotNull] IOptimizer optimizer,
+                                [NotNull] IAntSettings antSettings,
                                 [NotNull] IEnumerable <int> trail)
             : base(random,
                    trailBuilderFactory,
@@ -25,17 +26,11 @@ namespace Selkie.Aco.Ants
                    tracker,
                    graph,
                    optimizer,
+                   antSettings,
                    trail)
         {
         }
 
         // ReSharper restore TooManyDependencies
-        public override void Update()
-        {
-            int startNode = Random.Next(0,
-                                        DistanceGraph.NumberOfNodes - 1);
-
-            TrailBuilder.Build(startNode);
-        }
     }
 }

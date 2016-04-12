@@ -210,7 +210,7 @@ namespace Selkie.Aco.Common
             return builder.ToString();
         }
 
-        private string CostMatrixToString(int[][] costMatrix)
+        private string CostMatrixToString(IEnumerable <int[]> costMatrix)
         {
             var builder = new StringBuilder();
             var count = 0;
@@ -227,7 +227,7 @@ namespace Selkie.Aco.Common
             return builder.ToString();
         }
 
-        private string CostPerLineToString(int[] costPerLine)
+        private string CostPerLineToString(IEnumerable <int> costPerLine)
         {
             string values = string.Join(", ",
                                         costPerLine);

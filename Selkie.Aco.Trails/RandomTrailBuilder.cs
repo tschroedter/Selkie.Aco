@@ -45,15 +45,9 @@ namespace Selkie.Aco.Trails
         }
 
         // ReSharper restore TooManyDependencies
-        public override void BuildTrail(int start)
+        internal override void BuildTrail(int startNode)
         {
-            if ( start >= DistanceGraph.NumberOfNodes ||
-                 start < 0 )
-            {
-                throw new ArgumentException("start = " + start);
-            }
-
-            Trail = CreateTrail(start,
+            Trail = CreateTrail(startNode,
                                 DistanceGraph.NumberOfNodes);
         }
 
@@ -61,32 +55,30 @@ namespace Selkie.Aco.Trails
         internal int[] CreateTrail(int startNode,
                                    int numberOfNodes)
         {
-            if ( numberOfNodes <= 1 ||
-                 numberOfNodes % 2 != 0 )
-            {
-                throw new ArgumentException("numberOfNodes is " + numberOfNodes);
-            }
-
             int[] trail = Create(numberOfNodes);
 
-            Randomize(trail,
-                      numberOfNodes);
+            trail = Randomize(trail,
+                              numberOfNodes);
+
             trail = RemoveReverseNodes(trail,
                                        startNode);
             BuildDictionaryIndexOfTarget(trail);
-            MoveNodeToStart(trail,
-                            startNode);
+
+            trail = MoveNodeToStartPosition(trail,
+                                            startNode);
 
             return trail;
         }
 
         [NotNull]
-        internal static int[] RemoveReverseNodes([NotNull] int[] trail,
+        internal static int[] RemoveReverseNodes([NotNull] IEnumerable <int> trail,
                                                  int startNode)
         {
             var reverseIds = new List <int>();
 
-            foreach ( int currentId in trail )
+            IEnumerable <int> nodeIds = trail as int[] ?? trail.ToArray();
+
+            foreach ( int currentId in nodeIds )
             {
                 if ( reverseIds.Contains(currentId) )
                 {
@@ -103,18 +95,23 @@ namespace Selkie.Aco.Trails
                 reverseIds.Add(reverseId);
             }
 
-            IEnumerable <int> trails = trail.Where(id => !reverseIds.Contains(id));
+            IEnumerable <int> trails = nodeIds.Where(id => !reverseIds.Contains(id));
 
             return trails.ToArray();
         }
 
-        internal void MoveNodeToStart([NotNull] int[] trail,
-                                      int nodeIndex)
+        internal int[] MoveNodeToStartPosition([NotNull] IEnumerable <int> trail,
+                                               int nodeIndex)
         {
-            int index = IndexOfTarget(nodeIndex);
-            int temp = trail [ 0 ];
-            trail [ 0 ] = trail [ index ];
-            trail [ index ] = temp;
+            int[] nodeIds = trail as int[] ?? trail.ToArray();
+
+            int index = Array.IndexOf(nodeIds,
+                                      nodeIndex);
+            int temp = nodeIds [ 0 ];
+            nodeIds [ 0 ] = nodeIds [ index ];
+            nodeIds [ index ] = temp;
+
+            return nodeIds;
         }
 
         [NotNull]
@@ -130,19 +127,23 @@ namespace Selkie.Aco.Trails
             return trail;
         }
 
-        internal void Randomize([NotNull] int[] trail,
-                                int numberOfNodes)
+        internal int[] Randomize([NotNull] IEnumerable <int> trail,
+                                 int numberOfNodes)
         {
+            int[] randomTrail = trail.ToArray();
+
             for ( var i = 0 ; i < numberOfNodes ; ++i )
             {
                 int r = Random.Next(i,
                                     numberOfNodes);
 
-                int tmp = trail [ r ];
+                int tmp = randomTrail [ r ];
 
-                trail [ r ] = trail [ i ];
-                trail [ i ] = tmp;
+                randomTrail [ r ] = randomTrail [ i ];
+                randomTrail [ i ] = tmp;
             }
+
+            return randomTrail;
         }
     }
 }

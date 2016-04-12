@@ -76,12 +76,15 @@ namespace Selkie.Aco.Ants.Tests.NUnit
 
             m_Random = Substitute.For <IRandom>();
 
+            m_AntSettings = Substitute.For <IAntSettings>();
+
             m_Ant = new UnknownAnt(m_Random,
                                    m_TrailBuilderFactory,
                                    m_Chromosome,
                                    m_Tracker,
                                    m_Graph,
                                    m_Optimizer,
+                                   m_AntSettings,
                                    new int[0]);
         }
 
@@ -92,6 +95,7 @@ namespace Selkie.Aco.Ants.Tests.NUnit
         private ITrailBuilderFactory m_TrailBuilderFactory;
         private TwoOptSimple m_Optimizer;
         private IRandom m_Random;
+        private IAntSettings m_AntSettings;
 
         [NotNull]
         // ReSharper disable once MethodTooLong
@@ -141,48 +145,62 @@ namespace Selkie.Aco.Ants.Tests.NUnit
         [Test]
         public void ChromosomeTest()
         {
+            // Arrange
+            // Act
+            // Assert
             Assert.AreEqual(m_Chromosome,
                             m_Ant.Chromosome);
         }
 
         [Test]
-        public void CloneReturnsItSelfTest()
+        public void Clone_ReturnsItSelf_WhenCalled()
         {
+            // Arrange
             var factory = Substitute.For <IAntFactory>();
 
+            // Act
             IAnt clone = m_Ant.Clone(factory,
                                      Substitute.For <IChromosomeFactory>());
 
+            // Assert
             Assert.AreEqual(m_Ant,
                             clone);
         }
 
         [Test]
-        public void CloneTest()
+        public void CloneCallsFactory_WhenCalled()
         {
+            // Arrange
             var factory = Substitute.For <IAntFactory>();
 
+            // Act
             m_Ant.Clone(factory,
                         Substitute.For <IChromosomeFactory>());
 
+            // Assert
             factory.DidNotReceiveWithAnyArgs().Create <IUnknownAnt>(Arg.Any <IChromosome>(),
                                                                     Arg.Any <IPheromonesTracker>(),
                                                                     Arg.Any <IDistanceGraph>(),
                                                                     Arg.Any <IOptimizer>(),
+                                                                    Arg.Any <IAntSettings>(),
                                                                     Arg.Any <IEnumerable <int>>());
         }
 
         [Test]
-        public void ConstuctorForTrailTest()
+        public void Constuctor_ReturnsInstance_WhenCalled()
         {
+            // Arrange
+            // Act
             var ant = new UnknownAnt(m_Random,
                                      m_TrailBuilderFactory,
                                      m_Chromosome,
                                      m_Tracker,
                                      m_Graph,
                                      m_Optimizer,
+                                     m_AntSettings,
                                      new int[0]);
 
+            // Assert
             Assert.AreEqual(typeof ( IUnknownAnt ).Name,
                             ant.Type,
                             "Type");
@@ -194,26 +212,45 @@ namespace Selkie.Aco.Ants.Tests.NUnit
         }
 
         [Test]
-        public void TrailBuilderLengthTest()
+        public void Trail_ReturnsTrailWithLengthMaxValue_WhenCalled()
         {
+            // Arrange
+            // Act
             m_Ant.Update();
 
+            // Assert
             Assert.AreEqual(double.MaxValue,
                             m_Ant.TrailBuilder.Length);
         }
 
         [Test]
-        public void TrailBuilderTypeTest()
+        public void TrailBuilderType_ReturnsString_WhenCalled()
         {
+            // Arrange
+            // Act
+            // Assert
             Assert.AreEqual(typeof ( IUnknownTrailBuilder ).Name,
                             m_Ant.TrailBuilder.Type);
         }
 
         [Test]
-        public void TrailLengthTest()
+        public void Type_ReturnsString_WhenCalled()
         {
+            // Arrange
+            // Act
+            // Assert
+            Assert.AreEqual(typeof ( IUnknownAnt ).Name,
+                            m_Ant.Type);
+        }
+
+        [Test]
+        public void Update_ReturnsEmptyTrail_WhenCalled()
+        {
+            // Arrange
+            // Act
             m_Ant.Update();
 
+            // Assert
             IEnumerable <int> trail = m_Ant.TrailBuilder.Trail;
 
             Assert.AreEqual(0,
@@ -221,10 +258,17 @@ namespace Selkie.Aco.Ants.Tests.NUnit
         }
 
         [Test]
-        public void TypeTest()
+        public void UpdateWithFixedStart_DoesNothing_WhenCalled()
         {
-            Assert.AreEqual(typeof ( IUnknownAnt ).Name,
-                            m_Ant.Type);
+            // Arrange
+            // Act
+            m_Ant.Update();
+
+            // Assert
+            IEnumerable <int> trail = m_Ant.TrailBuilder.Trail;
+
+            Assert.AreEqual(0,
+                            trail.Count());
         }
     }
 }

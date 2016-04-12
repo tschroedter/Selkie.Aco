@@ -256,30 +256,6 @@ namespace Selkie.Aco.Trails.Tests.NUnit
         }
 
         [Test]
-        public void BuildTrailThrowsForStartBiggerNumberOfNodesTest()
-        {
-            Assert.Throws <ArgumentException>(() => m_TrailBuilder.BuildTrail(1000));
-        }
-
-        [Test]
-        public void BuildTrailThrowsForStartEqualNumberOfGraphNodesTest()
-        {
-            Assert.Throws <ArgumentException>(() => m_TrailBuilder.BuildTrail(m_Graph.NumberOfNodes));
-        }
-
-        [Test]
-        public void BuildTrailThrowsForStartGreaterNumberOfGraphNodesTest()
-        {
-            Assert.Throws <ArgumentException>(() => m_TrailBuilder.BuildTrail(m_Graph.NumberOfNodes + 1));
-        }
-
-        [Test]
-        public void BuildTrailThrowsForStartLessZeroTest()
-        {
-            Assert.Throws <ArgumentException>(() => m_TrailBuilder.BuildTrail(-1));
-        }
-
-        [Test]
         public void CloneTest()
         {
             var trailBuilderFactory = Substitute.For <ITrailBuilderFactory>();

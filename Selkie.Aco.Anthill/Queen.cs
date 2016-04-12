@@ -31,6 +31,7 @@ namespace Selkie.Aco.Anthill
                      [NotNull] IPheromonesTracker tracker,
                      [NotNull] IOptimizer optimizer,
                      [NotNull] ICrossover crossover,
+                     [NotNull] IAntSettings antSettings,
                      [NotNull] ISquadFactory squadFactory)
         {
             m_Logger = logger;
@@ -43,7 +44,8 @@ namespace Selkie.Aco.Anthill
 
             m_Squad = squadFactory.Create(m_Graph,
                                           m_Tracker,
-                                          m_Optimizer);
+                                          m_Optimizer,
+                                          antSettings);
 
             m_BestTrailFinder = bestTrailFinderFactory.Create(m_Graph,
                                                               m_Tracker,
@@ -53,6 +55,7 @@ namespace Selkie.Aco.Anthill
                                                              m_Tracker,
                                                              m_Graph,
                                                              m_Optimizer,
+                                                             AntSettings.Unknown,
                                                              new int[0]);
         }
 
@@ -200,6 +203,7 @@ namespace Selkie.Aco.Anthill
                                                       m_Tracker,
                                                       m_Graph,
                                                       m_Optimizer,
+                                                      AntSettings.Unknown,
                                                       trail);
 
             m_Tracker.Update(new IAnt[]

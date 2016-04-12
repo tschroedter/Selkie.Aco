@@ -12,6 +12,7 @@ namespace Selkie.Aco.Common
                      [NotNull] IPheromonesTracker tracker,
                      [NotNull] IDistanceGraph graph,
                      [NotNull] IOptimizer optimizer,
+                     [NotNull] IAntSettings antSettings,
                      [NotNull] IEnumerable <int> trail) where T : IAnt;
 
         void Release([NotNull] IAnt ant);

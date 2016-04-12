@@ -13,10 +13,7 @@ namespace Selkie.Aco.Ants
     {
         // ReSharper disable once StaticMemberInGenericType
         private static int s_NextId; // means s_NextId per <TAnt, TBuilder>
-        private readonly IDistanceGraph m_Graph;
-        private readonly int m_Id;
         private readonly IOptimizer m_Optimizer;
-        private readonly IRandom m_Random;
         private readonly IPheromonesTracker m_Tracker;
         // ReSharper disable TooManyDependencies
         protected BaseAnt([NotNull] IRandom random,
@@ -25,14 +22,17 @@ namespace Selkie.Aco.Ants
                           [NotNull] IPheromonesTracker tracker,
                           [NotNull] IDistanceGraph graph,
                           [NotNull] IOptimizer optimizer,
+                          [NotNull] IAntSettings antSettings,
                           [NotNull] IEnumerable <int> trail)
         {
-            m_Id = s_NextId++;
-            m_Random = random;
+            Type = typeof ( TAnt ).Name;
+            Id = s_NextId++;
+            Random = random;
             Chromosome = chromosome;
             m_Tracker = tracker;
-            m_Graph = graph;
+            DistanceGraph = graph;
             m_Optimizer = optimizer;
+            AntSettings = antSettings;
             TrailBuilder = trailBuilderFactory.Create <TBuilder>(Chromosome,
                                                                  m_Tracker,
                                                                  DistanceGraph,
@@ -42,22 +42,13 @@ namespace Selkie.Aco.Ants
 
         // ReSharper restore TooManyDependencies
         [NotNull]
-        protected IRandom Random
-        {
-            get
-            {
-                return m_Random;
-            }
-        }
+        protected IAntSettings AntSettings { get; private set; }
 
         [NotNull]
-        protected IDistanceGraph DistanceGraph
-        {
-            get
-            {
-                return m_Graph;
-            }
-        }
+        protected IRandom Random { get; private set; }
+
+        [NotNull]
+        protected IDistanceGraph DistanceGraph { get; private set; }
 
         public double Alpha
         {
@@ -83,25 +74,24 @@ namespace Selkie.Aco.Ants
             }
         }
 
-        public string Type
-        {
-            get
-            {
-                return typeof ( TAnt ).Name;
-            }
-        }
+        public string Type { get; private set; }
 
-        public int Id
-        {
-            get
-            {
-                return m_Id;
-            }
-        }
+        public int Id { get; private set; }
 
         public IChromosome Chromosome { get; set; }
         public ITrailBuilder TrailBuilder { get; protected set; }
-        public abstract void Update();
+
+        public void Update()
+        {
+            if ( AntSettings.IsFixedStartNode )
+            {
+                UpdateWithFixedStartNode(AntSettings.FixedStartNode);
+            }
+            else
+            {
+                UpdateWithRandomStartNode();
+            }
+        }
 
         public virtual IAnt Clone(IAntFactory antFactory,
                                   IChromosomeFactory chromosomeFactory)
@@ -110,6 +100,7 @@ namespace Selkie.Aco.Ants
                                                  m_Tracker,
                                                  DistanceGraph,
                                                  m_Optimizer,
+                                                 AntSettings,
                                                  TrailBuilder.Trail.ToArray());
 
             return clone;
@@ -118,6 +109,19 @@ namespace Selkie.Aco.Ants
         public void RandomizeChromosome()
         {
             Chromosome = Chromosome.Randomize();
+        }
+
+        protected virtual void UpdateWithRandomStartNode()
+        {
+            int startNode = Random.Next(0,
+                                        DistanceGraph.NumberOfNodes - 1);
+
+            TrailBuilder.Build(startNode);
+        }
+
+        protected virtual void UpdateWithFixedStartNode(int startNode)
+        {
+            TrailBuilder.Build(startNode);
         }
     }
 }

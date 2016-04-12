@@ -21,7 +21,7 @@ namespace Selkie.Aco.Common
         bool EdgeInTrail(int cityX,
                          int cityY);
 
-        void Build(int start);
+        void Build(int startNode);
 
         [NotNull]
         ITrailBuilder Clone([NotNull] ITrailBuilderFactory trailBuilderFactory,

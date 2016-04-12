@@ -108,39 +108,46 @@ namespace Selkie.Aco.Trails.Tests.NUnit
         private IRandom m_Random;
 
         [Test]
-        public void BuildTrailTest()
+        public void BuildTrail_ReturnsTrailStaringWithFixedNode_ForGivenStartNode()
         {
-            m_TrailBuilder.BuildTrail(1);
+            // Arrange
+            // Act
+            m_TrailBuilder.BuildTrail(2);
 
+            // Assert
             int[] actual = m_TrailBuilder.Trail.ToArray();
 
-            Assert.True(actual [ 0 ] == 1,
-                        "1");
+            Assert.AreEqual(2,
+                            actual [ 0 ],
+                            "Node 2 expected at index 0!");
+        }
+
+        [Test]
+        public void BuildTrail_ReturnsTrailWithCorrectLength_ForGivenStartNode()
+        {
+            // Arrange
+            m_TrailBuilder.BuildTrail(2);
+
+            // Act
+            int[] actual = m_TrailBuilder.Trail.ToArray();
+
+            // Assert
             Assert.AreEqual(2,
                             actual.Length);
         }
 
         [Test]
-        public void BuildTrailThrowsForStartBiggerNumberOfNodesTest()
+        public void Clone_ReturnsInstance_WhenCalled()
         {
-            Assert.Throws <ArgumentException>(() => m_TrailBuilder.BuildTrail(1000));
-        }
-
-        [Test]
-        public void BuildTrailThrowsForStartLessZeroTest()
-        {
-            Assert.Throws <ArgumentException>(() => m_TrailBuilder.BuildTrail(-1));
-        }
-
-        [Test]
-        public void CloneTest()
-        {
+            // Arrange
             var trailBuilderFactory = Substitute.For <ITrailBuilderFactory>();
             var chromosomeFactory = Substitute.For <IChromosomeFactory>();
 
+            // Act
             m_TrailBuilder.Clone(trailBuilderFactory,
                                  chromosomeFactory);
 
+            // Assert
             trailBuilderFactory.ReceivedWithAnyArgs().Create <IRandomTrailBuilder>(Arg.Any <IChromosome>(),
                                                                                    Arg.Any <IPheromonesTracker>(),
                                                                                    Arg.Any <IDistanceGraph>(),
@@ -149,10 +156,16 @@ namespace Selkie.Aco.Trails.Tests.NUnit
         }
 
         [Test]
-        public void CreateTest()
+        public void Create_ReturnsRandomTrail_WhenCalled()
         {
+            // Arrange
+            // Act
             int[] actual = RandomTrailBuilder.Create(3);
 
+            // Assert
+            Assert.AreEqual(3,
+                            actual.Length,
+                            "Length");
             Assert.AreEqual(0,
                             actual [ 0 ],
                             "[0]");
@@ -165,41 +178,9 @@ namespace Selkie.Aco.Trails.Tests.NUnit
         }
 
         [Test]
-        public void CreateTrailForNumberOfNodesIsOddTest()
+        public void IndexOfNode_ReturnsIndex_ForGivenNode()
         {
-            Assert.Throws <ArgumentException>(() => m_TrailBuilder.CreateTrail(1,
-                                                                               3));
-        }
-
-        [Test]
-        public void CreateTrailForNumberOfNodesIsOneTest()
-        {
-            Assert.Throws <ArgumentException>(() => m_TrailBuilder.CreateTrail(1,
-                                                                               1));
-        }
-
-        [Test]
-        public void CreateTrailForNumberOfNodesIsZeroTest()
-        {
-            Assert.Throws <ArgumentException>(() => m_TrailBuilder.CreateTrail(1,
-                                                                               0));
-        }
-
-        [Test]
-        public void CreateTrailTest()
-        {
-            int[] actual = m_TrailBuilder.CreateTrail(1,
-                                                      4);
-
-            Assert.True(actual [ 0 ] == 1,
-                        "1");
-            Assert.AreEqual(2,
-                            actual.Length);
-        }
-
-        [Test]
-        public void IndexOfNodeTest()
-        {
+            // Arrange
             var unknown = Substitute.For <IChromosome>();
             unknown.IsUnknown.Returns(true);
 
@@ -217,59 +198,40 @@ namespace Selkie.Aco.Trails.Tests.NUnit
                                                  m_Optimizer,
                                                  trail);
 
+            // Act
             int actual = builder.IndexOfTarget(0);
 
+            // Assert
             Assert.AreEqual(2,
                             actual);
         }
 
         [Test]
-        public void IsUnknownReturnsFalseTest()
+        public void IsUnknown_ReturnsFalse_ForKnownInstance()
         {
+            // Arrange
+            // Act
+            // Assert
             Assert.False(m_TrailBuilder.IsUnknown);
         }
 
         [Test]
-        public void LengthCallsGraphLengthTest()
+        public void Length_CallsGraphLength_WhenCalled()
         {
+            // Arrange
             var trail = new int[0];
 
+            // Act
             m_TrailBuilder.CalculateLength(trail);
 
+            // Assert
             m_Graph.Received().Length(trail);
         }
 
         [Test]
-        public void MoveNodeToStartForNodeZeroTest()
+        public void MoveNodeToStartPosition_MoveNodeToStartPosition_ForGivenNode()
         {
-            var unknown = Substitute.For <IChromosome>();
-            unknown.IsUnknown.Returns(true);
-
-            int[] trail =
-            {
-                1,
-                2,
-                0
-            };
-
-            var builder = new RandomTrailBuilder(m_Random,
-                                                 unknown,
-                                                 m_Tracker,
-                                                 m_Graph,
-                                                 m_Optimizer,
-                                                 trail);
-
-            builder.MoveNodeToStart(trail,
-                                    0);
-
-            Assert.AreEqual(0,
-                            trail [ 0 ],
-                            "Node 0 expected at index 0!");
-        }
-
-        [Test]
-        public void RandomizeTest()
-        {
+            // Arrange
             int[] trail =
             {
                 0,
@@ -277,20 +239,44 @@ namespace Selkie.Aco.Trails.Tests.NUnit
                 2
             };
 
-            m_TrailBuilder.Randomize(trail,
-                                     3);
+            // Act
+            int[] actual = m_TrailBuilder.MoveNodeToStartPosition(trail,
+                                                                  2);
 
-            Assert.True(trail.Any(x => x == 0),
+            // Assert
+            Assert.AreEqual(2,
+                            actual [ 0 ],
+                            "Node 2 expected at index 0!");
+        }
+
+        [Test]
+        public void Randomize_RandomizeTrail_ForGivenTrail()
+        {
+            // Arrange
+            int[] trail =
+            {
+                0,
+                1,
+                2
+            };
+
+            // Act
+            int[] actual = m_TrailBuilder.Randomize(trail,
+                                                    3);
+
+            // Assert
+            Assert.True(actual.Any(x => x == 0),
                         "0");
-            Assert.True(trail.Any(x => x == 1),
+            Assert.True(actual.Any(x => x == 1),
                         "1");
-            Assert.True(trail.Any(x => x == 2),
+            Assert.True(actual.Any(x => x == 2),
                         "2");
         }
 
         [Test]
-        public void RemoveReverseNodesForFourTest()
+        public void RemoveReverseNodes_RemovesNodes_ForGivenTrail()
         {
+            // Arrange
             int[] trail =
             {
                 0,
@@ -299,9 +285,11 @@ namespace Selkie.Aco.Trails.Tests.NUnit
                 3
             };
 
+            // Act
             int[] actual = RandomTrailBuilder.RemoveReverseNodes(trail,
                                                                  2);
 
+            // Assert
             Assert.AreEqual(2,
                             actual.Length,
                             "Length");
@@ -314,8 +302,9 @@ namespace Selkie.Aco.Trails.Tests.NUnit
         }
 
         [Test]
-        public void RemoveReverseNodesForStartNodeAfterReverseTest()
+        public void RemoveReverseNodes_RemovesNodes_ForStartNodeAfterReverset()
         {
+            // Arrange
             int[] trail =
             {
                 5,
@@ -335,9 +324,12 @@ namespace Selkie.Aco.Trails.Tests.NUnit
                                 1,
                                 2
                             };
+
+            // Act
             int[] actual = RandomTrailBuilder.RemoveReverseNodes(trail,
                                                                  2);
 
+            // Assert
             Assert.AreEqual(4,
                             actual.Length,
                             "Length");
@@ -345,8 +337,9 @@ namespace Selkie.Aco.Trails.Tests.NUnit
         }
 
         [Test]
-        public void RemoveReverseNodesForStartNodeBeforeReverseTest()
+        public void RemoveReverseNodes_RemovesNodes_ForStartNodeBeforeReverse()
         {
+            // Arrange
             int[] trail =
             {
                 5,
@@ -366,9 +359,11 @@ namespace Selkie.Aco.Trails.Tests.NUnit
                                 1,
                                 2
                             };
+            // Act
             int[] actual = RandomTrailBuilder.RemoveReverseNodes(trail,
                                                                  2);
 
+            // Assert
             Assert.AreEqual(4,
                             actual.Length,
                             "Length");
@@ -376,17 +371,20 @@ namespace Selkie.Aco.Trails.Tests.NUnit
         }
 
         [Test]
-        public void RemoveReverseNodesForTwoTest()
+        public void RemoveReverseNodes_RemovesNodes_ForTrailOfTwo()
         {
+            // Arrange
             int[] trail =
             {
                 0,
                 1
             };
 
+            // Act
             int[] actual = RandomTrailBuilder.RemoveReverseNodes(trail,
                                                                  0);
 
+            // Assert
             Assert.AreEqual(1,
                             actual.Length,
                             "Length");
@@ -396,10 +394,17 @@ namespace Selkie.Aco.Trails.Tests.NUnit
         }
 
         [Test]
-        public void TypeTest()
+        public void Type_ReturnsString_WhenCalled()
         {
-            Assert.AreEqual(typeof ( IRandomTrailBuilder ).Name,
-                            m_TrailBuilder.Type);
+            // Arrange
+            string expected = typeof ( IRandomTrailBuilder ).Name;
+
+            // Act
+            string actual = m_TrailBuilder.Type;
+
+            // Assert
+            Assert.AreEqual(expected,
+                            actual);
         }
     }
 }

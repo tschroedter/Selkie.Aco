@@ -9,7 +9,8 @@ namespace Selkie.Aco.Anthill.TypedFactories
         [NotNull]
         ISquad Create([NotNull] IDistanceGraph graph,
                       [NotNull] IPheromonesTracker tracker,
-                      [NotNull] IOptimizer optimizer);
+                      [NotNull] IOptimizer optimizer,
+                      [NotNull] IAntSettings antSettings);
 
         [UsedImplicitly]
         void Release([NotNull] ISquad squad);

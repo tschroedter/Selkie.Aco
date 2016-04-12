@@ -37,6 +37,7 @@ namespace Selkie.Aco.Anthill
                                                         m_Tracker,
                                                         m_Graph,
                                                         m_Optimizer,
+                                                        AntSettings.Unknown,
                                                         new int[0]);
 
             m_Disposer.AddResource(() => m_AntFactory.Release(BestAnt));
@@ -71,6 +72,7 @@ namespace Selkie.Aco.Anthill
                                                         m_Tracker,
                                                         m_Graph,
                                                         m_Optimizer,
+                                                        AntSettings.Unknown,
                                                         new int[0]);
 
             m_Disposer.AddResource(() => m_AntFactory.Release(BestAnt));

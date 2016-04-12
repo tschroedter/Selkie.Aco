@@ -45,22 +45,16 @@ namespace Selkie.Aco.Trails
         }
 
         // ReSharper disable once MethodTooLong
-        public override void BuildTrail(int start)
+        internal override void BuildTrail(int startNode)
         {
-            if ( start >= DistanceGraph.NumberOfNodes ||
-                 start < 0 )
-            {
-                throw new ArgumentException("start = " + start);
-            }
-
-            int reverseStart = FindRelatedCity(start);
+            int reverseStart = FindRelatedCity(startNode);
 
             var trail = new int[DistanceGraph.NumberOfUniqueNodes];
             var visited = new bool[DistanceGraph.NumberOfNodes];
 
-            trail [ 0 ] = start;
+            trail [ 0 ] = startNode;
 
-            visited [ start ] = true;
+            visited [ startNode ] = true;
             visited [ reverseStart ] = true;
 
             for ( var i = 0 ; i < DistanceGraph.NumberOfUniqueNodes - 1 ; ++i )

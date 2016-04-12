@@ -16,6 +16,7 @@ namespace Selkie.Aco.Anthill
         internal const int DefaultNumberOfAnts = 10;
         private readonly IAntFactory m_AntFactory;
         private readonly IList <IAnt> m_Ants = new List <IAnt>();
+        private readonly IAntSettings m_AntSettings;
         private readonly IList <IAnt> m_BestAnts = new List <IAnt>();
         private readonly IDisposer m_Disposer;
         private readonly IDistanceGraph m_Graph;
@@ -30,7 +31,8 @@ namespace Selkie.Aco.Anthill
                      [NotNull] IAntFactory antFactory,
                      [NotNull] IDistanceGraph graph,
                      [NotNull] IPheromonesTracker tracker,
-                     [NotNull] IOptimizer optimizer)
+                     [NotNull] IOptimizer optimizer,
+                     [NotNull] IAntSettings antSettings)
         {
             m_Disposer = disposer;
             m_Logger = logger;
@@ -39,6 +41,7 @@ namespace Selkie.Aco.Anthill
             m_Graph = graph;
             m_Tracker = tracker;
             m_Optimizer = optimizer;
+            m_AntSettings = antSettings;
 
             CreateAnts(DefaultNumberOfAnts);
 
@@ -124,11 +127,13 @@ namespace Selkie.Aco.Anthill
                                                                     m_Tracker,
                                                                     m_Graph,
                                                                     m_Optimizer,
+                                                                    m_AntSettings,
                                                                     new int[0])
                                : m_AntFactory.Create <ICandidateListAnt>(new Chromosome(m_Random),
                                                                          m_Tracker,
                                                                          m_Graph,
                                                                          m_Optimizer,
+                                                                         m_AntSettings,
                                                                          new int[0]) as IAnt;
 
                 m_Ants.Add(ant);

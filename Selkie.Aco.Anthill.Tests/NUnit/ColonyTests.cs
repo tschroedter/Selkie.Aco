@@ -97,6 +97,9 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
 
             m_NaturalSelectionFactory = new TestNaturalSelectionFactory();
 
+            m_AntSettings = new AntSettings(AntSettings.TrailStartNodeType.Random,
+                                            0);
+
             m_BestTrailFinder = new BestTrailFinder(new Disposer(),
                                                     m_AntFactory,
                                                     m_Graph,
@@ -284,7 +287,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         private IOptimizer m_Optimizer;
         private IAntFactory m_AntFactory;
         private IBestTrailFinderFactory m_BestTrailFinderFactory;
-        private BestTrailFinder m_BestTrailFinder;
+        private IBestTrailFinder m_BestTrailFinder;
         private ITrailAlternatives m_TrailAlternatives;
         private IQueenFactory m_QueenFactory;
         private IPheromones m_Pheromones;
@@ -295,6 +298,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         private IColonyLogger m_ColonyLogger;
         private INaturalSelectionFactory m_NaturalSelectionFactory;
         private TestChromosomeFactory m_ChromosomeFactory;
+        private IAntSettings m_AntSettings;
 
         [NotNull]
         private static int[] CreateCostPerLine([NotNull] int[][] costMatrix)
@@ -347,6 +351,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                                   trackerFactory,
                                   graph,
                                   m_Optimizer,
+                                  m_AntSettings,
                                   m_NaturalSelectionFactory);
             }
         }
@@ -718,9 +723,78 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         }
 
         [Test]
+        public void IsInvalidTrail_LogsMessage_ForIsFixedStartNodeIsTrueAndFixedStarNodeDoesMatch()
+        {
+            // Arrange
+            m_AntSettings = new AntSettings(AntSettings.TrailStartNodeType.Fixed,
+                                            123);
+
+            var builder = Substitute.For <IUnknownTrailBuilder>();
+            builder.IsUnknown.Returns(false);
+            builder.Trail.Returns(new[]
+                                  {
+                                      2,
+                                      2
+                                  });
+
+            Colony sut = CreateColonyWithCostMatrixAllSame();
+
+            // Act
+            sut.IsInvalidTrail(builder);
+
+            // Assert
+            m_ColonyLogger.Received()
+                          .Info(Arg.Is <string>(x => x.StartsWith("Trail is invalid because of IsFixedStartNode")));
+        }
+
+        [Test]
+        public void IsInvalidTrail_ReturnsFalse_ForIsFixedStartNodeIsTrueAndFixedStarNodeDoesMatch()
+        {
+            // Arrange
+            m_AntSettings = new AntSettings(AntSettings.TrailStartNodeType.Fixed,
+                                            0);
+
+            var builder = Substitute.For <IUnknownTrailBuilder>();
+            builder.IsUnknown.Returns(false);
+            builder.Trail.Returns(new[]
+                                  {
+                                      2,
+                                      2
+                                  });
+
+            // Act
+            Colony sut = CreateColonyWithCostMatrixAllSame();
+
+            // Assert
+            Assert.True(sut.IsInvalidTrail(builder));
+        }
+
+        [Test]
         public void IsInvalidTrail_ReturnsTrue_ForInvalid()
         {
             // Arrange
+            var builder = Substitute.For <IUnknownTrailBuilder>();
+            builder.IsUnknown.Returns(false);
+            builder.Trail.Returns(new[]
+                                  {
+                                      2,
+                                      2
+                                  });
+
+            // Act
+            Colony sut = CreateColonyWithCostMatrixAllSame();
+
+            // Assert
+            Assert.True(sut.IsInvalidTrail(builder));
+        }
+
+        [Test]
+        public void IsInvalidTrail_ReturnsTrue_ForIsFixedStartNodeIsTrueAndFixedStarNodeDoesNotMatch()
+        {
+            // Arrange
+            m_AntSettings = new AntSettings(AntSettings.TrailStartNodeType.Fixed,
+                                            123);
+
             var builder = Substitute.For <IUnknownTrailBuilder>();
             builder.IsUnknown.Returns(false);
             builder.Trail.Returns(new[]

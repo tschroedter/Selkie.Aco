@@ -83,12 +83,15 @@ namespace Selkie.Aco.Ants.Tests.NUnit
 
             m_Random = Substitute.For <IRandom>();
 
+            m_AntSettings = Substitute.For <IAntSettings>();
+
             m_Ant = new TestBaseAnt(m_Random,
                                     m_TrailBuilderFactory,
                                     m_Chromosome,
                                     m_Tracker,
                                     m_Graph,
-                                    m_Optimizer);
+                                    m_Optimizer,
+                                    m_AntSettings);
         }
 
         // ReSharper restore MethodTooLong
@@ -100,6 +103,7 @@ namespace Selkie.Aco.Ants.Tests.NUnit
         private IRandom m_Random;
         private IPheromonesTracker m_Tracker;
         private ITrailBuilderFactory m_TrailBuilderFactory;
+        private IAntSettings m_AntSettings;
 
         internal sealed class TestBaseAnt : BaseAnt <TestBaseAnt, IRandomTrailBuilder>
         {
@@ -109,32 +113,20 @@ namespace Selkie.Aco.Ants.Tests.NUnit
                                [NotNull] IChromosome chromosome,
                                [NotNull] IPheromonesTracker tracker,
                                [NotNull] IDistanceGraph graph,
-                               [NotNull] IOptimizer optimizer)
+                               [NotNull] IOptimizer optimizer,
+                               [NotNull] IAntSettings antSettings)
                 : base(random,
                        trailBuilderFactory,
                        chromosome,
                        tracker,
                        graph,
                        optimizer,
+                       antSettings,
                        new int[0])
             {
-                int startNode = Random.Next(0,
-                                            DistanceGraph.NumberOfNodes);
-
-                var builder = new RandomTrailBuilder(random,
-                                                     chromosome,
-                                                     tracker,
-                                                     graph,
-                                                     optimizer);
-                builder.BuildTrail(startNode);
-
-                TrailBuilder = builder;
             }
 
             // ReSharper restore TooManyDependencies
-            public override void Update()
-            {
-            }
         }
 
         [Test]
@@ -167,6 +159,7 @@ namespace Selkie.Aco.Ants.Tests.NUnit
                                                                Arg.Any <IPheromonesTracker>(),
                                                                Arg.Any <IDistanceGraph>(),
                                                                Arg.Any <IOptimizer>(),
+                                                               Arg.Any <IAntSettings>(),
                                                                Arg.Any <IEnumerable <int>>());
         }
 
@@ -179,6 +172,7 @@ namespace Selkie.Aco.Ants.Tests.NUnit
                                          Arg.Any <IPheromonesTracker>(),
                                          Arg.Any <IDistanceGraph>(),
                                          Arg.Any <IOptimizer>(),
+                                         Arg.Any <IAntSettings>(),
                                          Arg.Any <IEnumerable <int>>()).Returns(m_Ant);
 
             IAnt actual = m_Ant.Clone(factory,
@@ -245,8 +239,70 @@ namespace Selkie.Aco.Ants.Tests.NUnit
         }
 
         [Test]
-        public void TrailTest()
+        public void Update_CallsBuildWithFixedStartNode_ForSettingIsRandomStartNodeIsFalse()
         {
+            // Arrange
+            m_AntSettings.IsFixedStartNode.Returns(true);
+            m_AntSettings.FixedStartNode.Returns(3);
+
+            var trailBuilder = Substitute.For <IRandomTrailBuilder>();
+            var trailBuilderFactory = Substitute.For <ITrailBuilderFactory>();
+            trailBuilderFactory.Create <IRandomTrailBuilder>(m_Chromosome,
+                                                             m_Tracker,
+                                                             m_Graph,
+                                                             m_Optimizer,
+                                                             new int[0]).ReturnsForAnyArgs(trailBuilder);
+
+            var ant = new TestBaseAnt(m_Random,
+                                      trailBuilderFactory,
+                                      m_Chromosome,
+                                      m_Tracker,
+                                      m_Graph,
+                                      m_Optimizer,
+                                      m_AntSettings);
+
+            // Act
+            ant.Update();
+
+            // Assert
+            trailBuilder.Received().Build(3);
+        }
+
+        [Test]
+        public void Update_CallsBuildWithRandomStartNode_ForSettingIsRandomStartNodeIsTrue()
+        {
+            // Arrange
+            var trailBuilder = Substitute.For <IRandomTrailBuilder>();
+            var trailBuilderFactory = Substitute.For <ITrailBuilderFactory>();
+            trailBuilderFactory.Create <IRandomTrailBuilder>(m_Chromosome,
+                                                             m_Tracker,
+                                                             m_Graph,
+                                                             m_Optimizer,
+                                                             new int[0]).ReturnsForAnyArgs(trailBuilder);
+
+            var ant = new TestBaseAnt(m_Random,
+                                      trailBuilderFactory,
+                                      m_Chromosome,
+                                      m_Tracker,
+                                      m_Graph,
+                                      m_Optimizer,
+                                      m_AntSettings);
+
+            // Act
+            ant.Update();
+
+            // Assert
+            trailBuilder.Received().Build(Arg.Any <int>());
+        }
+
+        [Test]
+        public void Update_CreatesTrail_WhenCalled()
+        {
+            // Arrange
+            // Act
+            m_Ant.Update();
+
+            // Assert
             IEnumerable <int> trail = m_Ant.TrailBuilder.Trail;
 
             Assert.AreEqual(4,
@@ -255,6 +311,32 @@ namespace Selkie.Aco.Ants.Tests.NUnit
             Assert.AreEqual(2,
                             trail.Count(),
                             "Count");
+        }
+
+        [Test]
+        public void Update_CreatesTrailWithRandomStartNode_ForSettingIsRandomStartNodeIsTrue()
+        {
+            // Arrange
+            // Act
+            m_Ant.Update();
+
+            // Assert
+            IEnumerable <int> trail = m_Ant.TrailBuilder.Trail;
+
+            Assert.AreEqual(2,
+                            trail.Count());
+        }
+
+        [Test]
+        public void Update_ReturnsTrailWithCorrectLength_WhenCalled()
+        {
+            // Arrange
+            // Act
+            m_Ant.Update();
+
+            // Assert
+            Assert.AreEqual(5,
+                            m_Ant.TrailBuilder.Length);
         }
     }
 }

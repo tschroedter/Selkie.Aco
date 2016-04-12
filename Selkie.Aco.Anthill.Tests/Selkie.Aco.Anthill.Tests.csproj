@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="NUnit\AntSettingsTests.cs" />
     <Compile Include="NUnit\BestTrailFinderTests.cs" />
     <Compile Include="NUnit\TrailInformationTests.cs" />
     <Compile Include="NUnit\ColonyLoggerTests.cs" />

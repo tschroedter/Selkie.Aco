@@ -93,12 +93,15 @@ namespace Selkie.Aco.Ants.Tests.NUnit
 
             m_Random = Substitute.For <IRandom>();
 
+            m_AntSettings = Substitute.For <IAntSettings>();
+
             m_Ant = new FixedAnt(m_Random,
                                  m_TrailBuilderFactory,
                                  m_Chromosome,
                                  m_Tracker,
                                  m_Graph,
                                  m_Optimizer,
+                                 m_AntSettings,
                                  m_Trail);
         }
 
@@ -111,6 +114,7 @@ namespace Selkie.Aco.Ants.Tests.NUnit
         private IPheromonesTracker m_Tracker;
         private int[] m_Trail;
         private ITrailBuilderFactory m_TrailBuilderFactory;
+        private IAntSettings m_AntSettings;
 
         [NotNull]
         // ReSharper disable once MethodTooLong
@@ -158,39 +162,50 @@ namespace Selkie.Aco.Ants.Tests.NUnit
         }
 
         [Test]
-        public void ChromosomeTest()
+        public void Chromosome_ReturnsChromosome_WhenCalled()
         {
+            // Arrange
+            // Act
+            // Assert
             Assert.AreEqual(m_Chromosome,
                             m_Ant.Chromosome);
         }
 
         [Test]
-        public void CloneTest()
+        public void Clone_CallsFactory_WhenCalled()
         {
+            // Arrange
             var antFactory = Substitute.For <IAntFactory>();
             var chromosomeFactory = Substitute.For <IChromosomeFactory>();
 
+            // Act
             m_Ant.Clone(antFactory,
                         chromosomeFactory);
 
+            // Assert
             antFactory.Received().Create <IFixedAnt>(Arg.Any <IChromosome>(),
                                                      Arg.Any <IPheromonesTracker>(),
                                                      Arg.Any <IDistanceGraph>(),
                                                      Arg.Any <IOptimizer>(),
+                                                     Arg.Any <IAntSettings>(),
                                                      Arg.Any <IEnumerable <int>>());
         }
 
         [Test]
-        public void ConstructorWithoutTrailTest()
+        public void Constructor_ReturnsInstance_ForEmptyTrail()
         {
+            // Arrange
+            // Act
             var ant = new FixedAnt(m_Random,
                                    m_TrailBuilderFactory,
                                    m_Chromosome,
                                    m_Tracker,
                                    m_Graph,
                                    m_Optimizer,
+                                   m_AntSettings,
                                    new int[0]);
 
+            // Assert
             Assert.AreEqual(typeof ( IFixedAnt ).Name,
                             ant.Type,
                             "Type");
@@ -206,34 +221,61 @@ namespace Selkie.Aco.Ants.Tests.NUnit
         }
 
         [Test]
-        public void TrailBuilderTypeTest()
+        public void NumberOfNodes_ReturnsCount_WhenCalled()
         {
+            // Arrange
+            // Act
+            m_Ant.Update();
+
+            // Assert
+            Assert.AreEqual(4,
+                            m_Graph.NumberOfNodes);
+        }
+
+        [Test]
+        public void TrailBuilderType_ReturnsString_WhenCalledt()
+        {
+            // Arrange
+            // Act
+            // Assert
             Assert.AreEqual(typeof ( IFixedTrailBuilder ).Name,
                             m_Ant.TrailBuilder.Type);
         }
 
         [Test]
-        public void TrailTest()
+        public void Type_ReturnsString_WhenCalled()
         {
-            m_Ant.Update();
-
-            Assert.AreEqual(4,
-                            m_Graph.NumberOfNodes,
-                            "Length");
-        }
-
-        [Test]
-        public void TypeTest()
-        {
+            // Arrange
+            // Act
+            // Assert
             Assert.AreEqual(typeof ( IFixedAnt ).Name,
                             m_Ant.Type);
         }
 
         [Test]
-        public void UpdateDoesNotCreateNewTrailTest()
+        public void UpdateWithFixedStartNode_DoesNotCreateNewTrail_WhenCalled()
         {
+            // Arrange
+            m_AntSettings.IsFixedStartNode.Returns(true);
+            m_AntSettings.FixedStartNode.Returns(10);
+
+            // Act
             m_Ant.Update();
 
+            // Assert
+            List <int> newTrail = m_Ant.TrailBuilder.Trail.ToList();
+
+            Assert.True(m_Trail.SequenceEqual(newTrail));
+        }
+
+        [Test]
+        public void UpdateWithRandomStartNode_DoesNotCreateNewTrail_WhenCalled()
+        {
+            // Arrange
+            // Act
+            m_Ant.Update();
+
+            // Assert
             List <int> newTrail = m_Ant.TrailBuilder.Trail.ToList();
 
             Assert.True(m_Trail.SequenceEqual(newTrail));

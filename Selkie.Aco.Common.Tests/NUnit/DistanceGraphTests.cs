@@ -620,19 +620,19 @@ namespace Selkie.Aco.Common.Tests.NUnit
         public void ToStringReturnsStringTest()
         {
             // Arrange
-            string expected = "CostMatrix\r\n" +
-                              "[0] 3, 2, 1, 0\r\n" +
-                              "[1] 2, 4, 6, 5\r\n" +
-                              "[2] 9, 6, 7, 8\r\n" +
-                              "[3] 1, 2, 3, 5\r\n\r\n" +
-                              "CostPerLine\r\n" +
-                              "1, 1, 2, 2\r\n\r\n" +
-                              "NearestNeighbours\r\n" +
-                              "[0] 3, 2, 1\r\n" +
-                              "[1] 0, 3, 2\r\n" +
-                              "[2] 1, 3, 0\r\n" +
-                              "[3] 0, 1, 2\r\n\r\n" +
-                              "IsValid? True\r\n";
+            const string expected = "CostMatrix\r\n" +
+                                    "[0] 3, 2, 1, 0\r\n" +
+                                    "[1] 2, 4, 6, 5\r\n" +
+                                    "[2] 9, 6, 7, 8\r\n" +
+                                    "[3] 1, 2, 3, 5\r\n\r\n" +
+                                    "CostPerLine\r\n" +
+                                    "1, 1, 2, 2\r\n\r\n" +
+                                    "NearestNeighbours\r\n" +
+                                    "[0] 3, 2, 1\r\n" +
+                                    "[1] 0, 3, 2\r\n" +
+                                    "[2] 1, 3, 0\r\n" +
+                                    "[3] 0, 1, 2\r\n\r\n" +
+                                    "IsValid? True\r\n";
 
             // Act
             string actual = m_Graph.ToString();

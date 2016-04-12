@@ -36,6 +36,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AntSettings.cs" />
     <Compile Include="BestTrailChangedEventArgs.cs" />
     <Compile Include="BestTrailFinder.cs" />
     <Compile Include="ColonyLogger.cs" />
@@ -44,6 +45,7 @@
     <Compile Include="LogTrailBuilderInformation.cs" />
     <Compile Include="PheromonesInformation.cs" />
     <Compile Include="TypedFactories\IBestTrailFinderFactory.cs" />
+    <Compile Include="TypedFactories\IAntSettingsFactory.cs" />
     <Compile Include="TypedFactories\IColonyFactory.cs" />
     <Compile Include="IColonyLogger.cs" />
     <Compile Include="TypedFactories\IDistanceGraphFactory.cs" />

@@ -45,15 +45,19 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                                               m_Pheromones,
                                               m_Graph);
 
+            m_AntSettings = Substitute.For <IAntSettings>();
+
             m_AntOne = m_AntFactory.Create <IStandardAnt>(new Chromosome(m_Random),
                                                           m_Tracker,
                                                           m_Graph,
-                                                          m_Optimizer);
+                                                          m_Optimizer,
+                                                          m_AntSettings);
 
             m_AntTwo = m_AntFactory.Create <IStandardAnt>(new Chromosome(m_Random),
                                                           m_Tracker,
                                                           m_Graph,
-                                                          m_Optimizer);
+                                                          m_Optimizer,
+                                                          m_AntSettings);
 
             m_Optimizer = new TwoOptSimple
                           {
@@ -66,7 +70,8 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                                 m_AntFactory,
                                 m_Graph,
                                 m_Tracker,
-                                m_Optimizer);
+                                m_Optimizer,
+                                m_AntSettings);
         }
 
         [TearDown]
@@ -89,6 +94,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         private IRandom m_Random;
         private Squad m_Squad;
         private PheromonesTracker m_Tracker;
+        private IAntSettings m_AntSettings;
 
         [NotNull]
         private int[][] CreateCostMatrix()
@@ -136,7 +142,8 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                                   m_AntFactory,
                                   m_Graph,
                                   m_Tracker,
-                                  m_Optimizer);
+                                  m_Optimizer,
+                                  m_AntSettings);
             return squad;
         }
 

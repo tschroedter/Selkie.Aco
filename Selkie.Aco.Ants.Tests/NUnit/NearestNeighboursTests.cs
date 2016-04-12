@@ -195,10 +195,10 @@ namespace Selkie.Aco.Ants.Tests.NUnit
         [Test]
         public void ToStringReturnsStringTest()
         {
-            string expected = "[0] 3, 2, 1\r\n" +
-                              "[1] 0, 3, 2\r\n" +
-                              "[2] 1, 3, 0\r\n" +
-                              "[3] 0, 1, 2\r\n";
+            const string expected = "[0] 3, 2, 1\r\n" +
+                                    "[1] 0, 3, 2\r\n" +
+                                    "[2] 1, 3, 0\r\n" +
+                                    "[3] 0, 1, 2\r\n";
 
             string actual = m_Neighbours.ToString();
 

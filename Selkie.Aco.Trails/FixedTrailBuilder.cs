@@ -43,7 +43,7 @@ namespace Selkie.Aco.Trails
             BuildDictionaryIndexOfTarget(Trail);
         }
 
-        public override void BuildTrail(int start)
+        internal override void BuildTrail(int startNode)
         {
         }
     }

@@ -4,7 +4,6 @@ using System.Linq;
 using JetBrains.Annotations;
 using Selkie.Aco.Common;
 using Selkie.Common;
-using Selkie.Windsor.Extensions;
 
 namespace Selkie.Aco.Trails
 {
@@ -111,29 +110,16 @@ namespace Selkie.Aco.Trails
             return number;
         }
 
-        public override void BuildTrail(int start)
+        internal override void BuildTrail(int startNode)
         {
-            if ( start < 0 )
-            {
-                throw new ArgumentException("start '{0}' is less than zero!".Inject(start));
-            }
-
-            if ( start >= DistanceGraph.NumberOfNodes )
-            {
-                throw new ArgumentException(
-                    "start '{0}' is equal or greater than number of graph nodes '{1}'!".Inject(start,
-                                                                                               DistanceGraph
-                                                                                                   .NumberOfNodes));
-            }
-
-            int reverseStart = FindRelatedCity(start);
+            int reverseStart = FindRelatedCity(startNode);
 
             var trail = new int[DistanceGraph.NumberOfUniqueNodes];
             var visited = new bool[DistanceGraph.NumberOfNodes];
 
-            trail [ 0 ] = start;
+            trail [ 0 ] = startNode;
 
-            visited [ start ] = true;
+            visited [ startNode ] = true;
             visited [ reverseStart ] = true;
 
             SearchGeneral(visited,

@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NUnit\BaseTrailBuilderTests.cs" />
     <Compile Include="NUnit\CandidateListTrailBuilderTests.cs" />
     <Compile Include="NUnit\FixedTrailBuilderTests.cs" />
     <Compile Include="NUnit\Optimizers\TwoOptSimpleTests.cs" />

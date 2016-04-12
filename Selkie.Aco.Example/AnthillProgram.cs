@@ -13,6 +13,7 @@ namespace Selkie.Aco.Example
 {
     public sealed class AnthillProgram : IDisposable
     {
+        private readonly IAntSettingsFactory m_AntSettingsFactory;
         private readonly IColonyFactory m_ColonyFactory;
         private readonly ISelkieConsole m_Console;
         private readonly IWindsorContainer m_Container;
@@ -68,6 +69,7 @@ namespace Selkie.Aco.Example
 
             m_ColonyFactory = container.Resolve <IColonyFactory>();
             m_GraphFactory = container.Resolve <IDistanceGraphFactory>();
+            m_AntSettingsFactory = container.Resolve <IAntSettingsFactory>();
             m_Console = container.Resolve <ISelkieConsole>();
         }
 
@@ -104,7 +106,12 @@ namespace Selkie.Aco.Example
 
                 IDistanceGraph graph = m_GraphFactory.Create(m_CostMatrix,
                                                              m_CostPerLine);
-                IColony colony = m_ColonyFactory.Create(graph);
+
+                IAntSettings settings = m_AntSettingsFactory.Create(AntSettings.TrailStartNodeType.Random,
+                                                                    0);
+
+                IColony colony = m_ColonyFactory.Create(graph,
+                                                        settings);
 
                 colony.BestTrailChanged += BestTrailChangedHandler;
                 colony.Finished += FinishHandler;
@@ -122,6 +129,7 @@ namespace Selkie.Aco.Example
                 colony.Finished -= FinishHandler;
                 colony.BestTrailChanged -= BestTrailChangedHandler;
 
+                m_AntSettingsFactory.Release(settings);
                 m_ColonyFactory.Release(colony);
                 m_GraphFactory.Release(graph);
             }

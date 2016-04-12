@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using Selkie.Aco.Anthill.TypedFactories;
 using Selkie.Aco.Ants;
@@ -21,6 +22,7 @@ namespace Selkie.Aco.Anthill
     {
         internal const int DefaultTurnsBeforeSelection = 100;
         internal const double Epsilon = 0.01;
+        private readonly IAntSettings m_AntSettings;
         private readonly IChromosomeFactory m_ChromosomeFactory;
         private readonly IDistanceGraph m_Graph;
         private readonly IColonyLogger m_Logger;
@@ -260,9 +262,31 @@ namespace Selkie.Aco.Anthill
                                                                               trailText));
         }
 
-        internal bool IsInvalidTrail([NotNull] ITrailBuilder bestTrailBuilder)
+        internal bool IsInvalidTrail([NotNull] ITrailBuilder trailBuilder)
         {
-            return bestTrailBuilder.IsUnknown || !m_Graph.IsValidPath(bestTrailBuilder.Trail);
+            return trailBuilder.IsUnknown ||
+                   !IsStartNodeValid(trailBuilder) ||
+                   !m_Graph.IsValidPath(trailBuilder.Trail);
+        }
+
+        private bool IsStartNodeValid(ITrailBuilder trailBuilder)
+        {
+            if ( m_AntSettings.IsFixedStartNode )
+            {
+                bool isStartNodeValid = trailBuilder.Trail.First() == m_AntSettings.FixedStartNode;
+
+                if ( !isStartNodeValid )
+                {
+                    m_Logger.Info("Trail is invalid because of " +
+                                  "IsFixedStartNode '{0}' ".Inject(m_AntSettings.IsFixedStartNode) +
+                                  "and FixedStartNode '{0}'!".Inject(m_AntSettings.FixedStartNode) +
+                                  " - {0}".Inject(trailBuilder.ToString()));
+                }
+
+                return isStartNodeValid;
+            }
+
+            return true;
         }
 
         private void EvolveNaturalSelection()
@@ -357,6 +381,7 @@ namespace Selkie.Aco.Anthill
                       [NotNull] IPheromonesTrackerFactory trackerFactory,
                       [NotNull] IDistanceGraph graph,
                       [NotNull] IOptimizer optimizer,
+                      [NotNull] IAntSettings antSettings,
                       [NotNull] INaturalSelectionFactory naturalSelectionFactory)
         {
             TurnsSinceNewBestTrailFound = DefaultTurnsBeforeSelection * 2;
@@ -368,6 +393,7 @@ namespace Selkie.Aco.Anthill
             m_TrailBuilderFactory = trailBuilderFactory;
             m_Graph = graph;
             m_Optimizer = optimizer;
+            m_AntSettings = antSettings;
             m_Logger = logger;
             m_Tracker = trackerFactory.Create(m_Graph);
 
@@ -378,7 +404,8 @@ namespace Selkie.Aco.Anthill
             m_Optimizer.DistanceGraph = graph;
             m_Queen = queenFactory.Create(m_Graph,
                                           m_Tracker,
-                                          m_Optimizer);
+                                          m_Optimizer,
+                                          antSettings);
 
             m_NaturalSelection = naturalSelectionFactory.Create(m_Queen);
 

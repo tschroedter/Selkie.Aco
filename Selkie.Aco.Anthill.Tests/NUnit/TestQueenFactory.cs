@@ -38,7 +38,8 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
 
         public IQueen Create(IDistanceGraph graph,
                              IPheromonesTracker tracker,
-                             IOptimizer optimizer)
+                             IOptimizer optimizer,
+                             IAntSettings antSettings)
         {
             var nest = new Squad(new Disposer(),
                                  m_Logger,
@@ -46,11 +47,13 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                                  m_AntFactory,
                                  graph,
                                  tracker,
-                                 optimizer);
+                                 optimizer,
+                                 antSettings);
 
             ISquad squad = m_SquadFactory.Create(Arg.Any <IDistanceGraph>(),
                                                  Arg.Any <IPheromonesTracker>(),
-                                                 Arg.Any <IOptimizer>());
+                                                 Arg.Any <IOptimizer>(),
+                                                 Arg.Any <IAntSettings>());
             squad.Returns(nest);
 
             return new Queen(m_Logger,
@@ -61,6 +64,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                              tracker,
                              optimizer,
                              m_Crossover,
+                             antSettings,
                              m_SquadFactory);
         }
 

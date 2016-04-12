@@ -74,6 +74,7 @@
     <Compile Include="DistanceGraph.cs" />
     <Compile Include="IAnt.cs" />
     <Compile Include="IAntFactory.cs" />
+    <Compile Include="IAntSettings.cs" />
     <Compile Include="IChromosome.cs" />
     <Compile Include="TypedFactories\IChromosomeFactory.cs" />
     <Compile Include="IDistanceGraph.cs" />

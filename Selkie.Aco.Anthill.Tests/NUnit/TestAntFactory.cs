@@ -22,6 +22,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                             IPheromonesTracker tracker,
                             IDistanceGraph graph,
                             IOptimizer optimizer,
+                            IAntSettings antSettings,
                             IEnumerable <int> trail) where T : IAnt
         {
             lock ( this )
@@ -34,6 +35,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                     tracker,
                     graph,
                     optimizer,
+                    antSettings,
                     trail
                 };
 
@@ -52,10 +54,11 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
         }
 
         // ReSharper disable TooManyArguments
-        public T Create <T>(IChromosome chromosome,
-                            IPheromonesTracker tracker,
-                            IDistanceGraph graph,
-                            IOptimizer optimizer) where T : IAnt
+        public T Create <T>([NotNull] IChromosome chromosome,
+                            [NotNull] IPheromonesTracker tracker,
+                            [NotNull] IDistanceGraph graph,
+                            [NotNull] IOptimizer optimizer,
+                            [NotNull] IAntSettings antSettings) where T : IAnt
         {
             lock ( this )
             {
@@ -67,6 +70,7 @@ namespace Selkie.Aco.Anthill.Tests.NUnit
                     tracker,
                     graph,
                     optimizer,
+                    antSettings,
                     new int[0]
                 };
 

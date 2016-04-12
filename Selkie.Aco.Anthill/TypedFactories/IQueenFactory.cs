@@ -9,7 +9,8 @@ namespace Selkie.Aco.Anthill.TypedFactories
         [NotNull]
         IQueen Create([NotNull] IDistanceGraph graph,
                       [NotNull] IPheromonesTracker tracker,
-                      [NotNull] IOptimizer optimizer);
+                      [NotNull] IOptimizer optimizer,
+                      [NotNull] IAntSettings antSettings);
 
         [UsedImplicitly]
         void Release([NotNull] IQueen queen);

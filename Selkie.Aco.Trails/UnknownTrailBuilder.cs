@@ -17,7 +17,7 @@ namespace Selkie.Aco.Trails
             return this;
         }
 
-        public override void BuildTrail(int start)
+        internal override void BuildTrail(int startNode)
         {
         } // ReSharper disable TooManyDependencies
 
