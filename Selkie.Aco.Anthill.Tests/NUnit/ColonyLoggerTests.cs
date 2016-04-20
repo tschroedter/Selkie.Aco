@@ -2,8 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using NSubstitute;
 using NUnit.Framework;
-using Selkie.Aco.Common;
-using Selkie.Aco.Trails;
+using Selkie.Aco.Common.Interfaces;
+using Selkie.Aco.Trails.Interfaces;
 using Selkie.Windsor;
 
 namespace Selkie.Aco.Anthill.Tests.NUnit

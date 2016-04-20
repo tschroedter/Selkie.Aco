@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.Windsor;
 using Selkie.Windsor.Extensions;
 

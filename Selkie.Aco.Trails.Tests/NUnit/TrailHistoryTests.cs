@@ -3,7 +3,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
-using Selkie.Aco.Common;
+using Selkie.Aco.Common.Interfaces;
+using Selkie.Aco.Trails.Interfaces;
 
 namespace Selkie.Aco.Trails.Tests.NUnit
 {

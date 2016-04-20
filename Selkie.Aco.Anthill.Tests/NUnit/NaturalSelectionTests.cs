@@ -2,8 +2,9 @@
 using JetBrains.Annotations;
 using NSubstitute;
 using NUnit.Framework;
-using Selkie.Aco.Common;
-using Selkie.Aco.Trails;
+using Selkie.Aco.Anthill.Interfaces;
+using Selkie.Aco.Common.Interfaces;
+using Selkie.Aco.Trails.Interfaces;
 using Selkie.Common;
 using Selkie.NUnit.Extensions;
 

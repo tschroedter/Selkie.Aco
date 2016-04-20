@@ -1,6 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
-using Selkie.Aco.Common;
+using Selkie.Aco.Ants.Interfaces;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Common.TypedFactories;
 using Selkie.Common;
 using Selkie.Windsor;

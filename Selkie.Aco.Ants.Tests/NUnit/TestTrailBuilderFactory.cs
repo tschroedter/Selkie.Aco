@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
-using Selkie.Aco.Common;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Common.TypedFactories;
 using Selkie.Aco.Trails;
 using Selkie.Common;

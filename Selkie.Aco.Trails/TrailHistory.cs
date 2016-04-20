@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
-using Selkie.Aco.Common;
+using Selkie.Aco.Common.Interfaces;
+using Selkie.Aco.Trails.Interfaces;
 using Selkie.Windsor;
 
 namespace Selkie.Aco.Trails

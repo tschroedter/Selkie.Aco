@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using JetBrains.Annotations;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.Windsor;
 
 namespace Selkie.Aco.Common

@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using Selkie.Aco.Anthill.Interfaces;
 using Selkie.Windsor;
 
 namespace Selkie.Aco.Anthill.TypedFactories

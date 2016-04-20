@@ -4,8 +4,9 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using JetBrains.Annotations;
 using Selkie.Aco.Anthill;
+using Selkie.Aco.Anthill.Interfaces;
 using Selkie.Aco.Anthill.TypedFactories;
-using Selkie.Aco.Common;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.Common;
 using Selkie.Windsor.Extensions;
 

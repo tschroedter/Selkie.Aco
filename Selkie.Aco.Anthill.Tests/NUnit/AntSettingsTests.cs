@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using NUnit.Framework;
-using Selkie.Aco.Common;
+using Selkie.Aco.Common.Interfaces;
 
 namespace Selkie.Aco.Anthill.Tests.NUnit
 {

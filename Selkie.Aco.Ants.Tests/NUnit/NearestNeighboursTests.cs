@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NUnit.Framework;
 using Selkie.Aco.Common;
+using Selkie.Aco.Common.Interfaces;
 
 namespace Selkie.Aco.Ants.Tests.NUnit
 {

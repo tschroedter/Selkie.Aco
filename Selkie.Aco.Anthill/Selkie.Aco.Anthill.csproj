@@ -47,21 +47,21 @@
     <Compile Include="TypedFactories\IBestTrailFinderFactory.cs" />
     <Compile Include="TypedFactories\IAntSettingsFactory.cs" />
     <Compile Include="TypedFactories\IColonyFactory.cs" />
-    <Compile Include="IColonyLogger.cs" />
+    <Compile Include="Interfaces\IColonyLogger.cs" />
     <Compile Include="TypedFactories\IDistanceGraphFactory.cs" />
-    <Compile Include="INaturalSelection.cs" />
+    <Compile Include="Interfaces\INaturalSelection.cs" />
     <Compile Include="TypedFactories\INaturalSelectionFactory.cs" />
     <Compile Include="TypedFactories\IPheromonesTrackerFactory.cs" />
-    <Compile Include="ISquad.cs" />
+    <Compile Include="Interfaces\ISquad.cs" />
     <Compile Include="TypedFactories\ISquadFactory.cs" />
     <Compile Include="Installer.cs" />
-    <Compile Include="IBestTrailFinder.cs" />
+    <Compile Include="Interfaces\IBestTrailFinder.cs" />
     <Compile Include="TypedFactories\IQueenFactory.cs" />
     <Compile Include="NaturalSelection.cs" />
     <Compile Include="Squad.cs" />
     <Compile Include="Colony.cs" />
-    <Compile Include="IColony.cs" />
-    <Compile Include="IQueen.cs" />
+    <Compile Include="Interfaces\IColony.cs" />
+    <Compile Include="Interfaces\IQueen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queen.cs" />
   </ItemGroup>

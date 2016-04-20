@@ -1,5 +1,5 @@
 using System;
-using Selkie.Aco.Common;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.Windsor;
 using Selkie.Windsor.Extensions;
 

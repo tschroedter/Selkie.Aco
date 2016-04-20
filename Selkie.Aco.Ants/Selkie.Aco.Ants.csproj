@@ -77,12 +77,12 @@
     <Compile Include="Chromosome.cs" />
     <Compile Include="Crossover.cs" />
     <Compile Include="FixedAnt.cs" />
-    <Compile Include="ICandidateListAnt.cs" />
-    <Compile Include="ICrossOver.cs" />
-    <Compile Include="IFixedAnt.cs" />
+    <Compile Include="Interfaces\ICandidateListAnt.cs" />
+    <Compile Include="Interfaces\ICrossOver.cs" />
+    <Compile Include="Interfaces\IFixedAnt.cs" />
     <Compile Include="Installer.cs" />
-    <Compile Include="IStandardAnt.cs" />
-    <Compile Include="IUnknownAnt.cs" />
+    <Compile Include="Interfaces\IStandardAnt.cs" />
+    <Compile Include="Interfaces\IUnknownAnt.cs" />
     <Compile Include="StandardAnt.cs" />
     <Compile Include="UnknownAnt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

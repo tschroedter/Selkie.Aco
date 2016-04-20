@@ -2,8 +2,9 @@ using System;
 using System.Globalization;
 using System.Linq;
 using JetBrains.Annotations;
-using Selkie.Aco.Common;
-using Selkie.Aco.Trails;
+using Selkie.Aco.Anthill.Interfaces;
+using Selkie.Aco.Common.Interfaces;
+using Selkie.Aco.Trails.Interfaces;
 using Selkie.Windsor;
 using Selkie.Windsor.Extensions;
 

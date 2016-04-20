@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using NSubstitute;
 using NUnit.Framework;
-using Selkie.Aco.Common;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Common.TypedFactories;
 using Selkie.Common;
 using Selkie.NUnit.Extensions;

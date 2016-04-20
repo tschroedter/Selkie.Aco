@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using NSubstitute;
 using NUnit.Framework;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.Common;
 
 namespace Selkie.Aco.Common.Tests.NUnit

@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Selkie.Aco.Anthill.Interfaces;
 using Selkie.Aco.Anthill.TypedFactories;
 using Selkie.Aco.Ants;
-using Selkie.Aco.Common;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Common.TypedFactories;
-using Selkie.Aco.Trails;
+using Selkie.Aco.Trails.Interfaces;
 using Selkie.Common;
 using Selkie.Windsor;
 using Selkie.Windsor.Extensions;

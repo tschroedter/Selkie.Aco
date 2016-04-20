@@ -1,4 +1,4 @@
-﻿using Selkie.Aco.Common;
+﻿using Selkie.Aco.Common.Interfaces;
 
 namespace Selkie.Aco.Trails.Optimizers
 {

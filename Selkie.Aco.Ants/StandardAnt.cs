@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
-using Selkie.Aco.Common;
+using Selkie.Aco.Ants.Interfaces;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Common.TypedFactories;
-using Selkie.Aco.Trails;
+using Selkie.Aco.Trails.Interfaces;
 using Selkie.Common;
 
 namespace Selkie.Aco.Ants

@@ -5,8 +5,9 @@ using System.Linq;
 using JetBrains.Annotations;
 using NSubstitute;
 using NUnit.Framework;
-using Selkie.Aco.Common;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Common.TypedFactories;
+using Selkie.Aco.Trails.Interfaces;
 using Selkie.Aco.Trails.Optimizers;
 using Selkie.Common;
 

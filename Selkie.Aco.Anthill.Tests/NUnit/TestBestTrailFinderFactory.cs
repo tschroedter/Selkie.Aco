@@ -1,7 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
+using Selkie.Aco.Anthill.Interfaces;
 using Selkie.Aco.Anthill.TypedFactories;
-using Selkie.Aco.Common;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Trails;
+using Selkie.Aco.Trails.Interfaces;
 using Selkie.Common;
 
 namespace Selkie.Aco.Anthill.Tests.NUnit

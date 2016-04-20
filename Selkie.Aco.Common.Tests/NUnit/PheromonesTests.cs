@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using NSubstitute;
 using NUnit.Framework;
+using Selkie.Aco.Common.Interfaces;
 using Selkie.NUnit.Extensions;
 
 namespace Selkie.Aco.Common.Tests.NUnit

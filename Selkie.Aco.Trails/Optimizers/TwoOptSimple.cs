@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Selkie.Aco.Common;
+using Selkie.Aco.Common.Interfaces;
 
 namespace Selkie.Aco.Trails.Optimizers
 {
