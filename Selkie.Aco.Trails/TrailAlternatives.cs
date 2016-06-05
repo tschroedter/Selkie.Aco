@@ -12,11 +12,6 @@ namespace Selkie.Aco.Trails
     [ProjectComponent(Lifestyle.Transient)]
     public sealed class TrailAlternatives : ITrailAlternatives
     {
-        private readonly Dictionary <int, List <ITrailBuilder>> m_Alternatives;
-        private readonly IChromosomeFactory m_ChromosomeFactory;
-        private readonly ITrailBuilderFactory m_TrailBuilderFactory;
-        private readonly List <ITrailBuilder> m_Trails;
-
         public TrailAlternatives([NotNull] ITrailBuilderFactory trailBuilderFactory,
                                  [NotNull] IChromosomeFactory chromosomeFactory)
         {
@@ -33,6 +28,11 @@ namespace Selkie.Aco.Trails
                 return m_Alternatives.Count;
             }
         }
+
+        private readonly Dictionary <int, List <ITrailBuilder>> m_Alternatives;
+        private readonly IChromosomeFactory m_ChromosomeFactory;
+        private readonly ITrailBuilderFactory m_TrailBuilderFactory;
+        private readonly List <ITrailBuilder> m_Trails;
 
         public IEnumerable <ITrailBuilder> Trails
         {
@@ -52,33 +52,35 @@ namespace Selkie.Aco.Trails
         public void AddAlternative(int id,
                                    ITrailBuilder trailBuilder)
         {
-            if ( !IsKnownAlternative(trailBuilder) )
+            if ( IsKnownAlternative(trailBuilder) )
             {
-                List <ITrailBuilder> list;
+                return;
+            }
 
-                ITrailBuilder clone = trailBuilder.Clone(m_TrailBuilderFactory,
-                                                         m_ChromosomeFactory);
+            List <ITrailBuilder> list;
 
-                if ( !m_Alternatives.TryGetValue(id,
-                                                 out list) )
-                {
-                    list = new List <ITrailBuilder>
-                           {
-                               clone
-                           };
+            ITrailBuilder clone = trailBuilder.Clone(m_TrailBuilderFactory,
+                                                     m_ChromosomeFactory);
 
-                    m_Alternatives.Add(id,
-                                       list);
+            if ( !m_Alternatives.TryGetValue(id,
+                                             out list) )
+            {
+                list = new List <ITrailBuilder>
+                       {
+                           clone
+                       };
 
-                    m_Trails.Clear();
-                    m_Trails.AddRange(ConvertValuesToList());
-                }
-                else
-                {
-                    list.Add(clone);
-                    m_Trails.Clear();
-                    m_Trails.AddRange(ConvertValuesToList());
-                }
+                m_Alternatives.Add(id,
+                                   list);
+
+                m_Trails.Clear();
+                m_Trails.AddRange(ConvertValuesToList());
+            }
+            else
+            {
+                list.Add(clone);
+                m_Trails.Clear();
+                m_Trails.AddRange(ConvertValuesToList());
             }
         }
 
@@ -92,44 +94,6 @@ namespace Selkie.Aco.Trails
             List <int> newTrail = trailBuilder.Trail.ToList();
 
             return Trails.Any(alternative => newTrail.SequenceEqual(alternative.Trail));
-        }
-
-        private void EmptyInternalList()
-        {
-            m_Alternatives.Clear();
-            m_Trails.Clear();
-        }
-
-        private void ReleaseTrails()
-        {
-            foreach ( ITrailBuilder builder in Trails )
-            {
-                m_TrailBuilderFactory.Release(builder);
-            }
-        }
-
-        private void ReleaseAlternatives()
-        {
-            foreach ( List <ITrailBuilder> builders in m_Alternatives.Values )
-            {
-                foreach ( ITrailBuilder builder in builders )
-                {
-                    m_TrailBuilderFactory.Release(builder);
-                }
-            }
-        }
-
-        [NotNull]
-        internal IEnumerable <ITrailBuilder> ConvertValuesToList()
-        {
-            var list = new List <ITrailBuilder>();
-
-            foreach ( List <ITrailBuilder> trails in m_Alternatives.Values )
-            {
-                list.AddRange(trails);
-            }
-
-            return list;
         }
 
         public override string ToString()
@@ -151,6 +115,44 @@ namespace Selkie.Aco.Trails
             }
 
             return sb.ToString();
+        }
+
+        [NotNull]
+        internal IEnumerable <ITrailBuilder> ConvertValuesToList()
+        {
+            var list = new List <ITrailBuilder>();
+
+            foreach ( List <ITrailBuilder> trails in m_Alternatives.Values )
+            {
+                list.AddRange(trails);
+            }
+
+            return list;
+        }
+
+        private void EmptyInternalList()
+        {
+            m_Alternatives.Clear();
+            m_Trails.Clear();
+        }
+
+        private void ReleaseAlternatives()
+        {
+            foreach ( List <ITrailBuilder> builders in m_Alternatives.Values )
+            {
+                foreach ( ITrailBuilder builder in builders )
+                {
+                    m_TrailBuilderFactory.Release(builder);
+                }
+            }
+        }
+
+        private void ReleaseTrails()
+        {
+            foreach ( ITrailBuilder builder in Trails )
+            {
+                m_TrailBuilderFactory.Release(builder);
+            }
         }
     }
 }

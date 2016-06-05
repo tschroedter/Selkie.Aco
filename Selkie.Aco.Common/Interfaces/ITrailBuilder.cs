@@ -18,13 +18,13 @@ namespace Selkie.Aco.Common.Interfaces
         [NotNull]
         IChromosome Chromosome { get; }
 
-        bool EdgeInTrail(int cityX,
-                         int cityY);
-
         void Build(int startNode);
 
         [NotNull]
         ITrailBuilder Clone([NotNull] ITrailBuilderFactory trailBuilderFactory,
                             [NotNull] IChromosomeFactory chromosomeFactory);
+
+        bool EdgeInTrail(int cityX,
+                         int cityY);
     }
 }

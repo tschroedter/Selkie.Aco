@@ -4,7 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Trails.Interfaces;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 
 namespace Selkie.Aco.Trails
 {
@@ -13,7 +13,6 @@ namespace Selkie.Aco.Trails
           ICandidateListTrailBuilder,
           IEquatable <CandidateListTrailBuilder>
     {
-        private int m_NumberOfCandidates;
         // ReSharper disable once TooManyDependencies
         public CandidateListTrailBuilder([NotNull] IRandom random,
                                          [NotNull] IChromosome chromosome,
@@ -63,6 +62,8 @@ namespace Selkie.Aco.Trails
             }
         }
 
+        private int m_NumberOfCandidates;
+
         // ReSharper disable once CodeAnnotationAnalyzer
         public bool Equals(CandidateListTrailBuilder other)
         {
@@ -111,35 +112,6 @@ namespace Selkie.Aco.Trails
             return number;
         }
 
-        internal override void BuildTrail(int startNode)
-        {
-            int reverseStart = FindRelatedCity(startNode);
-
-            var trail = new int[DistanceGraph.NumberOfUniqueNodes];
-            var visited = new bool[DistanceGraph.NumberOfNodes];
-
-            trail [ 0 ] = startNode;
-
-            visited [ startNode ] = true;
-            visited [ reverseStart ] = true;
-
-            SearchGeneral(visited,
-                          trail);
-
-            Trail = trail;
-        }
-
-        [NotNull]
-        internal int[] FindCandidates(int fromCity,
-                                      [NotNull] bool[] visited)
-        {
-            IEnumerable <int> candidates = BuildCandidateList(fromCity);
-
-            IEnumerable <int> canditatesList = candidates.Where(candidate => visited [ candidate ] == false);
-
-            return canditatesList.ToArray();
-        }
-
         [NotNull]
         internal IEnumerable <int> BuildCandidateList(int city)
         {
@@ -156,27 +128,21 @@ namespace Selkie.Aco.Trails
             return candidates;
         }
 
-        internal void SearchGeneral([NotNull] bool[] visited,
-                                    [NotNull] int[] trail)
+        [NotNull]
+        internal int[] FindCandidates(int fromCity,
+                                      [NotNull] bool[] visited)
         {
-            for ( var i = 0 ; i < DistanceGraph.NumberOfUniqueNodes - 1 ; ++i )
-            {
-                int cityX = trail [ i ];
-                double dicider = Random.NextDouble();
-                int next = NextCity(cityX,
-                                    visited,
-                                    dicider);
-                trail [ i + 1 ] = next;
-                visited [ next ] = true;
+            IEnumerable <int> candidates = BuildCandidateList(fromCity);
 
-                int nextRelatedCity = FindRelatedCity(next);
-                visited [ nextRelatedCity ] = true;
-            }
+            IEnumerable <int> canditatesList = candidates.Where(candidate => visited [ candidate ] == false);
+
+            return canditatesList.ToArray();
         }
 
-        internal int NextCity(int cityX,
-                              [NotNull] bool[] visited,
-                              double dicider)
+        // Attention: tested by sub-classes only
+        internal override int NextCity(int cityX,
+                                       [NotNull] bool[] visited,
+                                       double dicider)
         {
             int[] candidates = FindCandidates(cityX,
                                               visited);

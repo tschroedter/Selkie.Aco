@@ -5,12 +5,6 @@ namespace Selkie.Aco.Anthill
 {
     public class LogTrailBuilderInformation
     {
-        private readonly string m_Prefix;
-        private readonly int m_Time;
-        private readonly ITrailBuilder m_TrailBuilder;
-        private readonly int m_TurnsRemaining;
-        private readonly int m_TurnsSinceNewBestTrailFound;
-
         public LogTrailBuilderInformation([NotNull] string prefix,
                                           int time,
                                           [NotNull] ITrailBuilder trailBuilder,
@@ -65,5 +59,11 @@ namespace Selkie.Aco.Anthill
                 return m_TurnsSinceNewBestTrailFound;
             }
         }
+
+        private readonly string m_Prefix;
+        private readonly int m_Time;
+        private readonly ITrailBuilder m_TrailBuilder;
+        private readonly int m_TurnsRemaining;
+        private readonly int m_TurnsSinceNewBestTrailFound;
     }
 }

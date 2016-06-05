@@ -12,16 +12,16 @@ namespace Selkie.Aco.Common
     [ProjectComponent(Lifestyle.Transient)]
     public class NearestNeighbours : INearestNeighbours
     {
-        public static readonly INearestNeighbours Unknown = new NearestNeighbours(true);
-        private readonly bool m_IsUnknown;
-        private int[][] m_NearestNeighbours;
-
         public NearestNeighbours(bool isUnknown = false)
         {
             m_IsUnknown = isUnknown;
 
             m_NearestNeighbours = new int[0][];
         }
+
+        public static readonly INearestNeighbours Unknown = new NearestNeighbours(true);
+        private readonly bool m_IsUnknown;
+        private int[][] m_NearestNeighbours;
 
         public bool IsUnknown
         {

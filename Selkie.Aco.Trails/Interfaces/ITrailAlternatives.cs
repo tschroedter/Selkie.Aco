@@ -9,9 +9,9 @@ namespace Selkie.Aco.Trails.Interfaces
         [NotNull]
         IEnumerable <ITrailBuilder> Trails { get; }
 
-        void Clear();
-
         void AddAlternative(int id,
                             [NotNull] ITrailBuilder trailBuilder);
+
+        void Clear();
     }
 }

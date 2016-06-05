@@ -4,7 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Trails.Interfaces;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 
 namespace Selkie.Aco.Trails
 {
@@ -46,27 +46,16 @@ namespace Selkie.Aco.Trails
         }
 
         // ReSharper restore TooManyDependencies
-        internal override void BuildTrail(int startNode)
-        {
-            Trail = CreateTrail(startNode,
-                                DistanceGraph.NumberOfNodes);
-        }
 
         [NotNull]
-        internal int[] CreateTrail(int startNode,
-                                   int numberOfNodes)
+        internal static int[] Create(int numberOfNodes)
         {
-            int[] trail = Create(numberOfNodes);
+            var trail = new int[numberOfNodes];
 
-            trail = Randomize(trail,
-                              numberOfNodes);
-
-            trail = RemoveReverseNodes(trail,
-                                       startNode);
-            BuildDictionaryIndexOfTarget(trail);
-
-            trail = MoveNodeToStartPosition(trail,
-                                            startNode);
+            for ( var i = 0 ; i < numberOfNodes ; ++i )
+            {
+                trail [ i ] = i;
+            }
 
             return trail;
         }
@@ -101,6 +90,31 @@ namespace Selkie.Aco.Trails
             return trails.ToArray();
         }
 
+        internal override void BuildTrail(int startNode)
+        {
+            Trail = CreateTrail(startNode,
+                                DistanceGraph.NumberOfNodes);
+        }
+
+        [NotNull]
+        internal int[] CreateTrail(int startNode,
+                                   int numberOfNodes)
+        {
+            int[] trail = Create(numberOfNodes);
+
+            trail = Randomize(trail,
+                              numberOfNodes);
+
+            trail = RemoveReverseNodes(trail,
+                                       startNode);
+            BuildDictionaryIndexOfTarget(trail);
+
+            trail = MoveNodeToStartPosition(trail,
+                                            startNode);
+
+            return trail;
+        }
+
         internal int[] MoveNodeToStartPosition([NotNull] IEnumerable <int> trail,
                                                int nodeIndex)
         {
@@ -113,19 +127,6 @@ namespace Selkie.Aco.Trails
             nodeIds [ index ] = temp;
 
             return nodeIds;
-        }
-
-        [NotNull]
-        internal static int[] Create(int numberOfNodes)
-        {
-            var trail = new int[numberOfNodes];
-
-            for ( var i = 0 ; i < numberOfNodes ; ++i )
-            {
-                trail [ i ] = i;
-            }
-
-            return trail;
         }
 
         internal int[] Randomize([NotNull] IEnumerable <int> trail,

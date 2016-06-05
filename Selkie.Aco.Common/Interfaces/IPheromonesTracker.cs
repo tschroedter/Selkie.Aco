@@ -9,14 +9,15 @@ namespace Selkie.Aco.Common.Interfaces
         double MaximumValue { get; }
         double MinimumValue { get; }
         double AverageValue { get; }
-        void Update([NotNull] IAnt[] ants);
         void Clear();
-        void Update([NotNull] IAnt ant);
+
+        double GetValue(int indexFrom,
+                        int indexTo);
 
         [NotNull]
         double[][] PheromonesToArray();
 
-        double GetValue(int indexFrom,
-                        int indexTo);
+        void Update([NotNull] IAnt[] ants);
+        void Update([NotNull] IAnt ant);
     }
 }

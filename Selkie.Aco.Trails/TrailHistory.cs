@@ -10,27 +10,13 @@ namespace Selkie.Aco.Trails
     [ProjectComponent(Lifestyle.Transient)]
     public class TrailHistory : ITrailHistory
     {
-        private Dictionary <int, List <ITrailInformation>> m_Dictonary;
-
         public TrailHistory()
         {
             m_Dictonary = new Dictionary <int, List <ITrailInformation>>();
             Information = new List <ITrailInformation>();
         }
 
-        [NotNull]
-        internal static IEnumerable <ITrailInformation> ConvertValuesToList(
-            [NotNull] Dictionary <int, List <ITrailInformation>>.ValueCollection values)
-        {
-            var list = new List <ITrailInformation>();
-
-            foreach ( List <ITrailInformation> trailInformations in values )
-            {
-                list.AddRange(trailInformations);
-            }
-
-            return list;
-        }
+        private Dictionary <int, List <ITrailInformation>> m_Dictonary;
 
         public override string ToString()
         {
@@ -51,6 +37,20 @@ namespace Selkie.Aco.Trails
             }
 
             return sb.ToString();
+        }
+
+        [NotNull]
+        internal static IEnumerable <ITrailInformation> ConvertValuesToList(
+            [NotNull] Dictionary <int, List <ITrailInformation>>.ValueCollection values)
+        {
+            var list = new List <ITrailInformation>();
+
+            foreach ( List <ITrailInformation> trailInformations in values )
+            {
+                list.AddRange(trailInformations);
+            }
+
+            return list;
         }
 
         #region IColonyBestTrails Members

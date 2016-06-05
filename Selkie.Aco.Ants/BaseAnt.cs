@@ -3,7 +3,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Common.TypedFactories;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 
 namespace Selkie.Aco.Ants
 {
@@ -11,10 +11,6 @@ namespace Selkie.Aco.Ants
         where TAnt : IAnt
         where TBuilder : ITrailBuilder
     {
-        // ReSharper disable once StaticMemberInGenericType
-        private static int s_NextId; // means s_NextId per <TAnt, TBuilder>
-        private readonly IOptimizer m_Optimizer;
-        private readonly IPheromonesTracker m_Tracker;
         // ReSharper disable TooManyDependencies
         protected BaseAnt([NotNull] IRandom random,
                           [NotNull] ITrailBuilderFactory trailBuilderFactory,
@@ -25,7 +21,7 @@ namespace Selkie.Aco.Ants
                           [NotNull] IAntSettings antSettings,
                           [NotNull] IEnumerable <int> trail)
         {
-            Type = typeof ( TAnt ).Name;
+            Type = typeof( TAnt ).Name;
             Id = s_NextId++;
             Random = random;
             Chromosome = chromosome;
@@ -41,6 +37,9 @@ namespace Selkie.Aco.Ants
         }
 
         // ReSharper restore TooManyDependencies
+        // ReSharper disable once StaticMemberInGenericType
+        private static int s_NextId; // means s_NextId per <TAnt, TBuilder>
+
         [NotNull]
         protected IAntSettings AntSettings { get; private set; }
 
@@ -73,6 +72,9 @@ namespace Selkie.Aco.Ants
                 return Chromosome.Gamma;
             }
         }
+
+        private readonly IOptimizer m_Optimizer;
+        private readonly IPheromonesTracker m_Tracker;
 
         public string Type { get; private set; }
 
@@ -111,16 +113,16 @@ namespace Selkie.Aco.Ants
             Chromosome = Chromosome.Randomize();
         }
 
+        protected virtual void UpdateWithFixedStartNode(int startNode)
+        {
+            TrailBuilder.Build(startNode);
+        }
+
         protected virtual void UpdateWithRandomStartNode()
         {
             int startNode = Random.Next(0,
                                         DistanceGraph.NumberOfNodes - 1);
 
-            TrailBuilder.Build(startNode);
-        }
-
-        protected virtual void UpdateWithFixedStartNode(int startNode)
-        {
             TrailBuilder.Build(startNode);
         }
     }

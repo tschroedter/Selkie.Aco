@@ -43,28 +43,28 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Annotations, Version=9.2.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.9.2.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+    <Reference Include="JetBrains.Annotations, Version=10.1.4.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.10.1.4\lib\net20\JetBrains.Annotations.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.1.0\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NSubstitute, Version=1.8.2.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
-      <HintPath>..\packages\NSubstitute.1.8.2.0\lib\net45\NSubstitute.dll</HintPath>
+    <Reference Include="NSubstitute, Version=1.10.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\NSubstitute.1.10.0.0\lib\net45\NSubstitute.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.2.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.2.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Selkie.Common, Version=0.6.192.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selkie.Common.0.6.192.0\lib\net45\Selkie.Common.dll</HintPath>
+    <Reference Include="Selkie.Common, Version=0.6.254.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selkie.Common.0.6.254\lib\net45\Selkie.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Selkie.Windsor, Version=0.6.243.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selkie.Windsor.0.6.243.0\lib\net45\Selkie.Windsor.dll</HintPath>
+    <Reference Include="Selkie.Windsor, Version=0.6.261.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selkie.Windsor.0.6.261\lib\net45\Selkie.Windsor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -76,16 +76,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NUnit\BaseTrailBuilderTests.cs" />
-    <Compile Include="NUnit\CandidateListTrailBuilderTests.cs" />
-    <Compile Include="NUnit\FixedTrailBuilderTests.cs" />
-    <Compile Include="NUnit\Optimizers\TwoOptSimpleTests.cs" />
-    <Compile Include="NUnit\RandomTrailBuilderTests.cs" />
-    <Compile Include="NUnit\StandardTrailBuilderTests.cs" />
-    <Compile Include="NUnit\TrailAlternativesTests.cs" />
-    <Compile Include="NUnit\TrailHistoryTests.cs" />
-    <Compile Include="NUnit\TrailInformationTests.cs" />
-    <Compile Include="NUnit\UnknownTrailBuilderTests.cs" />
+    <Compile Include="BaseTrailBuilderTests.cs" />
+    <Compile Include="CandidateListTrailBuilderTests.cs" />
+    <Compile Include="FixedTrailBuilderTests.cs" />
+    <Compile Include="Optimizers\TwoOptSimpleTests.cs" />
+    <Compile Include="RandomTrailBuilderTests.cs" />
+    <Compile Include="StandardTrailBuilderTests.cs" />
+    <Compile Include="TrailAlternativesTests.cs" />
+    <Compile Include="TrailHistoryTests.cs" />
+    <Compile Include="TrailInformationTests.cs" />
+    <Compile Include="UnknownTrailBuilderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

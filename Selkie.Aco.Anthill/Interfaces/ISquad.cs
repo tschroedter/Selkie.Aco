@@ -12,8 +12,9 @@ namespace Selkie.Aco.Anthill.Interfaces
         [NotNull]
         IEnumerable <IAnt> Ants { get; }
 
-        void Restart();
-        void Clear();
         void AddBestAnt([NotNull] IAnt ant);
+        void Clear();
+
+        void Restart();
     }
 }

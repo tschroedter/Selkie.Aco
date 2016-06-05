@@ -10,10 +10,6 @@ namespace Selkie.Aco.Trails
     [ProjectComponent(Lifestyle.Transient)]
     public sealed class TrailInformation : ITrailInformation
     {
-        private readonly ISettings m_Settings;
-        private readonly int m_Time;
-        private readonly ITrailBuilder m_TrailBuilder;
-
         public TrailInformation([NotNull] ITrailBuilder trailBuilder,
                                 [NotNull] ISettings settings,
                                 int time)
@@ -22,6 +18,10 @@ namespace Selkie.Aco.Trails
             m_Settings = settings;
             m_Time = time;
         }
+
+        private readonly ISettings m_Settings;
+        private readonly int m_Time;
+        private readonly ITrailBuilder m_TrailBuilder;
 
         public override string ToString()
         {

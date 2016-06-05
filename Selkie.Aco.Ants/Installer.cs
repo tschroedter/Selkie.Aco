@@ -10,7 +10,6 @@ using Selkie.Common;
 namespace Selkie.Aco.Ants
 {
     // ReSharper disable MaximumChainedReferences
-    //ncrunch: no coverage start
     [ExcludeFromCodeCoverage]
     [UsedImplicitly]
     public class Installer : SelkieInstaller <Installer>
@@ -24,7 +23,7 @@ namespace Selkie.Aco.Ants
             container.Register(
                                Classes.FromThisAssembly()
                                       .BasedOn <IAnt>()
-                                      .WithServiceFromInterface(typeof ( IAnt ))
+                                      .WithServiceFromInterface(typeof( IAnt ))
                                       .Configure(c => c.LifeStyle.Is(LifestyleType.Transient)));
         }
     }

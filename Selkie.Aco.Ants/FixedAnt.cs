@@ -4,7 +4,7 @@ using Selkie.Aco.Ants.Interfaces;
 using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Common.TypedFactories;
 using Selkie.Aco.Trails.Interfaces;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 
 namespace Selkie.Aco.Ants
 {
@@ -33,11 +33,12 @@ namespace Selkie.Aco.Ants
         }
 
         // ReSharper restore TooManyDependencies
-        protected override void UpdateWithRandomStartNode()
+
+        protected override void UpdateWithFixedStartNode(int startNode)
         {
         }
 
-        protected override void UpdateWithFixedStartNode(int startNode)
+        protected override void UpdateWithRandomStartNode()
         {
         }
     }

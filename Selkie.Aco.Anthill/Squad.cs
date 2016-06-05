@@ -6,7 +6,7 @@ using Selkie.Aco.Anthill.Interfaces;
 using Selkie.Aco.Ants;
 using Selkie.Aco.Ants.Interfaces;
 using Selkie.Aco.Common.Interfaces;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 using Selkie.Windsor;
 using Selkie.Windsor.Extensions;
 
@@ -15,17 +15,6 @@ namespace Selkie.Aco.Anthill
     [ProjectComponent(Lifestyle.Transient)]
     public sealed class Squad : ISquad
     {
-        internal const int DefaultNumberOfAnts = 10;
-        private readonly IAntFactory m_AntFactory;
-        private readonly IList <IAnt> m_Ants = new List <IAnt>();
-        private readonly IAntSettings m_AntSettings;
-        private readonly IList <IAnt> m_BestAnts = new List <IAnt>();
-        private readonly IDisposer m_Disposer;
-        private readonly IDistanceGraph m_Graph;
-        private readonly ISelkieLogger m_Logger;
-        private readonly IOptimizer m_Optimizer;
-        private readonly IRandom m_Random;
-        private readonly IPheromonesTracker m_Tracker;
         // ReSharper disable TooManyDependencies
         public Squad([NotNull] IDisposer disposer,
                      [NotNull] ISelkieLogger logger,
@@ -51,6 +40,8 @@ namespace Selkie.Aco.Anthill
         }
 
         // ReSharper restore TooManyDependencies
+        internal const int DefaultNumberOfAnts = 10;
+
         public IEnumerable <IAnt> BestAnts
         {
             get
@@ -58,6 +49,17 @@ namespace Selkie.Aco.Anthill
                 return m_BestAnts;
             }
         }
+
+        private readonly IAntFactory m_AntFactory;
+        private readonly IList <IAnt> m_Ants = new List <IAnt>();
+        private readonly IAntSettings m_AntSettings;
+        private readonly IList <IAnt> m_BestAnts = new List <IAnt>();
+        private readonly IDisposer m_Disposer;
+        private readonly IDistanceGraph m_Graph;
+        private readonly ISelkieLogger m_Logger;
+        private readonly IOptimizer m_Optimizer;
+        private readonly IRandom m_Random;
+        private readonly IPheromonesTracker m_Tracker;
 
         public int NumberOfAnts
         {
@@ -112,10 +114,55 @@ namespace Selkie.Aco.Anthill
             CreateAnts(numberOfAnts);
         }
 
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+
+            sb.Append("Number of Ants: {0} ".Inject(m_Ants.Count));
+            sb.Append("Number of Best Ants: {0}{1}".Inject(m_BestAnts.Count,
+                                                           Environment.NewLine));
+
+            var counter = 0;
+            foreach ( IAnt ant in m_Ants )
+            {
+                sb.Append("[{0}] {1} {2} {3}".Inject(counter++,
+                                                     ant.Type,
+                                                     ant.Chromosome,
+                                                     Environment.NewLine));
+            }
+
+            return sb.ToString();
+        }
+
         internal void CreateAnts(int numberOfAnts)
         {
             CreateNewAnts(numberOfAnts);
             AddBestAnts();
+        }
+
+        internal void ReleaseAllAnts()
+        {
+            ReleaseAnts(m_Ants);
+            ReleaseAnts(m_BestAnts);
+
+            m_Ants.Clear();
+            m_BestAnts.Clear();
+        }
+
+        internal void ReleaseAnts([NotNull] IEnumerable <IAnt> ants)
+        {
+            foreach ( IAnt ant in ants )
+            {
+                m_AntFactory.Release(ant);
+            }
+        }
+
+        private void AddBestAnts()
+        {
+            foreach ( IAnt ant in m_BestAnts )
+            {
+                m_Ants.Add(ant);
+            }
         }
 
         private void CreateNewAnts(int numberOfAnts)
@@ -139,51 +186,6 @@ namespace Selkie.Aco.Anthill
                                                                          new int[0]) as IAnt;
 
                 m_Ants.Add(ant);
-            }
-        }
-
-        private void AddBestAnts()
-        {
-            foreach ( IAnt ant in m_BestAnts )
-            {
-                m_Ants.Add(ant);
-            }
-        }
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-
-            sb.Append("Number of Ants: {0} ".Inject(m_Ants.Count));
-            sb.Append("Number of Best Ants: {0}{1}".Inject(m_BestAnts.Count,
-                                                           Environment.NewLine));
-
-            var counter = 0;
-            foreach ( IAnt ant in m_Ants )
-            {
-                sb.Append("[{0}] {1} {2} {3}".Inject(counter++,
-                                                     ant.Type,
-                                                     ant.Chromosome,
-                                                     Environment.NewLine));
-            }
-
-            return sb.ToString();
-        }
-
-        internal void ReleaseAllAnts()
-        {
-            ReleaseAnts(m_Ants);
-            ReleaseAnts(m_BestAnts);
-
-            m_Ants.Clear();
-            m_BestAnts.Clear();
-        }
-
-        internal void ReleaseAnts([NotNull] IEnumerable <IAnt> ants)
-        {
-            foreach ( IAnt ant in ants )
-            {
-                m_AntFactory.Release(ant);
             }
         }
     }

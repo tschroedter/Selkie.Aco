@@ -7,13 +7,6 @@ namespace Selkie.Aco.Common
 {
     public sealed class Settings : ISettings
     {
-        private readonly double m_Alpha;
-        private readonly string m_AntType;
-        private readonly double m_Beta;
-        private readonly double m_Gamma;
-        private readonly double m_Q;
-        private readonly double m_Rho;
-
         public Settings([NotNull] IAnt ant,
                         [NotNull] IPheromonesTracker tracker)
         {
@@ -26,6 +19,13 @@ namespace Selkie.Aco.Common
             m_Rho = tracker.Rho;
             m_Q = tracker.Q;
         }
+
+        private readonly double m_Alpha;
+        private readonly string m_AntType;
+        private readonly double m_Beta;
+        private readonly double m_Gamma;
+        private readonly double m_Q;
+        private readonly double m_Rho;
 
         public override string ToString()
         {

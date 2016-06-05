@@ -19,7 +19,8 @@ namespace Selkie.Aco.Anthill.Interfaces
         [NotNull]
         IAnt BestAnt { get; }
 
-        void FindBestTrail([NotNull] IEnumerable <IAnt> ants);
         void Clear();
+
+        void FindBestTrail([NotNull] IEnumerable <IAnt> ants);
     }
 }

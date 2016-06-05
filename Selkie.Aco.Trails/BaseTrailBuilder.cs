@@ -5,7 +5,7 @@ using System.Text;
 using JetBrains.Annotations;
 using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Common.TypedFactories;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 using Selkie.Windsor.Extensions;
 
 namespace Selkie.Aco.Trails
@@ -13,20 +13,6 @@ namespace Selkie.Aco.Trails
     public abstract class BaseTrailBuilder <T> : ITrailBuilder
         where T : ITrailBuilder
     {
-        private const double PredefinedTendencyMinimum = 1E-50;
-        public const int UnknownId = -1;
-        // ReSharper disable once StaticMemberInGenericType
-        private static int s_NextId; // means NextId per <T>
-        private readonly IChromosome m_Chromosome;
-        private readonly IDistanceGraph m_Graph;
-        private readonly Dictionary <int, int> m_IndexOfTargets = new Dictionary <int, int>();
-        private readonly IOptimizer m_Optimizer;
-        private readonly IRandom m_Random;
-        private readonly double m_TendencyMaximum;
-        private readonly double m_TendencyMinimum;
-        private readonly IPheromonesTracker m_Tracker;
-        private double m_Length = double.MaxValue;
-        private int[] m_Trail = new int[0];
         // ReSharper disable once TooManyDependencies
         protected BaseTrailBuilder([NotNull] IRandom random,
                                    [NotNull] IChromosome chromosome,
@@ -65,6 +51,11 @@ namespace Selkie.Aco.Trails
             }
         }
 
+        private const double PredefinedTendencyMinimum = 1E-50;
+        public const int UnknownId = -1;
+        // ReSharper disable once StaticMemberInGenericType
+        private static int s_NextId; // means NextId per <T>
+
         [NotNull]
         protected IRandom Random
         {
@@ -83,12 +74,49 @@ namespace Selkie.Aco.Trails
             }
         }
 
+        private readonly IChromosome m_Chromosome;
+        private readonly IDistanceGraph m_Graph;
+        private readonly Dictionary <int, int> m_IndexOfTargets = new Dictionary <int, int>();
+        private readonly IOptimizer m_Optimizer;
+        private readonly IRandom m_Random;
+        private readonly double m_TendencyMaximum;
+        private readonly double m_TendencyMinimum;
+        private readonly IPheromonesTracker m_Tracker;
+        private double m_Length = double.MaxValue;
+        private int[] m_Trail = new int[0];
+
         public IChromosome Chromosome
         {
             get
             {
                 return m_Chromosome;
             }
+        }
+
+        public static int FindRelatedCity(int cityIndex)
+        {
+            bool isEndPoint = cityIndex % 2 == 1;
+
+            if ( isEndPoint )
+            {
+                return cityIndex - 1;
+            }
+
+            return cityIndex + 1;
+        }
+
+        public static bool operator ==(BaseTrailBuilder <T> left,
+                                       BaseTrailBuilder <T> right)
+        {
+            return Equals(left,
+                          right);
+        }
+
+        public static bool operator !=(BaseTrailBuilder <T> left,
+                                       BaseTrailBuilder <T> right)
+        {
+            return !Equals(left,
+                           right);
         }
 
         #region IEquatable<BaseTrailBuilder> Members
@@ -113,51 +141,37 @@ namespace Selkie.Aco.Trails
 
         #endregion
 
-        internal abstract void BuildTrail(int startNode);
-
-        protected void BuildDictionaryIndexOfTarget([NotNull] IEnumerable <int> trail)
+        // ReSharper disable once CodeAnnotationAnalyzer
+        public override bool Equals(object obj)
         {
-            m_IndexOfTargets.Clear();
-
-            int[] trailArray = trail.ToArray();
-
-            for ( var index = 0 ; index < trailArray.Length ; index++ )
+            if ( ReferenceEquals(null,
+                                 obj) )
             {
-                m_IndexOfTargets.Add(trailArray [ index ],
-                                     index);
+                return false;
             }
+            if ( ReferenceEquals(this,
+                                 obj) )
+            {
+                return true;
+            }
+            // ReSharper disable once ConvertIfStatementToReturnStatement
+            if ( obj.GetType() != typeof( BaseTrailBuilder <T> ) )
+            {
+                return false;
+            }
+            return Equals(( BaseTrailBuilder <T> ) obj);
         }
 
-        internal int IndexOfTarget(int target)
+        public override int GetHashCode()
         {
-            int index;
-
-            if ( m_IndexOfTargets.TryGetValue(target,
-                                              out index) )
+            unchecked
             {
-                return index;
+                int code = m_Chromosome != null
+                               ? m_Chromosome.GetHashCode()
+                               : 0;
+
+                return ( code * 397 ) ^ Type.GetHashCode();
             }
-
-            return -1;
-        }
-
-        internal double CalculateLength([NotNull] IEnumerable <int> trail)
-        {
-            double result = m_Graph.Length(trail);
-
-            return result;
-        }
-
-        public static int FindRelatedCity(int cityIndex)
-        {
-            bool isEndPoint = cityIndex % 2 == 1;
-
-            if ( isEndPoint )
-            {
-                return cityIndex - 1;
-            }
-
-            return cityIndex + 1;
         }
 
         public override string ToString()
@@ -177,6 +191,19 @@ namespace Selkie.Aco.Trails
             return sb.ToString();
         }
 
+        protected void BuildDictionaryIndexOfTarget([NotNull] IEnumerable <int> trail)
+        {
+            m_IndexOfTargets.Clear();
+
+            int[] trailArray = trail.ToArray();
+
+            for ( var index = 0 ; index < trailArray.Length ; index++ )
+            {
+                m_IndexOfTargets.Add(trailArray [ index ],
+                                     index);
+            }
+        }
+
         [NotNull]
         internal static double[] CalculateCuMul([NotNull] double[] probs)
         {
@@ -190,6 +217,31 @@ namespace Selkie.Aco.Trails
             return cumul;
         }
 
+        internal virtual void BuildTrail(int startNode)
+        {
+            int reverseStart = FindRelatedCity(startNode);
+
+            var trail = new int[DistanceGraph.NumberOfUniqueNodes];
+            var visited = new bool[DistanceGraph.NumberOfNodes];
+
+            trail [ 0 ] = startNode;
+
+            visited [ startNode ] = true;
+            visited [ reverseStart ] = true;
+
+            SearchGeneral(visited,
+                          trail);
+
+            Trail = trail;
+        }
+
+        internal double CalculateLength([NotNull] IEnumerable <int> trail)
+        {
+            double result = m_Graph.Length(trail);
+
+            return result;
+        }
+
         [NotNull]
         internal double[] CalculateProbabilities(int cityX,
                                                  [NotNull] bool[] visited)
@@ -200,6 +252,45 @@ namespace Selkie.Aco.Trails
             double[] probs = CreateProbabilities(tendency);
 
             return probs;
+        }
+
+        internal int IndexOfTarget(int target)
+        {
+            int index;
+
+            if ( m_IndexOfTargets.TryGetValue(target,
+                                              out index) )
+            {
+                return index;
+            }
+
+            return -1;
+        }
+
+        internal virtual int NextCity(int cityX,
+                                      bool[] visited,
+                                      double dicider)
+        {
+            throw new NotImplementedException();
+        }
+
+        // Attention: tested by sub-classes only
+        internal void SearchGeneral([NotNull] bool[] visited,
+                                    [NotNull] int[] trail)
+        {
+            for ( var i = 0 ; i < DistanceGraph.NumberOfUniqueNodes - 1 ; ++i )
+            {
+                int cityX = trail [ i ];
+                double dicider = Random.NextDouble();
+                int next = NextCity(cityX,
+                                    visited,
+                                    dicider);
+                trail [ i + 1 ] = next;
+                visited [ next ] = true;
+
+                int nextRelatedCity = FindRelatedCity(next);
+                visited [ nextRelatedCity ] = true;
+            }
         }
 
         [NotNull]
@@ -269,52 +360,6 @@ namespace Selkie.Aco.Trails
             return probs;
         }
 
-        // ReSharper disable once CodeAnnotationAnalyzer
-        public override bool Equals(object obj)
-        {
-            if ( ReferenceEquals(null,
-                                 obj) )
-            {
-                return false;
-            }
-            if ( ReferenceEquals(this,
-                                 obj) )
-            {
-                return true;
-            }
-            if ( obj.GetType() != typeof ( BaseTrailBuilder <T> ) )
-            {
-                return false;
-            }
-            return Equals(( BaseTrailBuilder <T> ) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int code = m_Chromosome != null
-                               ? m_Chromosome.GetHashCode()
-                               : 0;
-
-                return ( code * 397 ) ^ Type.GetHashCode();
-            }
-        }
-
-        public static bool operator ==(BaseTrailBuilder <T> left,
-                                       BaseTrailBuilder <T> right)
-        {
-            return Equals(left,
-                          right);
-        }
-
-        public static bool operator !=(BaseTrailBuilder <T> left,
-                                       BaseTrailBuilder <T> right)
-        {
-            return !Equals(left,
-                           right);
-        }
-
         #region ITrailBuilder Members
 
         public void Build(int startNode)
@@ -357,7 +402,7 @@ namespace Selkie.Aco.Trails
         {
             get
             {
-                return typeof ( T ).Name;
+                return typeof( T ).Name;
             }
         }
 
@@ -443,6 +488,7 @@ namespace Selkie.Aco.Trails
             {
                 return true;
             }
+            // ReSharper disable once ConvertIfStatementToReturnStatement
             if ( m_Trail [ idx + 1 ] == cityY )
             {
                 return true;

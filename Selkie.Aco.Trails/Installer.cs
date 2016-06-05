@@ -22,10 +22,10 @@ namespace Selkie.Aco.Trails
             container.Register(
                                Classes.FromThisAssembly()
                                       .BasedOn <ITrailBuilder>()
-                                      .WithServiceFromInterface(typeof ( ITrailBuilder ))
+                                      .WithServiceFromInterface(typeof( ITrailBuilder ))
                                       .Configure(c => c.LifeStyle.Is(LifestyleType.Transient)));
 
-            container.Register(Component.For <IOptimizer>().ImplementedBy(typeof ( TwoOptSimple )).LifestyleTransient());
+            container.Register(Component.For <IOptimizer>().ImplementedBy(typeof( TwoOptSimple )).LifestyleTransient());
         }
     }
 

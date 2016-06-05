@@ -14,12 +14,12 @@ namespace Selkie.Aco.Common.Interfaces
         IChromosome Chromosome { get; set; }
 
         string Type { get; }
-        void Update();
 
         [NotNull]
         IAnt Clone([NotNull] IAntFactory antFactory,
                    [NotNull] IChromosomeFactory chromosomeFactory);
 
         void RandomizeChromosome();
+        void Update();
     }
 }

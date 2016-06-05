@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Common.TypedFactories;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 using Selkie.Windsor;
 using Selkie.Windsor.Extensions;
 
@@ -14,22 +14,6 @@ namespace Selkie.Aco.Ants
         : IChromosome,
           IEquatable <Chromosome>
     {
-        public static readonly IChromosome Unknown = new Chromosome(true);
-        private readonly double m_Alpha;
-        private readonly double m_AlphaMaxValue = 1.0;
-        private readonly double m_AlphaMinValue = 0.1;
-        private readonly double m_Beta;
-        private readonly double m_BetaMaxValue = 7.0; // reset this to 20
-        private readonly double m_BetaMinValue = 5.0; // reset this to 5
-        private readonly double m_Gamma;
-        private readonly double m_GammaMaxValue = 2.0;
-        private readonly double m_GammaMinValue = 0.0001;
-        private readonly bool m_IsUnknown;
-        private readonly IRandom m_Random;
-        private double m_AlphaRange = 1.0;
-        private double m_BetaRange = 1.0;
-        private double m_GammaRange = 1.0;
-
         public Chromosome([NotNull] IRandom random)
         {
             m_Random = random;
@@ -96,6 +80,21 @@ namespace Selkie.Aco.Ants
         }
 
         // ReSharper restore TooManyDependencies
+        public static readonly IChromosome Unknown = new Chromosome(true);
+        private readonly double m_Alpha;
+        private readonly double m_AlphaMaxValue = 1.0;
+        private readonly double m_AlphaMinValue = 0.1;
+        private readonly double m_Beta;
+        private readonly double m_BetaMaxValue = 7.0; // reset this to 20
+        private readonly double m_BetaMinValue = 5.0; // reset this to 5
+        private readonly double m_Gamma;
+        private readonly double m_GammaMaxValue = 2.0;
+        private readonly double m_GammaMinValue = 0.0001;
+        private readonly bool m_IsUnknown;
+        private readonly IRandom m_Random;
+        private double m_AlphaRange = 1.0;
+        private double m_BetaRange = 1.0;
+        private double m_GammaRange = 1.0;
         // ReSharper disable once CodeAnnotationAnalyzer
         public override bool Equals(object obj)
         {
@@ -123,6 +122,13 @@ namespace Selkie.Aco.Ants
             }
         }
 
+        public override string ToString()
+        {
+            return "Alpha: {0:F4} Beta: {1:F4} Gamma: {2:F4}".Inject(m_Alpha,
+                                                                     m_Beta,
+                                                                     m_Gamma);
+        }
+
         private void InitializeFactors()
         {
             if ( m_Random == null )
@@ -133,13 +139,6 @@ namespace Selkie.Aco.Ants
             m_AlphaRange = m_AlphaMaxValue - m_AlphaMinValue;
             m_BetaRange = m_BetaMaxValue - m_BetaMinValue;
             m_GammaRange = m_GammaMaxValue - m_GammaMinValue;
-        }
-
-        public override string ToString()
-        {
-            return "Alpha: {0:F4} Beta: {1:F4} Gamma: {2:F4}".Inject(m_Alpha,
-                                                                     m_Beta,
-                                                                     m_Gamma);
         }
 
         // ReSharper disable TooManyDependencies

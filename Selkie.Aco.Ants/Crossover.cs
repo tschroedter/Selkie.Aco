@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using Selkie.Aco.Ants.Interfaces;
 using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Common.TypedFactories;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 using Selkie.Windsor;
 using Selkie.Windsor.Extensions;
 
@@ -12,13 +12,6 @@ namespace Selkie.Aco.Ants
     [ProjectComponent(Lifestyle.Transient)]
     public sealed class Crossover : ICrossover
     {
-        public const int NumberOfGenes = 3;
-        public const bool FromFather = true;
-        public const bool FromMother = false;
-        private readonly IChromosomeFactory m_Factory;
-        private readonly ISelkieLogger m_Logger;
-        private readonly IRandom m_Random;
-
         public Crossover([NotNull] IDisposer disposer,
                          [NotNull] ISelkieLogger logger,
                          [NotNull] IRandom random,
@@ -30,7 +23,14 @@ namespace Selkie.Aco.Ants
             m_Factory = factory;
         }
 
+        public const int NumberOfGenes = 3;
+        public const bool FromFather = true;
+        public const bool FromMother = false;
+
         internal IDisposer Disposer { private get; set; }
+        private readonly IChromosomeFactory m_Factory;
+        private readonly ISelkieLogger m_Logger;
+        private readonly IRandom m_Random;
 
         public IChromosome Mutation(IChromosome chromosome)
         {
@@ -56,6 +56,19 @@ namespace Selkie.Aco.Ants
         public void Dispose()
         {
             Disposer.Dispose();
+        }
+
+        [NotNull]
+        internal bool[] CreateGenes()
+        {
+            var genes = new bool[NumberOfGenes];
+
+            for ( var i = 0 ; i < NumberOfGenes ; i++ )
+            {
+                genes [ i ] = m_Random.NextDouble() < 0.5;
+            }
+
+            return genes;
         }
 
         [NotNull]
@@ -162,19 +175,6 @@ namespace Selkie.Aco.Ants
             Disposer.AddResource(() => m_Factory.Release(chromosome));
 
             return chromosome;
-        }
-
-        [NotNull]
-        internal bool[] CreateGenes()
-        {
-            var genes = new bool[NumberOfGenes];
-
-            for ( var i = 0 ; i < NumberOfGenes ; i++ )
-            {
-                genes [ i ] = m_Random.NextDouble() < 0.5;
-            }
-
-            return genes;
         }
 
         #region Nested type: Gene

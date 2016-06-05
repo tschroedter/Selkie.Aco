@@ -65,21 +65,26 @@ namespace Selkie.Aco.Trails.Optimizers
 
                         int improvement = oldEdgeDists - newEdgeDists;
 
-                        if ( improvement > bestImprovement )
+                        if ( improvement <= bestImprovement )
                         {
-                            bestImprovement = improvement;
-                            bestI = firstEdgeU;
-                            bestJ = secondEdgeU;
+                            continue;
                         }
+
+                        bestImprovement = improvement;
+                        bestI = firstEdgeU;
+                        bestJ = secondEdgeU;
                     }
-                    if ( bestImprovement > 0 )
+
+                    if ( bestImprovement <= 0 )
                     {
-                        // swap the "middle" vertices
-                        Swap(trailArray,
-                             ( bestI + 1 ) % trailArray.Length,
-                             bestJ);
-                        bestImprovement = 0;
+                        continue;
                     }
+
+                    // swap the "middle" vertices
+                    Swap(trailArray,
+                         ( bestI + 1 ) % trailArray.Length,
+                         bestJ);
+                    bestImprovement = 0;
                 }
             }
             while ( bestImprovement > 0 );

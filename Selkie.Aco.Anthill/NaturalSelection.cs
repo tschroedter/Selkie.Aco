@@ -6,7 +6,7 @@ using Selkie.Aco.Anthill.Interfaces;
 using Selkie.Aco.Ants;
 using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Trails.Interfaces;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 using Selkie.Windsor;
 
 namespace Selkie.Aco.Anthill
@@ -14,9 +14,6 @@ namespace Selkie.Aco.Anthill
     [ProjectComponent(Lifestyle.Transient)]
     public class NaturalSelection : INaturalSelection
     {
-        private readonly IQueen m_Queen;
-        private readonly IRandom m_Random;
-        private readonly ITrailHistory m_TrailHistory;
         // ReSharper disable once NotNullMemberIsNotInitialized
         public NaturalSelection([NotNull] IRandom random,
                                 [NotNull] ITrailHistory trailHistory,
@@ -34,6 +31,10 @@ namespace Selkie.Aco.Anthill
                 return m_Queen;
             }
         }
+
+        private readonly IQueen m_Queen;
+        private readonly IRandom m_Random;
+        private readonly ITrailHistory m_TrailHistory;
 
         public ITrailHistory TrailHistory
         {
@@ -87,6 +88,15 @@ namespace Selkie.Aco.Anthill
         }
 
         [NotNull]
+        internal IChromosome SettingsToChromosome([NotNull] ISettings settings)
+        {
+            return new Chromosome(m_Random,
+                                  settings.Alpha,
+                                  settings.Beta,
+                                  settings.Gamma);
+        }
+
+        [NotNull]
         private IChromosome FindBestChromosomePairInSortedKeys([NotNull] IEnumerable <int> sortedKeys,
                                                                [NotNull] IChromosome male,
                                                                [NotNull] IChromosome female)
@@ -106,15 +116,6 @@ namespace Selkie.Aco.Anthill
                 break;
             }
             return female;
-        }
-
-        [NotNull]
-        internal IChromosome SettingsToChromosome([NotNull] ISettings settings)
-        {
-            return new Chromosome(m_Random,
-                                  settings.Alpha,
-                                  settings.Beta,
-                                  settings.Gamma);
         }
     }
 }

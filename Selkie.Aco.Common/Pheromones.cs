@@ -9,12 +9,12 @@ namespace Selkie.Aco.Common
     [ProjectComponent(Lifestyle.Transient)]
     public class Pheromones : IPheromones
     {
-        private double m_Q;
-        private double m_Rho;
-        private double[][] m_Values = new double[0][];
         public double InitialValue { get; private set; }
         public double MinimumValue { get; private set; }
         public double MaximumValue { get; private set; }
+        private double m_Q;
+        private double m_Rho;
+        private double[][] m_Values = new double[0][];
         public int NumberOfNodes { get; private set; }
 
         public double GetValue(int fromIndex,
@@ -95,40 +95,6 @@ namespace Selkie.Aco.Common
             m_Values [ fromIndex ] [ toIndex ] = m_Values [ toIndex ] [ fromIndex ];
         }
 
-        [NotNull]
-        private static double[][] Create(int numberOfNodes,
-                                         double initialValue)
-        {
-            var pheromones = new double[numberOfNodes][];
-
-            for ( var i = 0 ; i < numberOfNodes ; ++i )
-            {
-                pheromones [ i ] = new double[numberOfNodes];
-            }
-
-            foreach ( double[] t in pheromones )
-            {
-                for ( var j = 0 ; j < t.Length ; ++j )
-                {
-                    t [ j ] = initialValue;
-                }
-            }
-
-            return pheromones;
-        }
-
-        internal double CalculateNewTrimValue([NotNull] IAnt ant,
-                                              int j,
-                                              int i)
-        {
-            double newValue = CaclulateNewValue(ant,
-                                                j,
-                                                i);
-            double trimValue = TrimPheromoneValue(newValue);
-
-            return trimValue;
-        }
-
         internal double CaclulateNewValue([NotNull] IAnt ant,
                                           int j,
                                           int i)
@@ -149,6 +115,18 @@ namespace Selkie.Aco.Common
             return newValue;
         }
 
+        internal double CalculateNewTrimValue([NotNull] IAnt ant,
+                                              int j,
+                                              int i)
+        {
+            double newValue = CaclulateNewValue(ant,
+                                                j,
+                                                i);
+            double trimValue = TrimPheromoneValue(newValue);
+
+            return trimValue;
+        }
+
         internal double TrimPheromoneValue(double value)
         {
             if ( value < MinimumValue )
@@ -158,6 +136,28 @@ namespace Selkie.Aco.Common
             return value > MaximumValue
                        ? MaximumValue
                        : value;
+        }
+
+        [NotNull]
+        private static double[][] Create(int numberOfNodes,
+                                         double initialValue)
+        {
+            var pheromones = new double[numberOfNodes][];
+
+            for ( var i = 0 ; i < numberOfNodes ; ++i )
+            {
+                pheromones [ i ] = new double[numberOfNodes];
+            }
+
+            foreach ( double[] t in pheromones )
+            {
+                for ( var j = 0 ; j < t.Length ; ++j )
+                {
+                    t [ j ] = initialValue;
+                }
+            }
+
+            return pheromones;
         }
     }
 }

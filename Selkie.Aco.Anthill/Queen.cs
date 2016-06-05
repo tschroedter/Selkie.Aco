@@ -15,15 +15,6 @@ namespace Selkie.Aco.Anthill
     [ProjectComponent(Lifestyle.Transient)]
     public sealed class Queen : IQueen
     {
-        private readonly IAntFactory m_AntFactory;
-        private readonly IBestTrailFinder m_BestTrailFinder;
-        private readonly IChromosomeFactory m_ChromosomeFactory;
-        private readonly ICrossover m_Crossover;
-        private readonly IDistanceGraph m_Graph;
-        private readonly ISelkieLogger m_Logger;
-        private readonly IOptimizer m_Optimizer;
-        private readonly ISquad m_Squad;
-        private readonly IPheromonesTracker m_Tracker;
         // ReSharper disable TooManyDependencies
         public Queen([NotNull] ISelkieLogger logger,
                      [NotNull] IAntFactory antFactory,
@@ -62,6 +53,16 @@ namespace Selkie.Aco.Anthill
         }
 
         // ReSharper restore TooManyDependencies
+        private readonly IAntFactory m_AntFactory;
+        private readonly IBestTrailFinder m_BestTrailFinder;
+        private readonly IChromosomeFactory m_ChromosomeFactory;
+        private readonly ICrossover m_Crossover;
+        private readonly IDistanceGraph m_Graph;
+        private readonly ISelkieLogger m_Logger;
+        private readonly IOptimizer m_Optimizer;
+        private readonly ISquad m_Squad;
+        private readonly IPheromonesTracker m_Tracker;
+
         internal void UpdateAnts([NotNull] IEnumerable <IAnt> ants)
         {
             IAnt[] antsArray = ants.ToArray();
@@ -81,7 +82,7 @@ namespace Selkie.Aco.Anthill
             ITrailBuilder totalTrailBuilder = TotalBestAnt.TrailBuilder;
             ITrailBuilder trailBuilder = m_BestTrailFinder.BestAnt.TrailBuilder;
 
-            if ( TotalBestAnt.Type == typeof ( IUnknownAnt ).Name ||
+            if ( TotalBestAnt.Type == typeof( IUnknownAnt ).Name ||
                  totalTrailBuilder.Length > trailBuilder.Length )
             {
                 TotalBestAnt = m_BestTrailFinder.BestAnt.Clone(m_AntFactory,

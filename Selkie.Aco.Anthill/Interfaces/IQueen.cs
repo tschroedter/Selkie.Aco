@@ -22,13 +22,15 @@ namespace Selkie.Aco.Anthill.Interfaces
         [NotNull]
         ITrailBuilder BestTrailBuilder { get; }
 
-        void UpdateAnts();
         void Clear();
-        void RandomSelection();
 
         void NaturalSelection([NotNull] IChromosome male,
                               [NotNull] IChromosome female);
 
+        void RandomSelection();
+
         void RestartFromTrail([NotNull] IEnumerable <int> trail);
+
+        void UpdateAnts();
     }
 }

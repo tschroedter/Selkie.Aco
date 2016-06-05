@@ -4,7 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Trails.Interfaces;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 
 namespace Selkie.Aco.Trails
 {
@@ -45,39 +45,9 @@ namespace Selkie.Aco.Trails
             BuildDictionaryIndexOfTarget(Trail);
         }
 
-        // ReSharper disable once MethodTooLong
-        internal override void BuildTrail(int startNode)
-        {
-            int reverseStart = FindRelatedCity(startNode);
-
-            var trail = new int[DistanceGraph.NumberOfUniqueNodes];
-            var visited = new bool[DistanceGraph.NumberOfNodes];
-
-            trail [ 0 ] = startNode;
-
-            visited [ startNode ] = true;
-            visited [ reverseStart ] = true;
-
-            for ( var i = 0 ; i < DistanceGraph.NumberOfUniqueNodes - 1 ; ++i )
-            {
-                int cityX = trail [ i ];
-                double dicider = Random.NextDouble();
-                int next = NextCity(cityX,
-                                    visited,
-                                    dicider);
-                trail [ i + 1 ] = next;
-                visited [ next ] = true;
-
-                int nextRelatedCity = FindRelatedCity(next);
-                visited [ nextRelatedCity ] = true;
-            }
-
-            Trail = trail;
-        }
-
-        internal int NextCity(int cityX,
-                              [NotNull] bool[] visited,
-                              double dicider)
+        internal override int NextCity(int cityX,
+                                       [NotNull] bool[] visited,
+                                       double dicider)
         {
             double[] probs = CalculateProbabilities(cityX,
                                                     visited);

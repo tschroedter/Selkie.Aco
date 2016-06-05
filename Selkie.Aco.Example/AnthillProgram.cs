@@ -7,13 +7,25 @@ using Selkie.Aco.Anthill;
 using Selkie.Aco.Anthill.Interfaces;
 using Selkie.Aco.Anthill.TypedFactories;
 using Selkie.Aco.Common.Interfaces;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 using Selkie.Windsor.Extensions;
 
 namespace Selkie.Aco.Example
 {
     public sealed class AnthillProgram : IDisposable
     {
+        public AnthillProgram([NotNull] IWindsorContainer container,
+                              [NotNull] IWindsorInstaller installer)
+        {
+            m_Container = container;
+            m_Container.Install(installer);
+
+            m_ColonyFactory = container.Resolve <IColonyFactory>();
+            m_GraphFactory = container.Resolve <IDistanceGraphFactory>();
+            m_AntSettingsFactory = container.Resolve <IAntSettingsFactory>();
+            m_Console = container.Resolve <ISelkieConsole>();
+        }
+
         private readonly IAntSettingsFactory m_AntSettingsFactory;
         private readonly IColonyFactory m_ColonyFactory;
         private readonly ISelkieConsole m_Console;
@@ -62,41 +74,11 @@ namespace Selkie.Aco.Example
         private readonly IDistanceGraphFactory m_GraphFactory;
         private bool m_IsFinished;
 
-        public AnthillProgram([NotNull] IWindsorContainer container,
-                              [NotNull] IWindsorInstaller installer)
-        {
-            m_Container = container;
-            m_Container.Install(installer);
-
-            m_ColonyFactory = container.Resolve <IColonyFactory>();
-            m_GraphFactory = container.Resolve <IDistanceGraphFactory>();
-            m_AntSettingsFactory = container.Resolve <IAntSettingsFactory>();
-            m_Console = container.Resolve <ISelkieConsole>();
-        }
-
         public void Dispose()
         {
             m_Container.Release(m_ColonyFactory);
             m_Container.Release(m_GraphFactory);
             m_Container.Release(m_Console);
-        }
-
-        private void FinishHandler([NotNull] object sender,
-                                   [NotNull] FinishedEventArgs eventArgs)
-        {
-            m_IsFinished = true;
-        }
-
-        private void BestTrailChangedHandler([NotNull] object sender,
-                                             [NotNull] BestTrailChangedEventArgs eventArgs)
-        {
-            string trail = string.Join(",",
-                                       eventArgs.Trail);
-
-            string text = "Length: {0} Trail: [{1}]".Inject(eventArgs.Length,
-                                                            trail);
-
-            m_Console.WriteLine(text);
         }
 
         public void Main()
@@ -136,6 +118,24 @@ namespace Selkie.Aco.Example
             }
 
             m_Console.ReadLine();
+        }
+
+        private void BestTrailChangedHandler([NotNull] object sender,
+                                             [NotNull] BestTrailChangedEventArgs eventArgs)
+        {
+            string trail = string.Join(",",
+                                       eventArgs.Trail);
+
+            string text = "Length: {0} Trail: [{1}]".Inject(eventArgs.Length,
+                                                            trail);
+
+            m_Console.WriteLine(text);
+        }
+
+        private void FinishHandler([NotNull] object sender,
+                                   [NotNull] FinishedEventArgs eventArgs)
+        {
+            m_IsFinished = true;
         }
     }
 }

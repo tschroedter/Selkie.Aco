@@ -6,14 +6,16 @@ namespace Selkie.Aco.Common.Interfaces
     {
         int NumberOfNodes { get; }
 
-        void SetValue(int fromIndex,
-                      int toIndex,
-                      double value);
+        double CalculateAverageValue();
 
         double GetValue(int fromIndex,
                         int toIndex);
 
-        double CalculateAverageValue();
+        void Initialize([NotNull] InitializeInformation information);
+
+        void SetValue(int fromIndex,
+                      int toIndex,
+                      double value);
 
         [NotNull]
         double[][] ToArray();
@@ -21,7 +23,5 @@ namespace Selkie.Aco.Common.Interfaces
         void UpdateForAnt([NotNull] IAnt ant,
                           int fromIndex,
                           int toIndex);
-
-        void Initialize([NotNull] InitializeInformation information);
     }
 }

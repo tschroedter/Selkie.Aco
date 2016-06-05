@@ -6,9 +6,10 @@ namespace Selkie.Aco.Common.Interfaces
     public interface INearestNeighbours
     {
         bool IsUnknown { get; }
-        void Initialize([NotNull] int[][] costMatrix);
 
         [NotNull]
         IEnumerable <int> GetNeighbours(int index);
+
+        void Initialize([NotNull] int[][] costMatrix);
     }
 }

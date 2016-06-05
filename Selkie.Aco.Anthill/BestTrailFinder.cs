@@ -7,7 +7,7 @@ using Selkie.Aco.Ants.Interfaces;
 using Selkie.Aco.Common;
 using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Trails.Interfaces;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 using Selkie.Windsor;
 
 namespace Selkie.Aco.Anthill
@@ -15,14 +15,6 @@ namespace Selkie.Aco.Anthill
     [ProjectComponent(Lifestyle.Transient)]
     public sealed class BestTrailFinder : IBestTrailFinder
     {
-        private const double Epsilon = 0.01;
-        private readonly IAntFactory m_AntFactory;
-        private readonly IDisposer m_Disposer;
-        private readonly IDistanceGraph m_Graph;
-        private readonly IOptimizer m_Optimizer;
-        private readonly IPheromonesTracker m_Tracker;
-        private readonly ITrailAlternatives m_TrailAlternatives;
-
         public BestTrailFinder([NotNull] IDisposer disposer,
                                [NotNull] IAntFactory antFactory,
                                [NotNull] IDistanceGraph graph,
@@ -36,18 +28,21 @@ namespace Selkie.Aco.Anthill
             m_Tracker = tracker;
             m_Optimizer = optimizer;
             m_TrailAlternatives = trailAlternatives;
-            BestAnt = m_AntFactory.Create <IUnknownAnt>(Chromosome.Unknown,
-                                                        m_Tracker,
-                                                        m_Graph,
-                                                        m_Optimizer,
-                                                        AntSettings.Unknown,
-                                                        new int[0]);
+            BestAnt = CreateUnknownAnt();
 
             m_Disposer.AddResource(() => m_AntFactory.Release(BestAnt));
 
             Settings = new Settings(BestAnt,
                                     m_Tracker);
         }
+
+        private const double Epsilon = 0.01;
+        private readonly IAntFactory m_AntFactory;
+        private readonly IDisposer m_Disposer;
+        private readonly IDistanceGraph m_Graph;
+        private readonly IOptimizer m_Optimizer;
+        private readonly IPheromonesTracker m_Tracker;
+        private readonly ITrailAlternatives m_TrailAlternatives;
 
         public ISettings Settings { get; private set; }
 
@@ -71,12 +66,7 @@ namespace Selkie.Aco.Anthill
 
         public void Clear()
         {
-            BestAnt = m_AntFactory.Create <IUnknownAnt>(Chromosome.Unknown,
-                                                        m_Tracker,
-                                                        m_Graph,
-                                                        m_Optimizer,
-                                                        AntSettings.Unknown,
-                                                        new int[0]);
+            BestAnt = CreateUnknownAnt();
 
             m_Disposer.AddResource(() => m_AntFactory.Release(BestAnt));
 
@@ -103,6 +93,17 @@ namespace Selkie.Aco.Anthill
         public void Dispose()
         {
             m_Disposer.Dispose();
+        }
+
+        [NotNull]
+        private IUnknownAnt CreateUnknownAnt()
+        {
+            return m_AntFactory.Create <IUnknownAnt>(Chromosome.Unknown,
+                                                     m_Tracker,
+                                                     m_Graph,
+                                                     m_Optimizer,
+                                                     AntSettings.Unknown,
+                                                     new int[0]);
         }
 
         private double FindBestLengthForCurrentAnt([NotNull] IAnt currentAnt,

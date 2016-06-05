@@ -15,13 +15,13 @@ namespace Selkie.Aco.Common.Interfaces
         int GetCost(int fromIndex,
                     int toIndex);
 
-        double Length([NotNull] IEnumerable <int> trail);
-
         [NotNull]
         IEnumerable <int> GetNeighbours(int node);
 
+        bool IsValid();
+
         bool IsValidPath([NotNull] IEnumerable <int> trail);
 
-        bool IsValid();
+        double Length([NotNull] IEnumerable <int> trail);
     }
 }

@@ -8,7 +8,7 @@ using Selkie.Aco.Ants;
 using Selkie.Aco.Common.Interfaces;
 using Selkie.Aco.Common.TypedFactories;
 using Selkie.Aco.Trails.Interfaces;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 using Selkie.Windsor;
 using Selkie.Windsor.Extensions;
 
@@ -23,6 +23,11 @@ namespace Selkie.Aco.Anthill
     {
         internal const int DefaultTurnsBeforeSelection = 100;
         internal const double Epsilon = 0.01;
+        public bool IsRequestedToStop { get; private set; }
+
+        [NotNull]
+        internal ITrailBuilder ColonyBestTrailBuilder { get; private set; }
+
         private readonly IAntSettings m_AntSettings;
         private readonly IChromosomeFactory m_ChromosomeFactory;
         private readonly IDistanceGraph m_Graph;
@@ -33,10 +38,6 @@ namespace Selkie.Aco.Anthill
         private readonly IDateTime m_SystemTime;
         private readonly IPheromonesTracker m_Tracker;
         private readonly ITrailBuilderFactory m_TrailBuilderFactory;
-        public bool IsRequestedToStop { get; private set; }
-
-        [NotNull]
-        internal ITrailBuilder ColonyBestTrailBuilder { get; private set; }
 
         public ITrailHistory TrailHistory
         {
@@ -77,18 +78,99 @@ namespace Selkie.Aco.Anthill
         public event EventHandler Stopped;
         public event EventHandler Started;
 
-        [NotNull]
-        private ITrailBuilder CreateUnknownTrailBuilder([NotNull] IPheromonesTracker tracker)
+        [UsedImplicitly]
+        public void RandomSelection()
         {
-            ITrailBuilder builder = m_TrailBuilderFactory.Create <IUnknownTrailBuilder>(Chromosome.Unknown,
-                                                                                        tracker,
-                                                                                        m_Graph,
-                                                                                        m_Optimizer,
-                                                                                        new int[]
-                                                                                        {
-                                                                                        });
+            TurnsRemaining = NumberOfNodes; // TurnsBeforeSelection;
+            m_Queen.RandomSelection();
+        }
 
-            return builder;
+        internal void Cycle(int times)
+        {
+            PreCycle();
+
+            StartTime = m_SystemTime.Now;
+
+            DoCycles(times);
+
+            FinishTime = m_SystemTime.Now;
+
+            PostCycle();
+        }
+
+        internal void CycleInitialize()
+        {
+            // Attention: default trail could be invalid, thats why we set to UnknownTrailBuilder first
+            ColonyBestTrailBuilder = CreateUnknownTrailBuilder(m_Tracker);
+
+            SetColonyBestTrailBuilderToDefaultTrail(m_Graph,
+                                                    m_Tracker);
+        }
+
+        internal void EvolveRestartFromBestTrail([NotNull] IQueen queen)
+        {
+            m_Logger.Info("[Time: {0:D5}] RestartFromTrail Selection!".Inject(Time));
+
+            queen.RestartFromTrail(ColonyBestTrailBuilder.Trail);
+
+            TurnsSinceNewBestTrailFound = TurnsBeforeSelection * 2;
+            TurnsRemaining = TurnsBeforeSelection;
+        }
+
+        internal bool IsInvalidTrail([NotNull] ITrailBuilder trailBuilder)
+        {
+            return trailBuilder.IsUnknown ||
+                   !IsStartNodeValid(trailBuilder) ||
+                   !m_Graph.IsValidPath(trailBuilder.Trail);
+        }
+
+        internal void NewBestTrailIsInvalid([NotNull] ITrailBuilder bestTrailBuilder)
+        {
+            string trailText = string.Join(",",
+                                           bestTrailBuilder.Trail);
+
+            m_Logger.Error("Found invalid trail: [IsUnknown: {0}] {1}".Inject(bestTrailBuilder.IsUnknown,
+                                                                              trailText));
+        }
+
+        internal void PostCycle()
+        {
+            SendBestTrailMessage(ColonyBestTrailBuilder);
+
+            if ( IsRequestedToStop )
+            {
+                OnStopped();
+                m_Logger.Info("Colony Stopped!");
+            }
+            else
+            {
+                RaiseFinishedEvent();
+                m_Logger.Info("Colony Finished!");
+            }
+        }
+
+        internal void PreCycle()
+        {
+            CycleInitialize();
+            OnStarted();
+        }
+
+        internal void SendBestTrailMessage([NotNull] ITrailBuilder trailBuilder)
+        {
+            IChromosome chromosome = trailBuilder.Chromosome;
+
+            var bestTrailChangedEventArgs = new BestTrailChangedEventArgs
+                                            {
+                                                Iteration = Time,
+                                                Trail = trailBuilder.Trail,
+                                                Length = trailBuilder.Length,
+                                                AntType = trailBuilder.Type,
+                                                Alpha = chromosome.Alpha,
+                                                Beta = chromosome.Beta,
+                                                Gamma = chromosome.Gamma
+                                            };
+
+            OnBestTrailChanged(bestTrailChangedEventArgs);
         }
 
         [NotNull]
@@ -117,61 +199,18 @@ namespace Selkie.Aco.Anthill
             return builder;
         }
 
-        internal void Cycle(int times)
+        [NotNull]
+        private ITrailBuilder CreateUnknownTrailBuilder([NotNull] IPheromonesTracker tracker)
         {
-            PreCycle();
+            ITrailBuilder builder = m_TrailBuilderFactory.Create <IUnknownTrailBuilder>(Chromosome.Unknown,
+                                                                                        tracker,
+                                                                                        m_Graph,
+                                                                                        m_Optimizer,
+                                                                                        new int[]
+                                                                                        {
+                                                                                        });
 
-            StartTime = m_SystemTime.Now;
-
-            DoCycles(times);
-
-            FinishTime = m_SystemTime.Now;
-
-            PostCycle();
-        }
-
-        internal void PreCycle()
-        {
-            CycleInitialize();
-            OnStarted();
-        }
-
-        private void OnStarted()
-        {
-            EventHandler handler = Started;
-            if ( handler != null )
-            {
-                handler(this,
-                        EventArgs.Empty);
-            }
-        }
-
-        internal void PostCycle()
-        {
-            SendBestTrailMessage(ColonyBestTrailBuilder);
-
-            if ( IsRequestedToStop )
-            {
-                OnStopped();
-                m_Logger.Info("Colony Stopped!");
-            }
-            else
-            {
-                RaiseFinishedEvent();
-                m_Logger.Info("Colony Finished!");
-            }
-        }
-
-        private void RaiseFinishedEvent()
-        {
-            var finishedEventArgs = new FinishedEventArgs
-                                    {
-                                        Times = Time,
-                                        StartTime = StartTime,
-                                        FinishTime = FinishTime
-                                    };
-
-            OnFinished(finishedEventArgs);
+            return builder;
         }
 
         private void DoCycles(int times)
@@ -201,17 +240,6 @@ namespace Selkie.Aco.Anthill
             }
         }
 
-        private void LogBestTrailBuilder([NotNull] string prefix)
-        {
-            var information = new LogTrailBuilderInformation(prefix,
-                                                             Time,
-                                                             ColonyBestTrailBuilder,
-                                                             TurnsSinceNewBestTrailFound,
-                                                             TurnsRemaining);
-
-            m_Logger.LogTrailBuilder(information);
-        }
-
         private void Evolve()
         {
             if ( TurnsSinceNewBestTrailFound <= 0 ) // If it's time to evolve the population...
@@ -224,6 +252,15 @@ namespace Selkie.Aco.Anthill
             }
         }
 
+        private void EvolveNaturalSelection()
+        {
+            m_Logger.Info("[Time: {0:D5}] Natural Selection!".Inject(Time));
+
+            m_NaturalSelection.DoSelection();
+
+            TurnsRemaining = TurnsBeforeSelection;
+        }
+
         private void FoundNewBestTrail([NotNull] ITrailBuilder bestTrailBuilder)
         {
             if ( IsInvalidTrail(bestTrailBuilder) )
@@ -234,6 +271,37 @@ namespace Selkie.Aco.Anthill
             {
                 NewBestTrailIsValid(bestTrailBuilder);
             }
+        }
+
+        private bool IsStartNodeValid(ITrailBuilder trailBuilder)
+        {
+            if ( !m_AntSettings.IsFixedStartNode )
+            {
+                return true;
+            }
+
+            bool isStartNodeValid = trailBuilder.Trail.First() == m_AntSettings.FixedStartNode;
+
+            if ( !isStartNodeValid )
+            {
+                m_Logger.Info("Trail is invalid because of " +
+                              "IsFixedStartNode '{0}' ".Inject(m_AntSettings.IsFixedStartNode) +
+                              "and FixedStartNode '{0}'!".Inject(m_AntSettings.FixedStartNode) +
+                              " - {0}".Inject(trailBuilder.ToString()));
+            }
+
+            return isStartNodeValid;
+        }
+
+        private void LogBestTrailBuilder([NotNull] string prefix)
+        {
+            var information = new LogTrailBuilderInformation(prefix,
+                                                             Time,
+                                                             ColonyBestTrailBuilder,
+                                                             TurnsSinceNewBestTrailFound,
+                                                             TurnsRemaining);
+
+            m_Logger.LogTrailBuilder(information);
         }
 
         private void NewBestTrailIsValid([NotNull] ITrailBuilder bestTrailBuilder)
@@ -252,95 +320,6 @@ namespace Selkie.Aco.Anthill
             LogBestTrailBuilder("New best trail");
 
             SendBestTrailMessage(ColonyBestTrailBuilder);
-        }
-
-        internal void NewBestTrailIsInvalid([NotNull] ITrailBuilder bestTrailBuilder)
-        {
-            string trailText = string.Join(",",
-                                           bestTrailBuilder.Trail);
-
-            m_Logger.Error("Found invalid trail: [IsUnknown: {0}] {1}".Inject(bestTrailBuilder.IsUnknown,
-                                                                              trailText));
-        }
-
-        internal bool IsInvalidTrail([NotNull] ITrailBuilder trailBuilder)
-        {
-            return trailBuilder.IsUnknown ||
-                   !IsStartNodeValid(trailBuilder) ||
-                   !m_Graph.IsValidPath(trailBuilder.Trail);
-        }
-
-        private bool IsStartNodeValid(ITrailBuilder trailBuilder)
-        {
-            if ( m_AntSettings.IsFixedStartNode )
-            {
-                bool isStartNodeValid = trailBuilder.Trail.First() == m_AntSettings.FixedStartNode;
-
-                if ( !isStartNodeValid )
-                {
-                    m_Logger.Info("Trail is invalid because of " +
-                                  "IsFixedStartNode '{0}' ".Inject(m_AntSettings.IsFixedStartNode) +
-                                  "and FixedStartNode '{0}'!".Inject(m_AntSettings.FixedStartNode) +
-                                  " - {0}".Inject(trailBuilder.ToString()));
-                }
-
-                return isStartNodeValid;
-            }
-
-            return true;
-        }
-
-        private void EvolveNaturalSelection()
-        {
-            m_Logger.Info("[Time: {0:D5}] Natural Selection!".Inject(Time));
-
-            m_NaturalSelection.DoSelection();
-
-            TurnsRemaining = TurnsBeforeSelection;
-        }
-
-        internal void EvolveRestartFromBestTrail([NotNull] IQueen queen)
-        {
-            m_Logger.Info("[Time: {0:D5}] RestartFromTrail Selection!".Inject(Time));
-
-            queen.RestartFromTrail(ColonyBestTrailBuilder.Trail);
-
-            TurnsSinceNewBestTrailFound = TurnsBeforeSelection * 2;
-            TurnsRemaining = TurnsBeforeSelection;
-        }
-
-        internal void CycleInitialize()
-        {
-            // Attention: default trail could be invalid, thats why we set to UnknownTrailBuilder first
-            ColonyBestTrailBuilder = CreateUnknownTrailBuilder(m_Tracker);
-
-            SetColonyBestTrailBuilderToDefaultTrail(m_Graph,
-                                                    m_Tracker);
-        }
-
-        internal void SendBestTrailMessage([NotNull] ITrailBuilder trailBuilder)
-        {
-            IChromosome chromosome = trailBuilder.Chromosome;
-
-            var bestTrailChangedEventArgs = new BestTrailChangedEventArgs
-                                            {
-                                                Iteration = Time,
-                                                Trail = trailBuilder.Trail,
-                                                Length = trailBuilder.Length,
-                                                AntType = trailBuilder.Type,
-                                                Alpha = chromosome.Alpha,
-                                                Beta = chromosome.Beta,
-                                                Gamma = chromosome.Gamma
-                                            };
-
-            OnBestTrailChanged(bestTrailChangedEventArgs);
-        }
-
-        [UsedImplicitly]
-        public void RandomSelection()
-        {
-            TurnsRemaining = NumberOfNodes; // TurnsBeforeSelection;
-            m_Queen.RandomSelection();
         }
 
         private void OnBestTrailChanged([NotNull] BestTrailChangedEventArgs eventArgs)
@@ -363,6 +342,16 @@ namespace Selkie.Aco.Anthill
             }
         }
 
+        private void OnStarted()
+        {
+            EventHandler handler = Started;
+            if ( handler != null )
+            {
+                handler(this,
+                        EventArgs.Empty);
+            }
+        }
+
         private void OnStopped()
         {
             EventHandler handler = Stopped;
@@ -371,6 +360,18 @@ namespace Selkie.Aco.Anthill
                 handler(this,
                         EventArgs.Empty);
             }
+        }
+
+        private void RaiseFinishedEvent()
+        {
+            var finishedEventArgs = new FinishedEventArgs
+                                    {
+                                        Times = Time,
+                                        StartTime = StartTime,
+                                        FinishTime = FinishTime
+                                    };
+
+            OnFinished(finishedEventArgs);
         }
 
         // ReSharper disable TooManyDependencies 

@@ -13,8 +13,6 @@ namespace Selkie.Aco.Anthill
     [ProjectComponent(Lifestyle.Transient)]
     public class ColonyLogger : IColonyLogger
     {
-        private readonly ISelkieLogger m_Logger;
-
         public ColonyLogger([NotNull] ISelkieLogger logger,
                             [NotNull] ITrailHistory trailHistory)
         {
@@ -23,6 +21,7 @@ namespace Selkie.Aco.Anthill
         }
 
         public ITrailHistory TrailHistory { get; set; }
+        private readonly ISelkieLogger m_Logger;
 
         public void LogResult(TimeSpan runtimeSpan)
         {
@@ -75,11 +74,6 @@ namespace Selkie.Aco.Anthill
             m_Logger.Error(message);
         }
 
-        private void LogResultNoTrailFound()
-        {
-            m_Logger.Info("No trail found!");
-        }
-
         private void LogResultForTrailFound(TimeSpan runTimeSpan)
         {
             IOrderedEnumerable <ITrailInformation> orderedByLength = from information in TrailHistory.Information
@@ -100,6 +94,11 @@ namespace Selkie.Aco.Anthill
             }
 
             m_Logger.Info("End Ant Colony Optimization demo!");
+        }
+
+        private void LogResultNoTrailFound()
+        {
+            m_Logger.Info("No trail found!");
         }
     }
 }

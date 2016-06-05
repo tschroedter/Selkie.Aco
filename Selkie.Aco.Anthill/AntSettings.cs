@@ -8,14 +8,6 @@ namespace Selkie.Aco.Anthill
     [ProjectComponent(Lifestyle.Transient)]
     public class AntSettings : IAntSettings
     {
-        public enum TrailStartNodeType
-        {
-            Random,
-            Fixed
-        }
-
-        public static readonly IAntSettings Unknown = new AntSettings();
-
         private AntSettings()
         {
             IsUnknown = true;
@@ -40,6 +32,14 @@ namespace Selkie.Aco.Anthill
 
             FixedStartNode = fixedStartNode;
         }
+
+        public enum TrailStartNodeType
+        {
+            Random,
+            Fixed
+        }
+
+        public static readonly IAntSettings Unknown = new AntSettings();
 
         public bool IsUnknown { get; private set; }
         public bool IsFixedStartNode { get; private set; }

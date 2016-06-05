@@ -5,6 +5,7 @@ using System.Text;
 using JetBrains.Annotations;
 using Selkie.Aco.Common.Interfaces;
 using Selkie.Common;
+using Selkie.Common.Interfaces;
 using Selkie.Windsor;
 using Selkie.Windsor.Extensions;
 
@@ -13,18 +14,6 @@ namespace Selkie.Aco.Common
     [ProjectComponent(Lifestyle.Transient)]
     public class DistanceGraph : IDistanceGraph
     {
-        public static readonly IDistanceGraph Unknown = new DistanceGraph(true);
-        private readonly double m_AverageDistance;
-        private readonly int[][] m_CostMatrix;
-        private readonly int[] m_CostPerLine;
-        private readonly bool m_IsUnknown;
-        private readonly double m_MaximumDistance;
-        private readonly double m_MinimumDistance;
-        private readonly INearestNeighbours m_NearestNeighbours;
-        private readonly int m_NumberOfNodes;
-        private readonly int m_NumberOfUniqueNodes;
-        private readonly IRandom m_Random;
-
         private DistanceGraph(bool isUnknown)
         {
             m_IsUnknown = isUnknown;
@@ -52,6 +41,18 @@ namespace Selkie.Aco.Common
             m_MaximumDistance = CalculateMaximumDistance();
         }
 
+        public static readonly IDistanceGraph Unknown = new DistanceGraph(true);
+        private readonly double m_AverageDistance;
+        private readonly int[][] m_CostMatrix;
+        private readonly int[] m_CostPerLine;
+        private readonly bool m_IsUnknown;
+        private readonly double m_MaximumDistance;
+        private readonly double m_MinimumDistance;
+        private readonly INearestNeighbours m_NearestNeighbours;
+        private readonly int m_NumberOfNodes;
+        private readonly int m_NumberOfUniqueNodes;
+        private readonly IRandom m_Random;
+
         public bool IsUnknown
         {
             get
@@ -66,97 +67,24 @@ namespace Selkie.Aco.Common
                                                                 m_CostPerLine);
         }
 
-        // todo move this into separat class DistanceGraphValidator
-        internal bool IsValidCombinationOfCostMatrixAndCostPerLine([NotNull] int[][] costMatrix,
-                                                                   [NotNull] int[] costPerLine)
+        public override string ToString()
         {
-            int numberOfNodes = costMatrix [ 0 ].Length;
-            int numberOfLines = costPerLine.Length;
+            var builder = new StringBuilder();
 
-            if ( costMatrix.Any(matrix => matrix.Length != NumberOfNodes) )
-            {
-                return false;
-            }
+            builder.AppendLine("CostMatrix");
+            builder.AppendLine(CostMatrixToString(m_CostMatrix));
 
-            return costMatrix.Length == numberOfNodes &&
-                   numberOfNodes == numberOfLines;
-        }
+            builder.AppendLine("CostPerLine");
+            builder.AppendLine(CostPerLineToString(m_CostPerLine));
 
-        [NotNull]
-        internal int[][] CreateRandom(int numCities)
-        {
-            var dists = new int[numCities][];
+            builder.AppendLine();
 
-            for ( var i = 0 ; i < dists.Length ; ++i )
-            {
-                dists [ i ] = new int[numCities];
-            }
+            builder.AppendLine("NearestNeighbours");
+            builder.AppendLine(m_NearestNeighbours.ToString());
 
-            for ( var i = 0 ; i < numCities ; ++i )
-            {
-                for ( int j = i + 1 ; j < numCities ; ++j )
-                {
-                    int d = m_Random.Next(1,
-                                          9);
-                    dists [ i ] [ j ] = d;
-                    dists [ j ] [ i ] = d;
-                }
-            }
-            return dists;
-        }
+            builder.AppendLine("IsValid? {0}".Inject(IsValid()));
 
-        private double CalculateAverageDistance()
-        {
-            double average = m_CostMatrix.Sum(ints => ints.Average());
-
-            average /= m_CostMatrix.GetLength(0);
-
-            return average;
-        }
-
-        private double CalculateMinimumDistance()
-        {
-            IEnumerable <double> minimum = m_CostMatrix.Select(FindMinimum);
-            IEnumerable <double> concat = minimum.Concat(new[]
-                                                         {
-                                                             double.MaxValue
-                                                         });
-
-            return concat.Min();
-        }
-
-        private double FindMinimum([NotNull] int[] ints)
-        {
-            double minimum = double.MaxValue;
-
-            foreach ( int i in ints )
-            {
-                if ( i > 0.0 &&
-                     i < minimum )
-                {
-                    minimum = i;
-                }
-            }
-
-            return minimum;
-        }
-
-        private double CalculateMaximumDistance()
-        {
-            double maximum = double.MinValue;
-
-            foreach ( int[] ints in m_CostMatrix )
-            {
-                int currentMaximum = ints.Max();
-
-                if ( currentMaximum > maximum &&
-                     currentMaximum < double.MaxValue )
-                {
-                    maximum = currentMaximum;
-                }
-            }
-
-            return maximum;
+            return builder.ToString();
         }
 
         [NotNull]
@@ -191,24 +119,81 @@ namespace Selkie.Aco.Common
             return neighbours;
         }
 
-        public override string ToString()
+        [NotNull]
+        internal int[][] CreateRandom(int numCities)
         {
-            var builder = new StringBuilder();
+            var dists = new int[numCities][];
 
-            builder.AppendLine("CostMatrix");
-            builder.AppendLine(CostMatrixToString(m_CostMatrix));
+            for ( var i = 0 ; i < dists.Length ; ++i )
+            {
+                dists [ i ] = new int[numCities];
+            }
 
-            builder.AppendLine("CostPerLine");
-            builder.AppendLine(CostPerLineToString(m_CostPerLine));
+            for ( var i = 0 ; i < numCities ; ++i )
+            {
+                for ( int j = i + 1 ; j < numCities ; ++j )
+                {
+                    int d = m_Random.Next(1,
+                                          9);
+                    dists [ i ] [ j ] = d;
+                    dists [ j ] [ i ] = d;
+                }
+            }
+            return dists;
+        }
 
-            builder.AppendLine();
+        // todo move this into separat class DistanceGraphValidator
+        internal bool IsValidCombinationOfCostMatrixAndCostPerLine([NotNull] int[][] costMatrix,
+                                                                   [NotNull] int[] costPerLine)
+        {
+            int numberOfNodes = costMatrix [ 0 ].Length;
+            int numberOfLines = costPerLine.Length;
 
-            builder.AppendLine("NearestNeighbours");
-            builder.AppendLine(m_NearestNeighbours.ToString());
+            if ( costMatrix.Any(matrix => matrix.Length != NumberOfNodes) )
+            {
+                return false;
+            }
 
-            builder.AppendLine("IsValid? {0}".Inject(IsValid()));
+            return costMatrix.Length == numberOfNodes &&
+                   numberOfNodes == numberOfLines;
+        }
 
-            return builder.ToString();
+        private double CalculateAverageDistance()
+        {
+            double average = m_CostMatrix.Sum(ints => ints.Average());
+
+            average /= m_CostMatrix.GetLength(0);
+
+            return average;
+        }
+
+        private double CalculateMaximumDistance()
+        {
+            double maximum = double.MinValue;
+
+            foreach ( int[] ints in m_CostMatrix )
+            {
+                int currentMaximum = ints.Max();
+
+                if ( currentMaximum > maximum &&
+                     currentMaximum < double.MaxValue )
+                {
+                    maximum = currentMaximum;
+                }
+            }
+
+            return maximum;
+        }
+
+        private double CalculateMinimumDistance()
+        {
+            IEnumerable <double> minimum = m_CostMatrix.Select(FindMinimum);
+            IEnumerable <double> concat = minimum.Concat(new[]
+                                                         {
+                                                             double.MaxValue
+                                                         });
+
+            return concat.Min();
         }
 
         private string CostMatrixToString(IEnumerable <int[]> costMatrix)
@@ -234,6 +219,22 @@ namespace Selkie.Aco.Common
                                         costPerLine);
 
             return values;
+        }
+
+        private double FindMinimum([NotNull] int[] ints)
+        {
+            double minimum = double.MaxValue;
+
+            foreach ( int i in ints )
+            {
+                if ( i > 0.0 &&
+                     i < minimum )
+                {
+                    minimum = i;
+                }
+            }
+
+            return minimum;
         }
 
         #region IDistanceGraph Members

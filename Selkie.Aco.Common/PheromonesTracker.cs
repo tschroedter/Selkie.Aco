@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Selkie.Aco.Common.Interfaces;
-using Selkie.Common;
+using Selkie.Common.Interfaces;
 using Selkie.Windsor;
 
 namespace Selkie.Aco.Common
@@ -8,22 +8,6 @@ namespace Selkie.Aco.Common
     [ProjectComponent(Lifestyle.Transient)]
     public class PheromonesTracker : IPheromonesTracker
     {
-        private const double InitialValueFactor = 1.25;
-        internal const double RhoMinimumValue = 0.005;
-        internal const double RhoMaximumValue = 0.1;
-        internal const double QMinimumValue = 2.0;
-        internal const double QMaximumValue = 5.0;
-        private const double QRandomFactor = QMaximumValue - QMinimumValue;
-        private const double RhoRandomFactor = RhoMaximumValue - RhoMinimumValue;
-        private readonly IDistanceGraph m_Graph;
-        private readonly double m_InitialValue;
-        private readonly double m_MaximumValue;
-        private readonly double m_MinimumValue;
-        private readonly IPheromones m_Pheromones;
-        private readonly IRandom m_Random;
-        private double m_Q = 2.0; // pheromone increase factor
-        private double m_Rho = 0.005; // pheromone decrease factor
-
         public PheromonesTracker([NotNull] IRandom random,
                                  [NotNull] IPheromones pheromones,
                                  [NotNull] IDistanceGraph graph)
@@ -35,15 +19,7 @@ namespace Selkie.Aco.Common
             m_MaximumValue = m_Q / ( m_Graph.MinimumDistance * m_Graph.NumberOfUniqueNodes );
             m_InitialValue = ( m_MaximumValue + m_MinimumValue ) / InitialValueFactor;
 
-            var information = new InitializeInformation
-                              {
-                                  NumberOfNodes = m_Graph.NumberOfNodes,
-                                  Rho = m_Rho,
-                                  Q = m_Q,
-                                  MinimumValue = m_MinimumValue,
-                                  MaximumValue = m_MaximumValue,
-                                  InitialValue = m_InitialValue
-                              };
+            InitializeInformation information = CreateInitializeInformation();
 
             m_Pheromones.Initialize(information);
         }
@@ -63,18 +39,18 @@ namespace Selkie.Aco.Common
             m_MaximumValue = m_Q / ( m_Graph.MinimumDistance * m_Graph.NumberOfUniqueNodes );
             m_InitialValue = ( m_MaximumValue + m_MinimumValue ) / InitialValueFactor;
 
-            var information = new InitializeInformation
-                              {
-                                  NumberOfNodes = m_Graph.NumberOfNodes,
-                                  Rho = m_Rho,
-                                  Q = m_Q,
-                                  MinimumValue = m_MinimumValue,
-                                  MaximumValue = m_MaximumValue,
-                                  InitialValue = m_InitialValue
-                              };
+            InitializeInformation information = CreateInitializeInformation();
 
             m_Pheromones.Initialize(information);
         }
+
+        private const double InitialValueFactor = 1.25;
+        internal const double RhoMinimumValue = 0.005;
+        internal const double RhoMaximumValue = 0.1;
+        internal const double QMinimumValue = 2.0;
+        internal const double QMaximumValue = 5.0;
+        private const double QRandomFactor = QMaximumValue - QMinimumValue;
+        private const double RhoRandomFactor = RhoMaximumValue - RhoMinimumValue;
 
         public double InitialValue
         {
@@ -91,6 +67,15 @@ namespace Selkie.Aco.Common
                 return m_Pheromones.NumberOfNodes;
             }
         }
+
+        private readonly IDistanceGraph m_Graph;
+        private readonly double m_InitialValue;
+        private readonly double m_MaximumValue;
+        private readonly double m_MinimumValue;
+        private readonly IPheromones m_Pheromones;
+        private readonly IRandom m_Random;
+        private double m_Q = 2.0; // pheromone increase factor
+        private double m_Rho = 0.005; // pheromone decrease factor
 
         public double MinimumValue
         {
@@ -192,6 +177,19 @@ namespace Selkie.Aco.Common
         {
             m_Rho = m_Random.NextDouble() * RhoRandomFactor + RhoMinimumValue;
             m_Q = m_Random.NextDouble() * QRandomFactor + QMinimumValue;
+        }
+
+        private InitializeInformation CreateInitializeInformation()
+        {
+            return new InitializeInformation
+                   {
+                       NumberOfNodes = m_Graph.NumberOfNodes,
+                       Rho = m_Rho,
+                       Q = m_Q,
+                       MinimumValue = m_MinimumValue,
+                       MaximumValue = m_MaximumValue,
+                       InitialValue = m_InitialValue
+                   };
         }
     }
 }

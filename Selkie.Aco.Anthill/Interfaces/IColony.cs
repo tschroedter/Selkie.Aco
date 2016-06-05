@@ -37,18 +37,19 @@ namespace Selkie.Aco.Anthill.Interfaces
         double PheromonesMinimum { get; }
         double PheromonesMaximum { get; }
         double PheromonesAverage { get; }
-        void Start(int times);
         event EventHandler <BestTrailChangedEventArgs> BestTrailChanged;
         event EventHandler <FinishedEventArgs> Finished;
 
         [NotNull]
         PheromonesInformation PheromonesInformation();
 
-        void Stop();
-        event EventHandler Stopped;
-        event EventHandler Started;
-
         [NotNull]
         double[][] PheromonesToArray();
+
+        void Start(int times);
+        event EventHandler Started;
+
+        void Stop();
+        event EventHandler Stopped;
     }
 }
