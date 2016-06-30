@@ -71,16 +71,16 @@
       <HintPath>..\packages\AutoFixture.NUnit3.3.46.0\lib\net40\Ploeh.AutoFixture.NUnit3.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Selkie.Common, Version=0.6.254.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selkie.Common.0.6.254\lib\net45\Selkie.Common.dll</HintPath>
+    <Reference Include="Selkie.Common, Version=0.7.24.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selkie.Common.0.7.24\lib\net45\Selkie.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Selkie.NUnit.Extensions, Version=0.6.142.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Selkie.NUnit.Extensions.0.6.142\lib\net45\Selkie.NUnit.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Selkie.Windsor, Version=0.6.261.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selkie.Windsor.0.6.261\lib\net45\Selkie.Windsor.dll</HintPath>
+    <Reference Include="Selkie.Windsor, Version=0.7.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selkie.Windsor.0.7.39\lib\net45\Selkie.Windsor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

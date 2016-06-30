@@ -54,12 +54,12 @@
     <Reference Include="nunit.core.interfaces">
       <HintPath>..\..\Services\Monitor\packages\NUnit.Runners.2.6.3\tools\lib\nunit.core.interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Selkie.Common, Version=0.6.254.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selkie.Common.0.6.254\lib\net45\Selkie.Common.dll</HintPath>
+    <Reference Include="Selkie.Common, Version=0.7.24.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selkie.Common.0.7.24\lib\net45\Selkie.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Selkie.Windsor, Version=0.6.261.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selkie.Windsor.0.6.261\lib\net45\Selkie.Windsor.dll</HintPath>
+    <Reference Include="Selkie.Windsor, Version=0.7.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selkie.Windsor.0.7.39\lib\net45\Selkie.Windsor.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -108,4 +108,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <SourceFiles Include="$(SolutionDir)Selkie.Aco.Common\bin\$(ConfigurationName)\Selkie.Aco.Common.dll" />
+    </ItemGroup>
+    <MakeDir Directories="$(SolutionDir)NuGet.Selkie.Aco\lib\net45" />
+    <Copy SourceFiles="@(SourceFiles)" DestinationFolder="$(SolutionDir)NuGet.Selkie.Aco\lib\net45" />
+  </Target>    
 </Project>
