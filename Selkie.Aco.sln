@@ -29,6 +29,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core2", "Core2", "{EF2D4E4D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core2.Selkie.Aco.Common", "Core2.Selkie.Aco.Common\Core2.Selkie.Aco.Common.csproj", "{B4592844-0EF0-425B-A002-1C288BC78E43}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E1BA9BD3-BB6E-41E9-9D74-C24457939B49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core2.Selkie.Aco.Common.Tests", "Core2.Selkie.Aco.Common.Tests\Core2.Selkie.Aco.Common.Tests.csproj", "{3BAE5603-2CF9-49DF-B40B-8CFCE1F9AD1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,12 +83,18 @@ Global
 		{B4592844-0EF0-425B-A002-1C288BC78E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4592844-0EF0-425B-A002-1C288BC78E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4592844-0EF0-425B-A002-1C288BC78E43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BAE5603-2CF9-49DF-B40B-8CFCE1F9AD1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BAE5603-2CF9-49DF-B40B-8CFCE1F9AD1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BAE5603-2CF9-49DF-B40B-8CFCE1F9AD1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BAE5603-2CF9-49DF-B40B-8CFCE1F9AD1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B4592844-0EF0-425B-A002-1C288BC78E43} = {EF2D4E4D-B4CD-4EBA-8D32-558ED54B8D24}
+		{E1BA9BD3-BB6E-41E9-9D74-C24457939B49} = {EF2D4E4D-B4CD-4EBA-8D32-558ED54B8D24}
+		{3BAE5603-2CF9-49DF-B40B-8CFCE1F9AD1F} = {E1BA9BD3-BB6E-41E9-9D74-C24457939B49}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D2D9572-6F7E-48C9-B5A5-FA6BF47768FE}

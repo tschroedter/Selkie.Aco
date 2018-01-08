@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Core2.Selkie.Aco.Common.Interfaces;
 using Core2.Selkie.Common;
 using Core2.Selkie.Common.Interfaces;
 using Core2.Selkie.Windsor;
 using JetBrains.Annotations;
+
+[assembly: InternalsVisibleTo("Core2.Selkie.ACO.Common.Tests")]
 
 namespace Core2.Selkie.Aco.Common
 {
