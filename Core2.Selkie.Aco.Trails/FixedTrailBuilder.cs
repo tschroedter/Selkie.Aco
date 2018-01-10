@@ -11,7 +11,7 @@ namespace Core2.Selkie.Aco.Trails
         : BaseTrailBuilder <IFixedTrailBuilder>,
           IFixedTrailBuilder
     {
-        // ReSharper disable TooManyDependencies
+        [UsedImplicitly]
         public FixedTrailBuilder([NotNull] IRandom random,
                                  [NotNull] IChromosome chromosome,
                                  [NotNull] IPheromonesTracker tracker,
@@ -25,8 +25,7 @@ namespace Core2.Selkie.Aco.Trails
         {
         }
 
-        // ReSharper restore TooManyDependencies
-        // ReSharper disable TooManyDependencies
+        [UsedImplicitly]
         public FixedTrailBuilder([NotNull] IRandom random,
                                  [NotNull] IChromosome chromosome,
                                  [NotNull] IPheromonesTracker tracker,

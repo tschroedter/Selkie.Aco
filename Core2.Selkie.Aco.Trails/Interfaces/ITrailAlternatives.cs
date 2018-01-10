@@ -9,6 +9,9 @@ namespace Core2.Selkie.Aco.Trails.Interfaces
         [NotNull]
         IEnumerable <ITrailBuilder> Trails { get; }
 
+        [UsedImplicitly]
+        int Count { get; }
+
         void AddAlternative(int id,
                             [NotNull] ITrailBuilder trailBuilder);
 

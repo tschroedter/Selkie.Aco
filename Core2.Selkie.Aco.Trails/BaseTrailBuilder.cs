@@ -146,6 +146,7 @@ namespace Core2.Selkie.Aco.Trails
         {
             unchecked
             {
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 int code = Chromosome != null
                                ? Chromosome.GetHashCode()
                                : 0;

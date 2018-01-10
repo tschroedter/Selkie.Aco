@@ -48,6 +48,7 @@ namespace Core2.Selkie.Aco.Trails
             BuildDictionaryIndexOfTarget(Trail);
         }
 
+        [UsedImplicitly]
         public int NumberOfCandidates
         {
             get
@@ -83,7 +84,7 @@ namespace Core2.Selkie.Aco.Trails
                           Chromosome);
         }
 
-        // ReSharper disable once MethodTooLong
+        [UsedImplicitly]
         internal static int DecideNumberOfCandidates(int numberOfNodes)
         {
             int number;
@@ -113,6 +114,7 @@ namespace Core2.Selkie.Aco.Trails
         }
 
         [NotNull]
+        [UsedImplicitly]
         internal IEnumerable <int> BuildCandidateList(int city)
         {
             // ReSharper disable once MaximumChainedReferences
@@ -129,6 +131,7 @@ namespace Core2.Selkie.Aco.Trails
         }
 
         [NotNull]
+        [UsedImplicitly]
         internal int[] FindCandidates(int fromCity,
                                       [NotNull] bool[] visited)
         {

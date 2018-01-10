@@ -14,8 +14,14 @@ namespace Core2.Selkie.Aco.Trails.Interfaces
         [NotNull]
         IEnumerable <ITrailInformation> Information { get; }
 
+        [UsedImplicitly]
+        int Count { get; }
+
         void AddTrailInformation([NotNull] ITrailBuilder trailBuilder,
                                  [NotNull] ISettings settings,
                                  int time);
+
+        [UsedImplicitly]
+        void Clear();
     }
 }
