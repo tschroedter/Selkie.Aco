@@ -236,10 +236,8 @@ namespace Core2.Selkie.Aco.Trails
 
         internal int IndexOfTarget(int target)
         {
-            int index;
-
             if ( m_IndexOfTargets.TryGetValue(target,
-                                              out index) )
+                                              out int index) )
             {
                 return index;
             }

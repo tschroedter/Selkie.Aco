@@ -57,13 +57,11 @@ namespace Core2.Selkie.Aco.Trails
                 return;
             }
 
-            List <ITrailBuilder> list;
-
             ITrailBuilder clone = trailBuilder.Clone(m_TrailBuilderFactory,
                                                      m_ChromosomeFactory);
 
             if ( !m_Alternatives.TryGetValue(id,
-                                             out list) )
+                                             out List <ITrailBuilder> list) )
             {
                 list = new List <ITrailBuilder>
                        {
