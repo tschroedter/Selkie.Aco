@@ -93,16 +93,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Selkie.Aco.Common\Selkie.Aco.Common.csproj">
-      <Project>{b54f394e-37fe-4c04-a821-1639035cd04e}</Project>
-      <Name>Selkie.Aco.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Selkie.Aco.Trails\Selkie.Aco.Trails.csproj">
-      <Project>{2ba5effe-ee53-4ca0-97d3-f31200ac71f3}</Project>
-      <Name>Selkie.Aco.Trails</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

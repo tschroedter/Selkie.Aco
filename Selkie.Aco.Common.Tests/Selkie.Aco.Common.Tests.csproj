@@ -104,12 +104,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Selkie.Aco.Common\Selkie.Aco.Common.csproj">
-      <Project>{b54f394e-37fe-4c04-a821-1639035cd04e}</Project>
-      <Name>Selkie.Aco.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

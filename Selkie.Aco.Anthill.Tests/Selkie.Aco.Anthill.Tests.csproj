@@ -114,10 +114,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Selkie.Aco.Anthill\Selkie.Aco.Anthill.csproj">
-      <Project>{33c99558-d63b-4406-a292-b9ce186f40cf}</Project>
-      <Name>Selkie.Aco.Anthill</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Selkie.Aco.Ants\Selkie.Aco.Ants.csproj">
       <Project>{ECEAE1CC-4B01-416E-B0D6-C8740DA8D5DF}</Project>
       <Name>Selkie.Aco.Ants</Name>

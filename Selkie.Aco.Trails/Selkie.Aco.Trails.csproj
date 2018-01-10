@@ -94,12 +94,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Selkie.Aco.Common\Selkie.Aco.Common.csproj">
-      <Project>{b54f394e-37fe-4c04-a821-1639035cd04e}</Project>
-      <Name>Selkie.Aco.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
