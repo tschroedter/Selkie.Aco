@@ -7,6 +7,7 @@ namespace Core2.Selkie.Aco.Common.Interfaces
 {
     public interface IChromosome
     {
+        [UsedImplicitly]
         bool IsUnknown { get; }
         double Alpha { get; }
         double AlphaMinValue { get; }

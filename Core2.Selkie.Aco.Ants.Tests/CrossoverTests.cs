@@ -7,7 +7,6 @@ using Core2.Selkie.Aco.Common.TypedFactories;
 using Core2.Selkie.Common;
 using Core2.Selkie.Common.Interfaces;
 using Core2.Selkie.NUnit.Extensions;
-using Core2.Selkie.Windsor;
 using Core2.Selkie.Windsor.Interfaces;
 
 namespace Core2.Selkie.Aco.Ants.Tests

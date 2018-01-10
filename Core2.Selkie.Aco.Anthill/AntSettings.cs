@@ -1,6 +1,7 @@
 using System;
 using Core2.Selkie.Aco.Common.Interfaces;
 using Core2.Selkie.Windsor;
+using JetBrains.Annotations;
 
 namespace Core2.Selkie.Aco.Anthill
 {
@@ -12,6 +13,7 @@ namespace Core2.Selkie.Aco.Anthill
             IsUnknown = true;
         }
 
+        [UsedImplicitly]
         public AntSettings(TrailStartNodeType trailStartNodeType,
                            int fixedStartNode)
         {

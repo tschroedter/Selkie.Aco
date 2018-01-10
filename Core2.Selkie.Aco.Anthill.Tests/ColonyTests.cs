@@ -304,6 +304,8 @@ namespace Core2.Selkie.Aco.Anthill.Tests
         private TestChromosomeFactory m_ChromosomeFactory;
         private IAntSettings m_AntSettings;
 
+        public string Epsilon { get; private set; }
+
         [NotNull]
         private static int[] CreateCostPerLine([NotNull] int[][] costMatrix)
         {
@@ -1275,7 +1277,7 @@ namespace Core2.Selkie.Aco.Anthill.Tests
 
             NUnitHelper.AssertIsEquivalent(110.0,
                                            actual.Length,
-                                           Colony.Epsilon,
+                                           NUnit.Extensions.Constants.Epsilon,
                                            actual.ToString());
         }
 
@@ -1380,7 +1382,7 @@ namespace Core2.Selkie.Aco.Anthill.Tests
 
             NUnitHelper.AssertIsEquivalent(150.0,
                                            actual.Length,
-                                           Colony.Epsilon,
+                                           NUnit.Extensions.Constants.Epsilon,
                                            actual.ToString());
         }
 

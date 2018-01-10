@@ -23,11 +23,12 @@ namespace Core2.Selkie.Aco.Anthill
     // ReSharper disable once ClassTooBig
     public sealed class Colony : IColony
     {
+        [UsedImplicitly]
         internal const int DefaultTurnsBeforeSelection = 100;
-        internal const double Epsilon = 0.01;
         public bool IsRequestedToStop { get; private set; }
 
         [NotNull]
+        [UsedImplicitly]
         internal ITrailBuilder ColonyBestTrailBuilder { get; private set; }
 
         private readonly IAntSettings m_AntSettings;
@@ -81,6 +82,7 @@ namespace Core2.Selkie.Aco.Anthill
             m_Queen.RandomSelection();
         }
 
+        [UsedImplicitly]
         internal void Cycle(int times)
         {
             PreCycle();
@@ -94,6 +96,7 @@ namespace Core2.Selkie.Aco.Anthill
             PostCycle();
         }
 
+        [UsedImplicitly]
         internal void CycleInitialize()
         {
             // Attention: default trail could be invalid, thats why we set to UnknownTrailBuilder first
@@ -103,6 +106,7 @@ namespace Core2.Selkie.Aco.Anthill
                                                     m_Tracker);
         }
 
+        [UsedImplicitly]
         internal void EvolveRestartFromBestTrail([NotNull] IQueen queen)
         {
             m_Logger.Info($"[Time: {Time:D5}] RestartFromTrail Selection!");
@@ -113,6 +117,7 @@ namespace Core2.Selkie.Aco.Anthill
             TurnsRemaining = TurnsBeforeSelection;
         }
 
+        [UsedImplicitly]
         internal bool IsInvalidTrail([NotNull] ITrailBuilder trailBuilder)
         {
             return trailBuilder.IsUnknown ||
@@ -120,14 +125,16 @@ namespace Core2.Selkie.Aco.Anthill
                    !m_Graph.IsValidPath(trailBuilder.Trail);
         }
 
+        [UsedImplicitly]
         internal void NewBestTrailIsInvalid([NotNull] ITrailBuilder bestTrailBuilder)
         {
             string trailText = string.Join(",",
                                            bestTrailBuilder.Trail);
 
-            m_Logger.Error("Found invalid trail: [IsUnknown: {bestTrailBuilder.IsUnknown}] {trailText}");
+            m_Logger.Error($"Found invalid trail: [IsUnknown: {bestTrailBuilder.IsUnknown}] {trailText}");
         }
 
+        [UsedImplicitly]
         internal void PostCycle()
         {
             SendBestTrailMessage(ColonyBestTrailBuilder);
@@ -144,12 +151,14 @@ namespace Core2.Selkie.Aco.Anthill
             }
         }
 
+        [UsedImplicitly]
         internal void PreCycle()
         {
             CycleInitialize();
             OnStarted();
         }
 
+        [UsedImplicitly]
         internal void SendBestTrailMessage([NotNull] ITrailBuilder trailBuilder)
         {
             IChromosome chromosome = trailBuilder.Chromosome;
@@ -320,41 +329,29 @@ namespace Core2.Selkie.Aco.Anthill
         private void OnBestTrailChanged([NotNull] BestTrailChangedEventArgs eventArgs)
         {
             EventHandler <BestTrailChangedEventArgs> handler = BestTrailChanged;
-            if ( handler != null )
-            {
-                handler(this,
-                        eventArgs);
-            }
+            handler?.Invoke(this,
+                            eventArgs);
         }
 
         private void OnFinished([NotNull] FinishedEventArgs eventArgs)
         {
             EventHandler <FinishedEventArgs> handler = Finished;
-            if ( handler != null )
-            {
-                handler(this,
-                        eventArgs);
-            }
+            handler?.Invoke(this,
+                            eventArgs);
         }
 
         private void OnStarted()
         {
             EventHandler handler = Started;
-            if ( handler != null )
-            {
-                handler(this,
-                        EventArgs.Empty);
-            }
+            handler?.Invoke(this,
+                            EventArgs.Empty);
         }
 
         private void OnStopped()
         {
             EventHandler handler = Stopped;
-            if ( handler != null )
-            {
-                handler(this,
-                        EventArgs.Empty);
-            }
+            handler?.Invoke(this,
+                            EventArgs.Empty);
         }
 
         private void RaiseFinishedEvent()

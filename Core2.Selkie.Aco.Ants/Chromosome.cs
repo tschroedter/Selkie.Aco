@@ -95,7 +95,8 @@ namespace Core2.Selkie.Aco.Ants
             {
                 return true;
             }
-            return obj is Chromosome && Equals(( Chromosome ) obj);
+
+            return obj is Chromosome chromosome && Equals(chromosome);
         }
 
         public override int GetHashCode()
