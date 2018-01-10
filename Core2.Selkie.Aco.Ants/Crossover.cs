@@ -25,12 +25,16 @@ namespace Core2.Selkie.Aco.Ants
 
         [UsedImplicitly]
         public const int NumberOfGenes = 3;
+
         [UsedImplicitly]
         public const bool FromFather = true;
+
         [UsedImplicitly]
         public const bool FromMother = false;
+
         [UsedImplicitly]
         internal IDisposer Disposer { private get; set; }
+
         private readonly IChromosomeFactory m_Factory;
         private readonly ISelkieLogger m_Logger;
         private readonly IRandom m_Random;

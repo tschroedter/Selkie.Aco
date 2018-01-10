@@ -1,5 +1,4 @@
 using System.Diagnostics.CodeAnalysis;
-using NSubstitute;
 using Core2.Selkie.Aco.Anthill.Interfaces;
 using Core2.Selkie.Aco.Anthill.TypedFactories;
 using Core2.Selkie.Aco.Ants;
@@ -10,6 +9,7 @@ using Core2.Selkie.Common;
 using Core2.Selkie.Common.Interfaces;
 using Core2.Selkie.Windsor.Interfaces;
 using JetBrains.Annotations;
+using NSubstitute;
 
 namespace Core2.Selkie.Aco.Anthill.Tests
 {

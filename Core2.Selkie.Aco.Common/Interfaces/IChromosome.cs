@@ -9,6 +9,7 @@ namespace Core2.Selkie.Aco.Common.Interfaces
     {
         [UsedImplicitly]
         bool IsUnknown { get; }
+
         double Alpha { get; }
         double AlphaMinValue { get; }
         double AlphaMaxValue { get; }

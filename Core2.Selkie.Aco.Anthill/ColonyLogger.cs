@@ -23,6 +23,7 @@ namespace Core2.Selkie.Aco.Anthill
 
         [UsedImplicitly]
         public ITrailHistory TrailHistory { get; internal set; }
+
         private readonly ISelkieLogger m_Logger;
 
         public void LogResult(TimeSpan runtimeSpan)
@@ -78,7 +79,7 @@ namespace Core2.Selkie.Aco.Anthill
                                                                      orderby information.TrailBuilder.Length
                                                                      select information;
 
-            var array = orderedByLength.ToArray();
+            ITrailInformation[] array = orderedByLength.ToArray();
 
             m_Logger.Info("Best trail found:");
             m_Logger.Info("=================");
@@ -88,7 +89,7 @@ namespace Core2.Selkie.Aco.Anthill
             m_Logger.Info("Alternative Trails:");
             m_Logger.Info("-------------");
 
-            foreach ( ITrailInformation trailInformation in array)
+            foreach ( ITrailInformation trailInformation in array )
             {
                 m_Logger.Info(trailInformation.ToString());
             }

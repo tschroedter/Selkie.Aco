@@ -48,6 +48,8 @@ namespace Core2.Selkie.Aco.Trails
             BuildDictionaryIndexOfTarget(Trail);
         }
 
+        private int m_NumberOfCandidates;
+
         [UsedImplicitly]
         public int NumberOfCandidates
         {
@@ -56,8 +58,6 @@ namespace Core2.Selkie.Aco.Trails
                                               ? 1
                                               : value;
         }
-
-        private int m_NumberOfCandidates;
 
         // ReSharper disable once CodeAnnotationAnalyzer
         public bool Equals(CandidateListTrailBuilder other)

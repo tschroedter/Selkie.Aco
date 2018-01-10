@@ -1,8 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using JetBrains.Annotations;
-using NSubstitute;
-using NUnit.Framework;
 using Core2.Selkie.Aco.Anthill.Interfaces;
 using Core2.Selkie.Aco.Anthill.TypedFactories;
 using Core2.Selkie.Aco.Ants;
@@ -15,6 +12,9 @@ using Core2.Selkie.Aco.Trails.Optimizers;
 using Core2.Selkie.Common;
 using Core2.Selkie.Common.Interfaces;
 using Core2.Selkie.Windsor.Interfaces;
+using JetBrains.Annotations;
+using NSubstitute;
+using NUnit.Framework;
 
 namespace Core2.Selkie.Aco.Anthill.Tests
 {
@@ -523,6 +523,7 @@ namespace Core2.Selkie.Aco.Anthill.Tests
         }
 
         // ReSharper restore MethodTooLong
+
         [Test]
         // ReSharper disable MethodTooLong
         public void UpdateBestAntSetsNewBestWhenNewIsShorterTest()
@@ -569,6 +570,7 @@ namespace Core2.Selkie.Aco.Anthill.Tests
         }
 
         // ReSharper restore MethodTooLong
+
         [Test]
         public void UpdateBestAntSetsNewBestWhenStillUnknownTest()
         {

@@ -9,7 +9,7 @@ using Core2.Selkie.Common.Interfaces;
 using Core2.Selkie.Windsor;
 using JetBrains.Annotations;
 
-[assembly: InternalsVisibleTo("Core2.Selkie.ACO.Common.Tests")]
+[assembly : InternalsVisibleTo("Core2.Selkie.ACO.Common.Tests")]
 
 namespace Core2.Selkie.Aco.Common
 {

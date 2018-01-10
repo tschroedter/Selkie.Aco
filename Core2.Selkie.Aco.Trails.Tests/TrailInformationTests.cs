@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Core2.Selkie.Aco.Common.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
-using Core2.Selkie.Aco.Common.Interfaces;
 
 namespace Core2.Selkie.Aco.Trails.Tests
 {

@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using NSubstitute;
-using NUnit.Framework;
 using Core2.Selkie.Aco.Common.Interfaces;
 using Core2.Selkie.NUnit.Extensions;
+using NSubstitute;
+using NUnit.Framework;
 
 namespace Core2.Selkie.Aco.Common.Tests
 {

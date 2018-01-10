@@ -12,7 +12,7 @@ using Core2.Selkie.Common.Interfaces;
 using Core2.Selkie.Windsor;
 using JetBrains.Annotations;
 
-[assembly: InternalsVisibleTo("Core2.Selkie.Aco.Anthill.Tests")]
+[assembly : InternalsVisibleTo("Core2.Selkie.Aco.Anthill.Tests")]
 
 namespace Core2.Selkie.Aco.Anthill
 {
@@ -25,7 +25,6 @@ namespace Core2.Selkie.Aco.Anthill
     {
         [UsedImplicitly]
         internal const int DefaultTurnsBeforeSelection = 100;
-        public bool IsRequestedToStop { get; private set; }
 
         [NotNull]
         [UsedImplicitly]
@@ -41,6 +40,7 @@ namespace Core2.Selkie.Aco.Anthill
         private readonly IDateTime m_SystemTime;
         private readonly IPheromonesTracker m_Tracker;
         private readonly ITrailBuilderFactory m_TrailBuilderFactory;
+        public bool IsRequestedToStop { get; private set; }
 
         public ITrailHistory TrailHistory => m_NaturalSelection.TrailHistory;
 

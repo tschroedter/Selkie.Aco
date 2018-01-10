@@ -38,6 +38,7 @@ namespace Core2.Selkie.Aco.Trails
         }
 
         // ReSharper restore TooManyDependencies
+
         [UsedImplicitly]
         public UnknownTrailBuilder([NotNull] IRandom random,
                                    [NotNull] IChromosome chromosome,

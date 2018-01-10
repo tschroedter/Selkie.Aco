@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Core2.Selkie.Aco.Common.Interfaces;
+using Core2.Selkie.Aco.Common.TypedFactories;
 using JetBrains.Annotations;
 using NSubstitute;
 using NUnit.Framework;
-using Core2.Selkie.Aco.Common.Interfaces;
-using Core2.Selkie.Aco.Common.TypedFactories;
 
 namespace Core2.Selkie.Aco.Trails.Tests
 {

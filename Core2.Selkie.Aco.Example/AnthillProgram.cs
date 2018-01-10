@@ -2,12 +2,12 @@
 using System.Threading;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using JetBrains.Annotations;
 using Core2.Selkie.Aco.Anthill;
 using Core2.Selkie.Aco.Anthill.Interfaces;
 using Core2.Selkie.Aco.Anthill.TypedFactories;
 using Core2.Selkie.Aco.Common.Interfaces;
 using Core2.Selkie.Common.Interfaces;
+using JetBrains.Annotations;
 
 namespace Core2.Selkie.Aco.Example
 {

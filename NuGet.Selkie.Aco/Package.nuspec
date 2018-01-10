@@ -1,39 +1,39 @@
 ﻿<?xml version="1.0"?>
 
 <package>
-  <metadata>
-    <id>Selkie.Aco</id>
-    <version>1.0.0.0</version>
-    <title>Selkie.Aco</title>
-    <authors>Thomas Schroedter</authors>
-    <owners>Thomas Schroedter</owners>
-    <description>
-      This package contains an Ant Colony Optimazation algorithm to find the shortest path for running survey lines.
-    </description>
-    <releaseNotes>
-    </releaseNotes>
-    <summary>
-      This package contains an Ant Colony Optimazation algorithm to find the shortest path for running survey lines. The algorithm considers both direction for running a line: forward and reverse.
-    </summary>
-    <language>en-US</language>
-    <projectUrl>https://github.com/tschroedter/Selkie.Aco</projectUrl>
-    <iconUrl>https://github.com/tschroedter/Selkie.Aco/blob/master/LICENSE</iconUrl>
-    <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
-    <copyright>Copyright © Thomas Schroedter 2015</copyright>
-    <dependencies>
-      <group targetFramework="net40">
-        <dependency id="log4net" version="1.2.10" />
-      </group>
-      <group targetFramework="net45">
-      </group>
-    </dependencies>
-    <references></references>
-    <tags>Selkie</tags>
-  </metadata>
-  <files>
-    <file src="lib\" target="lib" />
-    <file src="tools\" target="tools" />
-    <file src="content\" target="content" />
-  </files>
+    <metadata>
+        <id>Selkie.Aco</id>
+        <version>1.0.0.0</version>
+        <title>Selkie.Aco</title>
+        <authors>Thomas Schroedter</authors>
+        <owners>Thomas Schroedter</owners>
+        <description>
+            This package contains an Ant Colony Optimazation algorithm to find the shortest path for running survey lines.
+        </description>
+        <releaseNotes>
+        </releaseNotes>
+        <summary>
+            This package contains an Ant Colony Optimazation algorithm to find the shortest path for running survey lines. The algorithm considers both direction for running a line: forward and reverse.
+        </summary>
+        <language>en-US</language>
+        <projectUrl>https://github.com/tschroedter/Selkie.Aco</projectUrl>
+        <iconUrl>https://github.com/tschroedter/Selkie.Aco/blob/master/LICENSE</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+        <copyright>Copyright © Thomas Schroedter 2015</copyright>
+        <dependencies>
+            <group targetFramework="net40">
+                <dependency id="log4net" version="1.2.10" />
+            </group>
+            <group targetFramework="net45">
+            </group>
+        </dependencies>
+        <references></references>
+        <tags>Selkie</tags>
+    </metadata>
+    <files>
+        <file src="lib\" target="lib" />
+        <file src="tools\" target="tools" />
+        <file src="content\" target="content" />
+    </files>
 </package>

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using JetBrains.Annotations;
 using Core2.Selkie.Aco.Ants;
 using Core2.Selkie.Aco.Common.Interfaces;
 using Core2.Selkie.Aco.Common.TypedFactories;
 using Core2.Selkie.Common;
 using Core2.Selkie.Common.Interfaces;
+using JetBrains.Annotations;
 
 namespace Core2.Selkie.Aco.Anthill.Tests
 {
@@ -16,6 +16,7 @@ namespace Core2.Selkie.Aco.Anthill.Tests
         private readonly IRandom m_Random = new SelkieRandom();
         private readonly IList <IAnt> m_ReleasedAnts = new List <IAnt>();
         private readonly ITrailBuilderFactory m_TrailBuilderFactory = new TestTrailBuilderFactory();
+
         // ReSharper disable once MethodTooLong
         // ReSharper disable once TooManyArguments
         public T Create <T>(IChromosome chromosome,
@@ -23,7 +24,8 @@ namespace Core2.Selkie.Aco.Anthill.Tests
                             IDistanceGraph graph,
                             IOptimizer optimizer,
                             IAntSettings antSettings,
-                            IEnumerable <int> trail) where T : IAnt
+                            IEnumerable <int> trail)
+            where T : IAnt
         {
             lock ( this )
             {
@@ -58,7 +60,8 @@ namespace Core2.Selkie.Aco.Anthill.Tests
                             [NotNull] IPheromonesTracker tracker,
                             [NotNull] IDistanceGraph graph,
                             [NotNull] IOptimizer optimizer,
-                            [NotNull] IAntSettings antSettings) where T : IAnt
+                            [NotNull] IAntSettings antSettings)
+            where T : IAnt
         {
             lock ( this )
             {
@@ -91,7 +94,8 @@ namespace Core2.Selkie.Aco.Anthill.Tests
 
         // ReSharper disable once MethodTooLong
         // ReSharper disable once ExcessiveIndentation
-        private static T CreateAntInstance <T>([NotNull] object[] args) where T : IAnt
+        private static T CreateAntInstance <T>([NotNull] object[] args)
+            where T : IAnt
         {
             T ant;
 

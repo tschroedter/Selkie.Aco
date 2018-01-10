@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using JetBrains.Annotations;
 using Core2.Selkie.Aco.Common.Interfaces;
 using Core2.Selkie.Aco.Common.TypedFactories;
 using Core2.Selkie.Aco.Trails;
 using Core2.Selkie.Common;
+using JetBrains.Annotations;
 
 namespace Core2.Selkie.Aco.Ants.Tests
 {
@@ -17,7 +17,8 @@ namespace Core2.Selkie.Aco.Ants.Tests
         public T Create <T>(IChromosome chromosome,
                             IPheromonesTracker tracker,
                             IDistanceGraph graph,
-                            IOptimizer optimizer) where T : ITrailBuilder
+                            IOptimizer optimizer)
+            where T : ITrailBuilder
         {
             object[] args =
             {
@@ -41,7 +42,8 @@ namespace Core2.Selkie.Aco.Ants.Tests
                             IPheromonesTracker tracker,
                             IDistanceGraph graph,
                             IOptimizer optimizer,
-                            IEnumerable <int> trail) where T : ITrailBuilder
+                            IEnumerable <int> trail)
+            where T : ITrailBuilder
         {
             object[] args =
             {
@@ -64,7 +66,8 @@ namespace Core2.Selkie.Aco.Ants.Tests
 
         // ReSharper disable once ExcessiveIndentation
         // ReSharper disable once MethodTooLong
-        private static T CreateTrailBuilderInstance <T>([NotNull] object[] args) where T : ITrailBuilder
+        private static T CreateTrailBuilderInstance <T>([NotNull] object[] args)
+            where T : ITrailBuilder
         {
             T trailBuilder;
 

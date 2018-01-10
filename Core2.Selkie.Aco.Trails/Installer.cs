@@ -23,7 +23,7 @@ namespace Core2.Selkie.Aco.Trails
             base.InstallComponents(container,
                                    store);
 
-            Assembly assembly = Assembly.GetAssembly(typeof(Installer));
+            Assembly assembly = Assembly.GetAssembly(typeof( Installer ));
 
             container.Register(Classes.FromAssembly(assembly)
                                       .BasedOn <ITrailBuilder>()

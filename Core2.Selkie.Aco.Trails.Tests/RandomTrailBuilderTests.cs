@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using JetBrains.Annotations;
-using NSubstitute;
-using NSubstitute.Core;
-using NUnit.Framework;
 using Core2.Selkie.Aco.Common.Interfaces;
 using Core2.Selkie.Aco.Common.TypedFactories;
 using Core2.Selkie.Aco.Trails.Interfaces;
 using Core2.Selkie.Aco.Trails.Optimizers;
 using Core2.Selkie.Common.Interfaces;
+using JetBrains.Annotations;
+using NSubstitute;
+using NSubstitute.Core;
+using NUnit.Framework;
 
 namespace Core2.Selkie.Aco.Trails.Tests
 {

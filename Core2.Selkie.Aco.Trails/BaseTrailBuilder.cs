@@ -8,7 +8,7 @@ using Core2.Selkie.Aco.Common.TypedFactories;
 using Core2.Selkie.Common.Interfaces;
 using JetBrains.Annotations;
 
-[assembly: InternalsVisibleTo("Core2.Selkie.Aco.Trails.Tests")]
+[assembly : InternalsVisibleTo("Core2.Selkie.Aco.Trails.Tests")]
 
 namespace Core2.Selkie.Aco.Trails
 {
@@ -54,8 +54,10 @@ namespace Core2.Selkie.Aco.Trails
         }
 
         private const double PredefinedTendencyMinimum = 1E-50;
+
         [UsedImplicitly]
         public const int UnknownId = -1;
+
         // ReSharper disable once StaticMemberInGenericType
         private static int s_NextId; // means NextId per <T>
 
@@ -118,7 +120,7 @@ namespace Core2.Selkie.Aco.Trails
             }
             return Equals(other.Chromosome,
                           Chromosome) && Equals(other.Type,
-                                                  Type);
+                                                Type);
         }
 
         #endregion
@@ -313,8 +315,8 @@ namespace Core2.Selkie.Aco.Trails
             double tendencyOther = Math.Pow(m_Tracker.GetValue(cityX,
                                                                cityOther),
                                             Chromosome.Alpha) * Math.Pow(Chromosome.Gamma / DistanceGraph.GetCost(cityX,
-                                                                                                                cityOther),
-                                                                           Chromosome.Beta);
+                                                                                                                  cityOther),
+                                                                         Chromosome.Beta);
 
             if ( tendencyOther < m_TendencyMinimum ||
                  double.IsNaN(tendencyOther) )

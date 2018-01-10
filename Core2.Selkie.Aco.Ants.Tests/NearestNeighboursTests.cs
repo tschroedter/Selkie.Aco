@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using NUnit.Framework;
 using Core2.Selkie.Aco.Common;
 using Core2.Selkie.Aco.Common.Interfaces;
+using NUnit.Framework;
 
 namespace Core2.Selkie.Aco.Ants.Tests
 {

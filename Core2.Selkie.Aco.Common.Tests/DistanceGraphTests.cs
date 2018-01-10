@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using NSubstitute;
-using NUnit.Framework;
 using Core2.Selkie.Aco.Common.Interfaces;
 using Core2.Selkie.Common;
+using NSubstitute;
+using NUnit.Framework;
 
 namespace Core2.Selkie.Aco.Common.Tests
 {

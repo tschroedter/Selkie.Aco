@@ -1,12 +1,12 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using JetBrains.Annotations;
-using NSubstitute;
-using NUnit.Framework;
 using Core2.Selkie.Aco.Anthill.Interfaces;
 using Core2.Selkie.Aco.Common.Interfaces;
 using Core2.Selkie.Aco.Trails.Interfaces;
 using Core2.Selkie.Common.Interfaces;
 using Core2.Selkie.NUnit.Extensions;
+using JetBrains.Annotations;
+using NSubstitute;
+using NUnit.Framework;
 
 namespace Core2.Selkie.Aco.Anthill.Tests
 {

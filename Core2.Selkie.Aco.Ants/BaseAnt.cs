@@ -6,7 +6,7 @@ using Core2.Selkie.Aco.Common.TypedFactories;
 using Core2.Selkie.Common.Interfaces;
 using JetBrains.Annotations;
 
-[assembly: InternalsVisibleTo("Core2.Selkie.Aco.Ants.Tests")]
+[assembly : InternalsVisibleTo("Core2.Selkie.Aco.Ants.Tests")]
 
 namespace Core2.Selkie.Aco.Ants
 {
@@ -40,6 +40,7 @@ namespace Core2.Selkie.Aco.Ants
         }
 
         // ReSharper restore TooManyDependencies
+
         // ReSharper disable once StaticMemberInGenericType
         private static int s_NextId; // means s_NextId per <TAnt, TBuilder>
 
@@ -55,20 +56,21 @@ namespace Core2.Selkie.Aco.Ants
         [UsedImplicitly]
         protected IDistanceGraph DistanceGraph { get; private set; }
 
+        private readonly IOptimizer m_Optimizer;
+        private readonly IPheromonesTracker m_Tracker;
+
         public double Alpha => Chromosome.Alpha;
 
         public double Beta => Chromosome.Beta;
 
         public double Gamma => Chromosome.Gamma;
 
-        private readonly IOptimizer m_Optimizer;
-        private readonly IPheromonesTracker m_Tracker;
-
         public string Type { get; }
 
         public int Id { get; }
 
         public IChromosome Chromosome { get; set; }
+
         [UsedImplicitly]
         public ITrailBuilder TrailBuilder { get; protected set; }
 

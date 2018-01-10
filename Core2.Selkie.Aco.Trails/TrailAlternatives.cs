@@ -21,12 +21,12 @@ namespace Core2.Selkie.Aco.Trails
             m_Trails = new List <ITrailBuilder>();
         }
 
-        public int Count => m_Alternatives.Count;
-
         private readonly Dictionary <int, List <ITrailBuilder>> m_Alternatives;
         private readonly IChromosomeFactory m_ChromosomeFactory;
         private readonly ITrailBuilderFactory m_TrailBuilderFactory;
         private readonly List <ITrailBuilder> m_Trails;
+
+        public int Count => m_Alternatives.Count;
 
         public IEnumerable <ITrailBuilder> Trails => m_Trails;
 

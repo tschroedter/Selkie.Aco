@@ -23,7 +23,7 @@ namespace Core2.Selkie.Aco.Trails
             var sb = new StringBuilder();
 
             sb.Append($"Time: {Time:D4} ");
-            sb.Append($"Length: {(( int ) TrailBuilder.Length):D4} ");
+            sb.Append($"Length: {( int ) TrailBuilder.Length:D4} ");
             sb.Append($"Trail: {TrailBuilder} ");
             sb.Append($"Type: {Settings.AntType} ");
             sb.Append($"Alpha: {Settings.Alpha:F4} ");

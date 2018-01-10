@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using JetBrains.Annotations;
-using NSubstitute;
-using NUnit.Framework;
 using Core2.Selkie.Aco.Anthill.Interfaces;
 using Core2.Selkie.Aco.Anthill.TypedFactories;
 using Core2.Selkie.Aco.Common;
@@ -16,6 +13,10 @@ using Core2.Selkie.Aco.Trails.Optimizers;
 using Core2.Selkie.Common;
 using Core2.Selkie.Common.Interfaces;
 using Core2.Selkie.NUnit.Extensions;
+using JetBrains.Annotations;
+using NSubstitute;
+using NUnit.Framework;
+using Constants = Core2.Selkie.NUnit.Extensions.Constants;
 
 namespace Core2.Selkie.Aco.Anthill.Tests
 {
@@ -1277,7 +1278,7 @@ namespace Core2.Selkie.Aco.Anthill.Tests
 
             NUnitHelper.AssertIsEquivalent(110.0,
                                            actual.Length,
-                                           NUnit.Extensions.Constants.Epsilon,
+                                           Constants.Epsilon,
                                            actual.ToString());
         }
 
@@ -1382,7 +1383,7 @@ namespace Core2.Selkie.Aco.Anthill.Tests
 
             NUnitHelper.AssertIsEquivalent(150.0,
                                            actual.Length,
-                                           NUnit.Extensions.Constants.Epsilon,
+                                           Constants.Epsilon,
                                            actual.ToString());
         }
 

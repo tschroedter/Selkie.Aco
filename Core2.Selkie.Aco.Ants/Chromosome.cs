@@ -13,6 +13,54 @@ namespace Core2.Selkie.Aco.Ants
         : IChromosome,
           IEquatable <Chromosome>
     {
+        public static readonly IChromosome Unknown = new Chromosome(true);
+        private readonly IRandom m_Random;
+
+        // ReSharper disable once CodeAnnotationAnalyzer
+        public override bool Equals(object obj)
+        {
+            if ( ReferenceEquals(null,
+                                 obj) )
+            {
+                return false;
+            }
+            if ( ReferenceEquals(this,
+                                 obj) )
+            {
+                return true;
+            }
+
+            return obj is Chromosome chromosome && Equals(chromosome);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = Alpha.GetHashCode();
+                hashCode = ( hashCode * 397 ) ^ Beta.GetHashCode();
+                hashCode = ( hashCode * 397 ) ^ Gamma.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public override string ToString()
+        {
+            return $"Alpha: {Alpha:F4} Beta: {Beta:F4} Gamma: {Gamma:F4}";
+        }
+
+        private void InitializeFactors()
+        {
+            if ( m_Random == null )
+            {
+                return;
+            }
+
+            AlphaRange = AlphaMaxValue - AlphaMinValue;
+            BetaRange = BetaMaxValue - BetaMinValue;
+            GammaRange = GammaMaxValue - GammaMinValue;
+        }
+
         public Chromosome([NotNull] IRandom random)
         {
             m_Random = random;
@@ -79,53 +127,6 @@ namespace Core2.Selkie.Aco.Ants
         }
 
         // ReSharper restore TooManyDependencies
-        public static readonly IChromosome Unknown = new Chromosome(true);
-        private readonly IRandom m_Random;
-
-        // ReSharper disable once CodeAnnotationAnalyzer
-        public override bool Equals(object obj)
-        {
-            if ( ReferenceEquals(null,
-                                 obj) )
-            {
-                return false;
-            }
-            if ( ReferenceEquals(this,
-                                 obj) )
-            {
-                return true;
-            }
-
-            return obj is Chromosome chromosome && Equals(chromosome);
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                int hashCode = Alpha.GetHashCode();
-                hashCode = ( hashCode * 397 ) ^ Beta.GetHashCode();
-                hashCode = ( hashCode * 397 ) ^ Gamma.GetHashCode();
-                return hashCode;
-            }
-        }
-
-        public override string ToString()
-        {
-            return $"Alpha: {Alpha:F4} Beta: {Beta:F4} Gamma: {Gamma:F4}";
-        }
-
-        private void InitializeFactors()
-        {
-            if ( m_Random == null )
-            {
-                return;
-            }
-
-            AlphaRange = AlphaMaxValue - AlphaMinValue;
-            BetaRange = BetaMaxValue - BetaMinValue;
-            GammaRange = GammaMaxValue - GammaMinValue;
-        }
 
         // ReSharper disable TooManyDependencies
         public Chromosome([NotNull] IRandom random,

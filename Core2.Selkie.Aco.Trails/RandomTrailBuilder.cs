@@ -12,40 +12,6 @@ namespace Core2.Selkie.Aco.Trails
         : BaseTrailBuilder <IRandomTrailBuilder>,
           IRandomTrailBuilder
     {
-        [UsedImplicitly]
-        public RandomTrailBuilder([NotNull] IRandom random,
-                                  [NotNull] IChromosome chromosome,
-                                  [NotNull] IPheromonesTracker tracker,
-                                  [NotNull] IDistanceGraph graph,
-                                  [NotNull] IOptimizer optimizer)
-            : base(random,
-                   chromosome,
-                   tracker,
-                   graph,
-                   optimizer)
-        {
-        }
-
-        [UsedImplicitly]
-        public RandomTrailBuilder([NotNull] IRandom random,
-                                  [NotNull] IChromosome chromosome,
-                                  [NotNull] IPheromonesTracker tracker,
-                                  [NotNull] IDistanceGraph graph,
-                                  [NotNull] IOptimizer optimizer,
-                                  [NotNull] IEnumerable <int> trail)
-            : base(random,
-                   chromosome,
-                   tracker,
-                   graph,
-                   optimizer)
-        {
-            Trail = trail.ToArray();
-            Length = CalculateLength(Trail);
-            BuildDictionaryIndexOfTarget(Trail);
-        }
-
-        // ReSharper restore TooManyDependencies
-
         [NotNull]
         [UsedImplicitly]
         internal static int[] Create(int numberOfNodes)
@@ -151,5 +117,39 @@ namespace Core2.Selkie.Aco.Trails
 
             return randomTrail;
         }
+
+        [UsedImplicitly]
+        public RandomTrailBuilder([NotNull] IRandom random,
+                                  [NotNull] IChromosome chromosome,
+                                  [NotNull] IPheromonesTracker tracker,
+                                  [NotNull] IDistanceGraph graph,
+                                  [NotNull] IOptimizer optimizer)
+            : base(random,
+                   chromosome,
+                   tracker,
+                   graph,
+                   optimizer)
+        {
+        }
+
+        [UsedImplicitly]
+        public RandomTrailBuilder([NotNull] IRandom random,
+                                  [NotNull] IChromosome chromosome,
+                                  [NotNull] IPheromonesTracker tracker,
+                                  [NotNull] IDistanceGraph graph,
+                                  [NotNull] IOptimizer optimizer,
+                                  [NotNull] IEnumerable <int> trail)
+            : base(random,
+                   chromosome,
+                   tracker,
+                   graph,
+                   optimizer)
+        {
+            Trail = trail.ToArray();
+            Length = CalculateLength(Trail);
+            BuildDictionaryIndexOfTarget(Trail);
+        }
+
+        // ReSharper restore TooManyDependencies
     }
 }
