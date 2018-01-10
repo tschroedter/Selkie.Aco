@@ -20,29 +20,15 @@ namespace Core2.Selkie.Aco.Anthill
                                 [NotNull] IQueen queen)
         {
             m_Random = random;
-            m_TrailHistory = trailHistory;
-            m_Queen = queen;
+            TrailHistory = trailHistory;
+            Queen = queen;
         }
 
-        public IQueen Queen
-        {
-            get
-            {
-                return m_Queen;
-            }
-        }
+        public IQueen Queen { get; }
 
-        private readonly IQueen m_Queen;
         private readonly IRandom m_Random;
-        private readonly ITrailHistory m_TrailHistory;
 
-        public ITrailHistory TrailHistory
-        {
-            get
-            {
-                return m_TrailHistory;
-            }
-        }
+        public ITrailHistory TrailHistory { get; }
 
         public void DoSelection()
         {

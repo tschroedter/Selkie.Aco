@@ -13,57 +13,35 @@ namespace Core2.Selkie.Aco.Trails
                                 [NotNull] ISettings settings,
                                 int time)
         {
-            m_TrailBuilder = trailBuilder;
-            m_Settings = settings;
-            m_Time = time;
+            TrailBuilder = trailBuilder;
+            Settings = settings;
+            Time = time;
         }
-
-        private readonly ISettings m_Settings;
-        private readonly int m_Time;
-        private readonly ITrailBuilder m_TrailBuilder;
 
         public override string ToString()
         {
             var sb = new StringBuilder();
 
-            sb.Append($"Time: {m_Time:D4} ");
-            sb.Append($"Length: {(( int ) m_TrailBuilder.Length):D4} ");
-            sb.Append($"Trail: {m_TrailBuilder} ");
-            sb.Append($"Type: {m_Settings.AntType} ");
-            sb.Append($"Alpha: {m_Settings.Alpha:F4} ");
-            sb.Append($"Beta: {m_Settings.Beta:F4} ");
-            sb.Append($"Gamma: {m_Settings.Gamma:F4} ");
-            sb.Append($"Rho: {m_Settings.Rho:F4} ");
-            sb.Append($"Q: {m_Settings.Q:F4}");
+            sb.Append($"Time: {Time:D4} ");
+            sb.Append($"Length: {(( int ) TrailBuilder.Length):D4} ");
+            sb.Append($"Trail: {TrailBuilder} ");
+            sb.Append($"Type: {Settings.AntType} ");
+            sb.Append($"Alpha: {Settings.Alpha:F4} ");
+            sb.Append($"Beta: {Settings.Beta:F4} ");
+            sb.Append($"Gamma: {Settings.Gamma:F4} ");
+            sb.Append($"Rho: {Settings.Rho:F4} ");
+            sb.Append($"Q: {Settings.Q:F4}");
 
             return sb.ToString();
         }
 
         #region ITrailInformation Members
 
-        public ITrailBuilder TrailBuilder
-        {
-            get
-            {
-                return m_TrailBuilder;
-            }
-        }
+        public ITrailBuilder TrailBuilder { get; }
 
-        public int Time
-        {
-            get
-            {
-                return m_Time;
-            }
-        }
+        public int Time { get; }
 
-        public ISettings Settings
-        {
-            get
-            {
-                return m_Settings;
-            }
-        }
+        public ISettings Settings { get; }
 
         #endregion
     }

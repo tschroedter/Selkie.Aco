@@ -23,27 +23,27 @@ namespace Core2.Selkie.Aco.Trails
                                    [NotNull] IOptimizer optimizer)
         {
             Id = s_NextId++;
-            m_Random = random;
-            m_Chromosome = chromosome;
+            Random = random;
+            Chromosome = chromosome;
             m_Tracker = tracker;
-            m_Graph = graph;
+            DistanceGraph = graph;
             m_Optimizer = optimizer;
 
-            if ( m_Graph.NumberOfNodes == 0 ||
-                 m_Graph.NumberOfNodes % 2 != 0 )
+            if ( DistanceGraph.NumberOfNodes == 0 ||
+                 DistanceGraph.NumberOfNodes % 2 != 0 )
             {
-                throw new ArgumentException("NumberOfNodes = " + m_Graph.NumberOfNodes);
+                throw new ArgumentException("NumberOfNodes = " + DistanceGraph.NumberOfNodes);
             }
 
-            if ( m_Graph.MinimumDistance <= 0.0 )
+            if ( DistanceGraph.MinimumDistance <= 0.0 )
             {
-                throw new ArgumentException("MinimumDistance = " + m_Graph.MinimumDistance);
+                throw new ArgumentException("MinimumDistance = " + DistanceGraph.MinimumDistance);
             }
 
             m_TendencyMinimum = Math.Pow(m_Tracker.MinimumValue,
-                                         m_Chromosome.Alpha) *
-                                Math.Pow(m_Chromosome.Gamma / m_Graph.MaximumDistance,
-                                         m_Chromosome.Beta);
+                                         Chromosome.Alpha) *
+                                Math.Pow(Chromosome.Gamma / DistanceGraph.MaximumDistance,
+                                         Chromosome.Beta);
             m_TendencyMaximum = double.MaxValue / ( graph.MinimumDistance * 100.0 );
 
             if ( m_TendencyMinimum < PredefinedTendencyMinimum ||
@@ -59,41 +59,19 @@ namespace Core2.Selkie.Aco.Trails
         private static int s_NextId; // means NextId per <T>
 
         [NotNull]
-        protected IRandom Random
-        {
-            get
-            {
-                return m_Random;
-            }
-        }
+        protected IRandom Random { get; }
 
         [NotNull]
-        protected IDistanceGraph DistanceGraph
-        {
-            get
-            {
-                return m_Graph;
-            }
-        }
+        protected IDistanceGraph DistanceGraph { get; }
 
-        private readonly IChromosome m_Chromosome;
-        private readonly IDistanceGraph m_Graph;
         private readonly Dictionary <int, int> m_IndexOfTargets = new Dictionary <int, int>();
         private readonly IOptimizer m_Optimizer;
-        private readonly IRandom m_Random;
         private readonly double m_TendencyMaximum;
         private readonly double m_TendencyMinimum;
         private readonly IPheromonesTracker m_Tracker;
-        private double m_Length = double.MaxValue;
         private int[] m_Trail = new int[0];
 
-        public IChromosome Chromosome
-        {
-            get
-            {
-                return m_Chromosome;
-            }
-        }
+        public IChromosome Chromosome { get; }
 
         public static int FindRelatedCity(int cityIndex)
         {
@@ -136,8 +114,8 @@ namespace Core2.Selkie.Aco.Trails
             {
                 return true;
             }
-            return Equals(other.m_Chromosome,
-                          m_Chromosome) && Equals(other.Type,
+            return Equals(other.Chromosome,
+                          Chromosome) && Equals(other.Type,
                                                   Type);
         }
 
@@ -168,8 +146,8 @@ namespace Core2.Selkie.Aco.Trails
         {
             unchecked
             {
-                int code = m_Chromosome != null
-                               ? m_Chromosome.GetHashCode()
+                int code = Chromosome != null
+                               ? Chromosome.GetHashCode()
                                : 0;
 
                 return ( code * 397 ) ^ Type.GetHashCode();
@@ -180,7 +158,7 @@ namespace Core2.Selkie.Aco.Trails
         {
             var sb = new StringBuilder();
 
-            string value = $"Length: {( int ) m_Length:D4}";
+            string value = $"Length: {( int ) Length:D4}";
 
             sb.Append(value);
             sb.Append(" [");
@@ -239,7 +217,7 @@ namespace Core2.Selkie.Aco.Trails
 
         internal double CalculateLength([NotNull] IEnumerable <int> trail)
         {
-            double result = m_Graph.Length(trail);
+            double result = DistanceGraph.Length(trail);
 
             return result;
         }
@@ -299,7 +277,7 @@ namespace Core2.Selkie.Aco.Trails
         private double[] CalculateTendencies(int cityX,
                                              [NotNull] bool[] visited)
         {
-            int numCities = m_Graph.NumberOfNodes;
+            int numCities = DistanceGraph.NumberOfNodes;
 
             var tendency = new double[numCities];
 
@@ -329,9 +307,9 @@ namespace Core2.Selkie.Aco.Trails
             // moving to an unvisited node
             double tendencyOther = Math.Pow(m_Tracker.GetValue(cityX,
                                                                cityOther),
-                                            m_Chromosome.Alpha) * Math.Pow(m_Chromosome.Gamma / m_Graph.GetCost(cityX,
+                                            Chromosome.Alpha) * Math.Pow(Chromosome.Gamma / DistanceGraph.GetCost(cityX,
                                                                                                                 cityOther),
-                                                                           m_Chromosome.Beta);
+                                                                           Chromosome.Beta);
 
             if ( tendencyOther < m_TendencyMinimum ||
                  double.IsNaN(tendencyOther) )
@@ -350,7 +328,7 @@ namespace Core2.Selkie.Aco.Trails
         [NotNull]
         private double[] CreateProbabilities([NotNull] double[] values)
         {
-            int numCities = m_Graph.NumberOfNodes;
+            int numCities = DistanceGraph.NumberOfNodes;
             var probs = new double[numCities];
             double sum = values.Sum();
 
@@ -377,7 +355,7 @@ namespace Core2.Selkie.Aco.Trails
         {
             IEnumerable <int> optimizedTrail = m_Optimizer.Optimize(m_Trail);
             m_Trail = optimizedTrail.ToArray();
-            m_Length = CalculateLength(m_Trail);
+            Length = CalculateLength(m_Trail);
         }
 
         private void ValidateStartNode(int startNode)
@@ -429,17 +407,7 @@ namespace Core2.Selkie.Aco.Trails
             }
         }
 
-        public double Length
-        {
-            get
-            {
-                return m_Length;
-            }
-            protected set
-            {
-                m_Length = value;
-            }
-        }
+        public double Length { get; protected set; } = double.MaxValue;
 
         // todo maybe this is not required because all of them are connected
         // ReSharper disable once MethodTooLong

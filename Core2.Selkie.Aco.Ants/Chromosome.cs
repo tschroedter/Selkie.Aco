@@ -19,14 +19,14 @@ namespace Core2.Selkie.Aco.Ants
 
             InitializeFactors();
 
-            m_Alpha = RandomizeAlpha();
-            m_Beta = RandomizeBeta();
-            m_Gamma = RandomizeGamma();
+            Alpha = RandomizeAlpha();
+            Beta = RandomizeBeta();
+            Gamma = RandomizeGamma();
         }
 
         private Chromosome(bool isUnknown)
         {
-            m_IsUnknown = isUnknown;
+            IsUnknown = isUnknown;
         }
 
         public Chromosome([NotNull] IRandom random,
@@ -34,21 +34,21 @@ namespace Core2.Selkie.Aco.Ants
                           double beta,
                           double gamma)
         {
-            m_AlphaMinValue = alpha - alpha * 0.1;
-            m_AlphaMaxValue = alpha + alpha * 0.1;
+            AlphaMinValue = alpha - alpha * 0.1;
+            AlphaMaxValue = alpha + alpha * 0.1;
 
-            m_BetaMinValue = beta - beta * 0.1;
-            m_BetaMaxValue = beta + beta * 0.1;
+            BetaMinValue = beta - beta * 0.1;
+            BetaMaxValue = beta + beta * 0.1;
 
-            m_GammaMinValue = gamma - gamma * 0.1;
-            m_GammaMaxValue = gamma + gamma * 0.1;
+            GammaMinValue = gamma - gamma * 0.1;
+            GammaMaxValue = gamma + gamma * 0.1;
 
             InitializeFactors();
 
             m_Random = random;
-            m_Alpha = alpha;
-            m_Beta = beta;
-            m_Gamma = gamma;
+            Alpha = alpha;
+            Beta = beta;
+            Gamma = gamma;
         }
 
         // ReSharper disable TooManyDependencies
@@ -62,38 +62,26 @@ namespace Core2.Selkie.Aco.Ants
         {
             m_Random = random;
 
-            m_AlphaMinValue = alphaMinValue;
-            m_AlphaMaxValue = alphaMaxValue;
+            AlphaMinValue = alphaMinValue;
+            AlphaMaxValue = alphaMaxValue;
 
-            m_BetaMinValue = betaMinValue;
-            m_BetaMaxValue = betaMaxValue;
+            BetaMinValue = betaMinValue;
+            BetaMaxValue = betaMaxValue;
 
-            m_GammaMinValue = gammaMinValue;
-            m_GammaMaxValue = gammaMaxValue;
+            GammaMinValue = gammaMinValue;
+            GammaMaxValue = gammaMaxValue;
 
             InitializeFactors();
 
-            m_Alpha = RandomizeAlpha();
-            m_Beta = RandomizeBeta();
-            m_Gamma = RandomizeGamma();
+            Alpha = RandomizeAlpha();
+            Beta = RandomizeBeta();
+            Gamma = RandomizeGamma();
         }
 
         // ReSharper restore TooManyDependencies
         public static readonly IChromosome Unknown = new Chromosome(true);
-        private readonly double m_Alpha;
-        private readonly double m_AlphaMaxValue = 1.0;
-        private readonly double m_AlphaMinValue = 0.1;
-        private readonly double m_Beta;
-        private readonly double m_BetaMaxValue = 7.0; // reset this to 20
-        private readonly double m_BetaMinValue = 5.0; // reset this to 5
-        private readonly double m_Gamma;
-        private readonly double m_GammaMaxValue = 2.0;
-        private readonly double m_GammaMinValue = 0.0001;
-        private readonly bool m_IsUnknown;
         private readonly IRandom m_Random;
-        private double m_AlphaRange = 1.0;
-        private double m_BetaRange = 1.0;
-        private double m_GammaRange = 1.0;
+
         // ReSharper disable once CodeAnnotationAnalyzer
         public override bool Equals(object obj)
         {
@@ -114,16 +102,16 @@ namespace Core2.Selkie.Aco.Ants
         {
             unchecked
             {
-                int hashCode = m_Alpha.GetHashCode();
-                hashCode = ( hashCode * 397 ) ^ m_Beta.GetHashCode();
-                hashCode = ( hashCode * 397 ) ^ m_Gamma.GetHashCode();
+                int hashCode = Alpha.GetHashCode();
+                hashCode = ( hashCode * 397 ) ^ Beta.GetHashCode();
+                hashCode = ( hashCode * 397 ) ^ Gamma.GetHashCode();
                 return hashCode;
             }
         }
 
         public override string ToString()
         {
-            return $"Alpha: {m_Alpha:F4} Beta: {m_Beta:F4} Gamma: {m_Gamma:F4}";
+            return $"Alpha: {Alpha:F4} Beta: {Beta:F4} Gamma: {Gamma:F4}";
         }
 
         private void InitializeFactors()
@@ -133,9 +121,9 @@ namespace Core2.Selkie.Aco.Ants
                 return;
             }
 
-            m_AlphaRange = m_AlphaMaxValue - m_AlphaMinValue;
-            m_BetaRange = m_BetaMaxValue - m_BetaMinValue;
-            m_GammaRange = m_GammaMaxValue - m_GammaMinValue;
+            AlphaRange = AlphaMaxValue - AlphaMinValue;
+            BetaRange = BetaMaxValue - BetaMinValue;
+            GammaRange = GammaMaxValue - GammaMinValue;
         }
 
         // ReSharper disable TooManyDependencies
@@ -152,180 +140,102 @@ namespace Core2.Selkie.Aco.Ants
         {
             m_Random = random;
 
-            m_AlphaMinValue = alphaMinValue;
-            m_AlphaMaxValue = alphaMaxValue;
+            AlphaMinValue = alphaMinValue;
+            AlphaMaxValue = alphaMaxValue;
 
-            m_BetaMinValue = betaMinValue;
-            m_BetaMaxValue = betaMaxValue;
+            BetaMinValue = betaMinValue;
+            BetaMaxValue = betaMaxValue;
 
-            m_GammaMinValue = gammaMinValue;
-            m_GammaMaxValue = gammaMaxValue;
+            GammaMinValue = gammaMinValue;
+            GammaMaxValue = gammaMaxValue;
 
             InitializeFactors();
 
-            m_Alpha = alpha;
-            m_Beta = beta;
-            m_Gamma = gamma;
+            Alpha = alpha;
+            Beta = beta;
+            Gamma = gamma;
         }
 
         #region IChromosome Members
 
-        public bool IsUnknown
-        {
-            get
-            {
-                return m_IsUnknown;
-            }
-        }
+        public bool IsUnknown { get; }
 
-        public double Alpha
-        {
-            get
-            {
-                return m_Alpha;
-            }
-        }
+        public double Alpha { get; }
 
-        public double AlphaMinValue
-        {
-            get
-            {
-                return m_AlphaMinValue;
-            }
-        }
+        public double AlphaMinValue { get; } = 0.1;
 
-        public double AlphaMaxValue
-        {
-            get
-            {
-                return m_AlphaMaxValue;
-            }
-        }
+        public double AlphaMaxValue { get; } = 1.0;
 
-        public double AlphaRange
-        {
-            get
-            {
-                return m_AlphaRange;
-            }
-        }
+        public double AlphaRange { get; private set; } = 1.0;
 
-        public double Beta
-        {
-            get
-            {
-                return m_Beta;
-            }
-        }
+        public double Beta { get; }
 
-        public double BetaMinValue
-        {
-            get
-            {
-                return m_BetaMinValue;
-            }
-        }
+        public double BetaMinValue { get; } = 5.0;
 
-        public double BetaMaxValue
-        {
-            get
-            {
-                return m_BetaMaxValue;
-            }
-        }
+        public double BetaMaxValue { get; } = 7.0;
 
-        public double BetaRange
-        {
-            get
-            {
-                return m_BetaRange;
-            }
-        }
+        public double BetaRange { get; private set; } = 1.0;
 
-        public double Gamma
-        {
-            get
-            {
-                return m_Gamma;
-            }
-        }
+        public double Gamma { get; }
 
-        public double GammaMinValue
-        {
-            get
-            {
-                return m_GammaMinValue;
-            }
-        }
+        public double GammaMinValue { get; } = 0.0001;
 
-        public double GammaMaxValue
-        {
-            get
-            {
-                return m_GammaMaxValue;
-            }
-        }
+        public double GammaMaxValue { get; } = 2.0;
 
-        public double GammaRange
-        {
-            get
-            {
-                return m_GammaRange;
-            }
-        }
+        public double GammaRange { get; private set; } = 1.0;
 
         public IChromosome Clone(IChromosomeFactory factory)
         {
-            IChromosome chromosome = factory.Create(m_Alpha,
-                                                    m_Beta,
-                                                    m_Gamma,
-                                                    m_AlphaMinValue,
-                                                    m_AlphaMaxValue,
-                                                    m_BetaMinValue,
-                                                    m_BetaMaxValue,
-                                                    m_GammaMinValue,
-                                                    m_GammaMaxValue);
+            IChromosome chromosome = factory.Create(Alpha,
+                                                    Beta,
+                                                    Gamma,
+                                                    AlphaMinValue,
+                                                    AlphaMaxValue,
+                                                    BetaMinValue,
+                                                    BetaMaxValue,
+                                                    GammaMinValue,
+                                                    GammaMaxValue);
 
             return chromosome;
         }
 
         public IChromosome Randomize()
         {
-            double alpha = m_Random.NextDouble() * m_AlphaRange + m_AlphaMinValue;
-            double beta = m_Random.NextDouble() * m_BetaRange + m_BetaMinValue;
-            double gamma = m_Random.NextDouble() * m_GammaRange + m_GammaMinValue;
+            double alpha = m_Random.NextDouble() * AlphaRange + AlphaMinValue;
+            double beta = m_Random.NextDouble() * BetaRange + BetaMinValue;
+            double gamma = m_Random.NextDouble() * GammaRange + GammaMinValue;
 
             var chromosome = new Chromosome(m_Random,
                                             alpha,
                                             beta,
                                             gamma,
-                                            m_AlphaMinValue,
-                                            m_AlphaMaxValue,
-                                            m_BetaMinValue,
-                                            m_BetaMinValue,
-                                            m_GammaMinValue,
-                                            m_GammaMaxValue);
+                                            AlphaMinValue,
+                                            AlphaMaxValue,
+                                            BetaMinValue,
+                                            BetaMinValue,
+                                            GammaMinValue,
+                                            GammaMaxValue);
 
             return chromosome;
         }
 
         internal double RandomizeAlpha()
         {
-            double alpha = m_Random.NextDouble() * m_AlphaRange + m_AlphaMinValue;
+            double alpha = m_Random.NextDouble() * AlphaRange + AlphaMinValue;
 
             return alpha;
         }
 
         internal double RandomizeBeta()
         {
-            double beta = m_Random.NextDouble() * m_BetaRange + m_BetaMinValue;
+            double beta = m_Random.NextDouble() * BetaRange + BetaMinValue;
 
             return beta;
         }
 
         internal double RandomizeGamma()
         {
-            double gamma = m_Random.NextDouble() * m_GammaRange + m_GammaMinValue;
+            double gamma = m_Random.NextDouble() * GammaRange + GammaMinValue;
 
             return gamma;
         }
@@ -349,7 +259,7 @@ namespace Core2.Selkie.Aco.Ants
                 return true;
             }
 
-            return other.m_Alpha.Equals(m_Alpha) && other.m_Beta.Equals(m_Beta) && other.m_Gamma.Equals(m_Gamma);
+            return other.Alpha.Equals(Alpha) && other.Beta.Equals(Beta) && other.Gamma.Equals(Gamma);
         }
 
         #endregion

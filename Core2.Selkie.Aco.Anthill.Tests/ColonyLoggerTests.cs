@@ -92,11 +92,20 @@ namespace Core2.Selkie.Aco.Anthill.Tests
         {
             // Arrange
             const string expected =
-                "[Time: 00123 10 50] Prefix - Trail with length of Castle.Proxies.ITrailBuilderProxy found at time 0.0: 123 Nodes: Castle.Proxies.ITrailBuilderProxy -  (Alpha: 0 Beta: 0 Gamma: 0)";
+                "[Time: 00123 10 50] Prefix - [Type] Trail with length of 0.0 found at time 123 Nodes: 11,22,33 -  (Alpha: 0 Beta: 0 Gamma: 0)";
+
+            var trailBuilder = Substitute.For <ITrailBuilder>();
+            trailBuilder.Type.Returns("Type");
+            trailBuilder.Trail.Returns(new[]
+                                       {
+                                           11,
+                                           22,
+                                           33
+                                       });
 
             var information = new LogTrailBuilderInformation("Prefix",
                                                              123,
-                                                             Substitute.For <ITrailBuilder>(),
+                                                             trailBuilder,
                                                              50,
                                                              10);
 

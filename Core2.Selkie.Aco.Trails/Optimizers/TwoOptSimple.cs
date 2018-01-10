@@ -7,19 +7,7 @@ namespace Core2.Selkie.Aco.Trails.Optimizers
 {
     public sealed class TwoOptSimple : ITwoOptSimple
     {
-        private IDistanceGraph m_DistanceGraph = Common.DistanceGraph.Unknown;
-
-        public IDistanceGraph DistanceGraph
-        {
-            private get
-            {
-                return m_DistanceGraph;
-            }
-            set
-            {
-                m_DistanceGraph = value;
-            }
-        }
+        public IDistanceGraph DistanceGraph { get; set; } = Common.DistanceGraph.Unknown;
 
         // ReSharper disable once MethodTooLong
         public IEnumerable <int> Optimize(IEnumerable <int> trail)
