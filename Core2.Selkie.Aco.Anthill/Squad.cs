@@ -38,7 +38,7 @@ namespace Core2.Selkie.Aco.Anthill
             m_Disposer.AddResource(ReleaseAllAnts);
         }
 
-        // ReSharper restore TooManyDependencies
+        [UsedImplicitly]
         internal const int DefaultNumberOfAnts = 10;
 
         public IEnumerable <IAnt> BestAnts => m_BestAnts;

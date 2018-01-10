@@ -23,10 +23,13 @@ namespace Core2.Selkie.Aco.Ants
             m_Factory = factory;
         }
 
+        [UsedImplicitly]
         public const int NumberOfGenes = 3;
+        [UsedImplicitly]
         public const bool FromFather = true;
+        [UsedImplicitly]
         public const bool FromMother = false;
-
+        [UsedImplicitly]
         internal IDisposer Disposer { private get; set; }
         private readonly IChromosomeFactory m_Factory;
         private readonly ISelkieLogger m_Logger;
@@ -59,6 +62,7 @@ namespace Core2.Selkie.Aco.Ants
         }
 
         [NotNull]
+        [UsedImplicitly]
         internal bool[] CreateGenes()
         {
             var genes = new bool[NumberOfGenes];
@@ -72,6 +76,7 @@ namespace Core2.Selkie.Aco.Ants
         }
 
         [NotNull]
+        [UsedImplicitly]
         internal IChromosome Mutation([NotNull] IChromosome chromosome,
                                       Gene random)
         {
@@ -114,7 +119,7 @@ namespace Core2.Selkie.Aco.Ants
         }
 
         [NotNull]
-        // ReSharper disable once MethodTooLong
+        [UsedImplicitly]
         internal IChromosome Offspring([NotNull] IChromosome male,
                                        [NotNull] IChromosome female,
                                        [NotNull] bool[] genes)

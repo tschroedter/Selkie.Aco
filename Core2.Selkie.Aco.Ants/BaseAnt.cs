@@ -44,12 +44,15 @@ namespace Core2.Selkie.Aco.Ants
         private static int s_NextId; // means s_NextId per <TAnt, TBuilder>
 
         [NotNull]
+        [UsedImplicitly]
         protected IAntSettings AntSettings { get; private set; }
 
         [NotNull]
+        [UsedImplicitly]
         protected IRandom Random { get; private set; }
 
         [NotNull]
+        [UsedImplicitly]
         protected IDistanceGraph DistanceGraph { get; private set; }
 
         public double Alpha => Chromosome.Alpha;
@@ -66,6 +69,7 @@ namespace Core2.Selkie.Aco.Ants
         public int Id { get; private set; }
 
         public IChromosome Chromosome { get; set; }
+        [UsedImplicitly]
         public ITrailBuilder TrailBuilder { get; protected set; }
 
         public void Update()

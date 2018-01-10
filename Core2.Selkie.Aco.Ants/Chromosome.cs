@@ -51,7 +51,7 @@ namespace Core2.Selkie.Aco.Ants
             Gamma = gamma;
         }
 
-        // ReSharper disable TooManyDependencies
+        [UsedImplicitly]
         public Chromosome([NotNull] IRandom random,
                           double alphaMinValue,
                           double alphaMaxValue,

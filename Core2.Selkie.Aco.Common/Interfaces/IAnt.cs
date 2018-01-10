@@ -16,6 +16,9 @@ namespace Core2.Selkie.Aco.Common.Interfaces
         IChromosome Chromosome { get; set; }
 
         string Type { get; }
+        double Alpha { get; }
+        double Beta { get; }
+        double Gamma { get; }
 
         [NotNull]
         IAnt Clone([NotNull] IAntFactory antFactory,

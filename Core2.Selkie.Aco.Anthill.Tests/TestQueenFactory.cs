@@ -9,10 +9,12 @@ using Core2.Selkie.Aco.Common.TypedFactories;
 using Core2.Selkie.Common;
 using Core2.Selkie.Common.Interfaces;
 using Core2.Selkie.Windsor.Interfaces;
+using JetBrains.Annotations;
 
 namespace Core2.Selkie.Aco.Anthill.Tests
 {
     [ExcludeFromCodeCoverage]
+    [UsedImplicitly]
     internal sealed class TestQueenFactory : IQueenFactory
     {
         public TestQueenFactory()

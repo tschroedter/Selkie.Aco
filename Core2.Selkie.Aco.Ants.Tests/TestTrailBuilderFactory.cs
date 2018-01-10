@@ -10,6 +10,7 @@ using Core2.Selkie.Common;
 namespace Core2.Selkie.Aco.Ants.Tests
 {
     [ExcludeFromCodeCoverage]
+    [UsedImplicitly]
     public class TestTrailBuilderFactory : ITrailBuilderFactory
     {
         // ReSharper disable once TooManyArguments

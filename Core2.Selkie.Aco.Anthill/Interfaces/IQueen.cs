@@ -22,6 +22,9 @@ namespace Core2.Selkie.Aco.Anthill.Interfaces
         [NotNull]
         ITrailBuilder BestTrailBuilder { get; }
 
+        [UsedImplicitly]
+        IAnt BestAnt { get; }
+
         void Clear();
 
         void NaturalSelection([NotNull] IChromosome male,
@@ -32,5 +35,8 @@ namespace Core2.Selkie.Aco.Anthill.Interfaces
         void RestartFromTrail([NotNull] IEnumerable <int> trail);
 
         void UpdateAnts();
+
+        [UsedImplicitly]
+        void UpdateChromosomes(IChromosome chromosome);
     }
 }

@@ -53,7 +53,7 @@ namespace Core2.Selkie.Aco.Anthill.Tests
             }
         }
 
-        // ReSharper disable TooManyArguments
+        [UsedImplicitly]
         public T Create <T>([NotNull] IChromosome chromosome,
                             [NotNull] IPheromonesTracker tracker,
                             [NotNull] IDistanceGraph graph,
@@ -80,8 +80,7 @@ namespace Core2.Selkie.Aco.Anthill.Tests
             }
         }
 
-        // ReSharper restore TooManyArguments
-
+        [UsedImplicitly]
         public bool Released([NotNull] IAnt ant)
         {
             lock ( this )

@@ -11,6 +11,7 @@ using JetBrains.Annotations;
 namespace Core2.Selkie.Aco.Anthill
 {
     [ProjectComponent(Lifestyle.Transient)]
+    [UsedImplicitly]
     public class ColonyLogger : IColonyLogger
     {
         public ColonyLogger([NotNull] ISelkieLogger logger,
