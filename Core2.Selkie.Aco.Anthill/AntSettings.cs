@@ -42,8 +42,8 @@ namespace Core2.Selkie.Aco.Anthill
 
         public static readonly IAntSettings Unknown = new AntSettings();
 
-        public bool IsUnknown { get; private set; }
-        public bool IsFixedStartNode { get; private set; }
-        public int FixedStartNode { get; private set; }
+        public bool IsUnknown { get; }
+        public bool IsFixedStartNode { get; }
+        public int FixedStartNode { get; }
     }
 }

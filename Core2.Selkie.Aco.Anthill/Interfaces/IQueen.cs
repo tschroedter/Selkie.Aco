@@ -25,6 +25,9 @@ namespace Core2.Selkie.Aco.Anthill.Interfaces
         [UsedImplicitly]
         IAnt BestAnt { get; }
 
+        [UsedImplicitly]
+        IAnt TotalBestAnt { get; }
+
         void Clear();
 
         void NaturalSelection([NotNull] IChromosome male,

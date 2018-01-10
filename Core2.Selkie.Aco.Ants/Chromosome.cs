@@ -220,6 +220,7 @@ namespace Core2.Selkie.Aco.Ants
             return chromosome;
         }
 
+        [UsedImplicitly]
         internal double RandomizeAlpha()
         {
             double alpha = m_Random.NextDouble() * AlphaRange + AlphaMinValue;
@@ -227,6 +228,7 @@ namespace Core2.Selkie.Aco.Ants
             return alpha;
         }
 
+        [UsedImplicitly]
         internal double RandomizeBeta()
         {
             double beta = m_Random.NextDouble() * BetaRange + BetaMinValue;
@@ -234,6 +236,7 @@ namespace Core2.Selkie.Aco.Ants
             return beta;
         }
 
+        [UsedImplicitly]
         internal double RandomizeGamma()
         {
             double gamma = m_Random.NextDouble() * GammaRange + GammaMinValue;

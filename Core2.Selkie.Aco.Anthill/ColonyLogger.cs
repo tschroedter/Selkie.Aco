@@ -21,7 +21,8 @@ namespace Core2.Selkie.Aco.Anthill
             TrailHistory = trailHistory;
         }
 
-        public ITrailHistory TrailHistory { get; set; }
+        [UsedImplicitly]
+        public ITrailHistory TrailHistory { get; internal set; }
         private readonly ISelkieLogger m_Logger;
 
         public void LogResult(TimeSpan runtimeSpan)

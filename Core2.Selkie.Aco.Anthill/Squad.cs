@@ -112,12 +112,14 @@ namespace Core2.Selkie.Aco.Anthill
             return sb.ToString();
         }
 
+        [UsedImplicitly]
         internal void CreateAnts(int numberOfAnts)
         {
             CreateNewAnts(numberOfAnts);
             AddBestAnts();
         }
 
+        [UsedImplicitly]
         internal void ReleaseAllAnts()
         {
             ReleaseAnts(m_Ants);
@@ -127,6 +129,7 @@ namespace Core2.Selkie.Aco.Anthill
             m_BestAnts.Clear();
         }
 
+        [UsedImplicitly]
         internal void ReleaseAnts([NotNull] IEnumerable <IAnt> ants)
         {
             foreach ( IAnt ant in ants )

@@ -24,7 +24,8 @@ namespace Core2.Selkie.Aco.Anthill
             Queen = queen;
         }
 
-        public IQueen Queen { get; }
+        [UsedImplicitly]
+        internal IQueen Queen { get; }
 
         private readonly IRandom m_Random;
 
@@ -55,6 +56,7 @@ namespace Core2.Selkie.Aco.Anthill
         }
 
         [NotNull]
+        [UsedImplicitly]
         internal Tuple <IChromosome, IChromosome> FindBestChromosomePair()
         {
             List <int> sortedKeys = TrailHistory.Lengths.ToList();
@@ -74,6 +76,7 @@ namespace Core2.Selkie.Aco.Anthill
         }
 
         [NotNull]
+        [UsedImplicitly]
         internal IChromosome SettingsToChromosome([NotNull] ISettings settings)
         {
             return new Chromosome(m_Random,

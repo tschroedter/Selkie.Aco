@@ -64,9 +64,9 @@ namespace Core2.Selkie.Aco.Ants
         private readonly IOptimizer m_Optimizer;
         private readonly IPheromonesTracker m_Tracker;
 
-        public string Type { get; private set; }
+        public string Type { get; }
 
-        public int Id { get; private set; }
+        public int Id { get; }
 
         public IChromosome Chromosome { get; set; }
         [UsedImplicitly]

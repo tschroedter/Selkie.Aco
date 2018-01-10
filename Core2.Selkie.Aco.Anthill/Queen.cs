@@ -63,6 +63,7 @@ namespace Core2.Selkie.Aco.Anthill
         private readonly ISquad m_Squad;
         private readonly IPheromonesTracker m_Tracker;
 
+        [UsedImplicitly]
         internal void UpdateAnts([NotNull] IEnumerable <IAnt> ants)
         {
             IAnt[] antsArray = ants.ToArray();
@@ -77,6 +78,7 @@ namespace Core2.Selkie.Aco.Anthill
             UpdateBestAnt();
         }
 
+        [UsedImplicitly]
         internal void UpdateBestAnt()
         {
             ITrailBuilder totalTrailBuilder = TotalBestAnt.TrailBuilder;
@@ -177,6 +179,7 @@ namespace Core2.Selkie.Aco.Anthill
             m_Logger.Debug("[Look] NaturalSelection - {m_Squad}");
         }
 
+        [UsedImplicitly]
         internal void UpdateAntsUsingOffspring([NotNull] IChromosome male,
                                                [NotNull] IChromosome female)
         {
