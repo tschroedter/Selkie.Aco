@@ -47,6 +47,7 @@ namespace Core2.Selkie.Aco.Trails
         // ReSharper restore TooManyDependencies
 
         [NotNull]
+        [UsedImplicitly]
         internal static int[] Create(int numberOfNodes)
         {
             var trail = new int[numberOfNodes];
@@ -60,6 +61,7 @@ namespace Core2.Selkie.Aco.Trails
         }
 
         [NotNull]
+        [UsedImplicitly]
         internal static int[] RemoveReverseNodes([NotNull] IEnumerable <int> trail,
                                                  int startNode)
         {
@@ -96,6 +98,7 @@ namespace Core2.Selkie.Aco.Trails
         }
 
         [NotNull]
+        [UsedImplicitly]
         internal int[] CreateTrail(int startNode,
                                    int numberOfNodes)
         {
@@ -114,6 +117,7 @@ namespace Core2.Selkie.Aco.Trails
             return trail;
         }
 
+        [UsedImplicitly]
         internal int[] MoveNodeToStartPosition([NotNull] IEnumerable <int> trail,
                                                int nodeIndex)
         {
@@ -128,6 +132,7 @@ namespace Core2.Selkie.Aco.Trails
             return nodeIds;
         }
 
+        [UsedImplicitly]
         internal int[] Randomize([NotNull] IEnumerable <int> trail,
                                  int numberOfNodes)
         {

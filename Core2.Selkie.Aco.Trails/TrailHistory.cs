@@ -40,6 +40,7 @@ namespace Core2.Selkie.Aco.Trails
         }
 
         [NotNull]
+        [UsedImplicitly]
         internal static IEnumerable <ITrailInformation> ConvertValuesToList(
             [NotNull] Dictionary <int, List <ITrailInformation>>.ValueCollection values)
         {
@@ -146,6 +147,7 @@ namespace Core2.Selkie.Aco.Trails
             }
         }
 
+        [UsedImplicitly]
         internal bool IsKnownLength(int length)
         {
             if ( length <= 0 )

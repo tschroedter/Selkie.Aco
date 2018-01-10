@@ -103,7 +103,7 @@ namespace Core2.Selkie.Aco.Trails
 
         #region IEquatable<BaseTrailBuilder> Members
 
-        // ReSharper disable once CodeAnnotationAnalyzer
+        [UsedImplicitly]
         public bool Equals(BaseTrailBuilder <T> other)
         {
             if ( ReferenceEquals(null,

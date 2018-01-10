@@ -116,6 +116,7 @@ namespace Core2.Selkie.Aco.Trails
         }
 
         [NotNull]
+        [UsedImplicitly]
         internal IEnumerable <ITrailBuilder> ConvertValuesToList()
         {
             var list = new List <ITrailBuilder>();

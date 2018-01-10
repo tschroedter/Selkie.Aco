@@ -23,5 +23,8 @@ namespace Core2.Selkie.Aco.Trails.Interfaces
 
         [UsedImplicitly]
         void Clear();
+
+        [UsedImplicitly]
+        void AddTrailInformation(ITrailInformation information);
     }
 }

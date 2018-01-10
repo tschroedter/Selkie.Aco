@@ -7,6 +7,7 @@ namespace Core2.Selkie.Aco.Trails.Optimizers
 {
     public sealed class TwoOptSimple : ITwoOptSimple
     {
+        [UsedImplicitly]
         public IDistanceGraph DistanceGraph { get; set; } = Common.DistanceGraph.Unknown;
 
         // ReSharper disable once MethodTooLong
@@ -80,6 +81,7 @@ namespace Core2.Selkie.Aco.Trails.Optimizers
             return trailArray;
         }
 
+        [UsedImplicitly]
         internal static void Swap([NotNull] int[] trail,
                                   int i,
                                   int j)

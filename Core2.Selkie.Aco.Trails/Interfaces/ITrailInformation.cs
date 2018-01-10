@@ -10,5 +10,8 @@ namespace Core2.Selkie.Aco.Trails.Interfaces
 
         [NotNull]
         ISettings Settings { get; }
+
+        [UsedImplicitly]
+        int Time { get; }
     }
 }

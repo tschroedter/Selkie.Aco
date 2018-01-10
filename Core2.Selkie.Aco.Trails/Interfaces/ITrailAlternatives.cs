@@ -16,5 +16,8 @@ namespace Core2.Selkie.Aco.Trails.Interfaces
                             [NotNull] ITrailBuilder trailBuilder);
 
         void Clear();
+
+        [UsedImplicitly]
+        bool IsKnownAlternative(ITrailBuilder trailBuilder);
     }
 }
