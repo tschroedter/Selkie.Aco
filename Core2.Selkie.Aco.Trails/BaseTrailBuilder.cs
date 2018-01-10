@@ -54,6 +54,7 @@ namespace Core2.Selkie.Aco.Trails
         }
 
         private const double PredefinedTendencyMinimum = 1E-50;
+        [UsedImplicitly]
         public const int UnknownId = -1;
         // ReSharper disable once StaticMemberInGenericType
         private static int s_NextId; // means NextId per <T>
@@ -73,6 +74,7 @@ namespace Core2.Selkie.Aco.Trails
 
         public IChromosome Chromosome { get; }
 
+        [UsedImplicitly]
         public static int FindRelatedCity(int cityIndex)
         {
             bool isEndPoint = cityIndex % 2 == 1;
@@ -198,6 +200,7 @@ namespace Core2.Selkie.Aco.Trails
             return cumul;
         }
 
+        [UsedImplicitly]
         internal virtual void BuildTrail(int startNode)
         {
             int reverseStart = FindRelatedCity(startNode);
@@ -235,6 +238,7 @@ namespace Core2.Selkie.Aco.Trails
             return probs;
         }
 
+        [UsedImplicitly]
         internal int IndexOfTarget(int target)
         {
             if ( m_IndexOfTargets.TryGetValue(target,
@@ -246,6 +250,7 @@ namespace Core2.Selkie.Aco.Trails
             return -1;
         }
 
+        [UsedImplicitly]
         internal virtual int NextCity(int cityX,
                                       bool[] visited,
                                       double dicider)
@@ -254,6 +259,7 @@ namespace Core2.Selkie.Aco.Trails
         }
 
         // Attention: tested by sub-classes only
+        [UsedImplicitly]
         internal void SearchGeneral([NotNull] bool[] visited,
                                     [NotNull] int[] trail)
         {
@@ -384,6 +390,7 @@ namespace Core2.Selkie.Aco.Trails
             }
         }
 
+        [UsedImplicitly]
         public int Id { get; protected set; }
 
         public bool IsUnknown
