@@ -41,13 +41,7 @@ namespace Core2.Selkie.Aco.Anthill
         private readonly IPheromonesTracker m_Tracker;
         private readonly ITrailBuilderFactory m_TrailBuilderFactory;
 
-        public ITrailHistory TrailHistory
-        {
-            get
-            {
-                return m_NaturalSelection.TrailHistory;
-            }
-        }
+        public ITrailHistory TrailHistory => m_NaturalSelection.TrailHistory;
 
         public DateTime StartTime { get; private set; }
 
@@ -433,53 +427,17 @@ namespace Core2.Selkie.Aco.Anthill
 
         public int TurnsBeforeSelection { get; set; }
 
-        public int NumberOfNodes
-        {
-            get
-            {
-                return m_Queen.NumberOfNodes;
-            }
-        }
+        public int NumberOfNodes => m_Queen.NumberOfNodes;
 
-        public int NumberOfAnts
-        {
-            get
-            {
-                return m_Queen.NumberOfAnts;
-            }
-        }
+        public int NumberOfAnts => m_Queen.NumberOfAnts;
 
-        public IEnumerable <IAnt> Ants
-        {
-            get
-            {
-                return m_Queen.Ants;
-            }
-        }
+        public IEnumerable <IAnt> Ants => m_Queen.Ants;
 
-        public ITrailBuilder BestTrailBuilder
-        {
-            get
-            {
-                return m_Queen.BestTrailBuilder;
-            }
-        }
+        public ITrailBuilder BestTrailBuilder => m_Queen.BestTrailBuilder;
 
-        public IEnumerable <ITrailBuilder> Alternatives
-        {
-            get
-            {
-                return m_Queen.Alternatives;
-            }
-        }
+        public IEnumerable <ITrailBuilder> Alternatives => m_Queen.Alternatives;
 
-        public TimeSpan Runtime
-        {
-            get
-            {
-                return FinishTime - StartTime;
-            }
-        }
+        public TimeSpan Runtime => FinishTime - StartTime;
 
         public double[][] PheromonesToArray()
         {
@@ -497,29 +455,11 @@ namespace Core2.Selkie.Aco.Anthill
             m_Logger.LogResult(Runtime);
         }
 
-        public double PheromonesMinimum
-        {
-            get
-            {
-                return m_Tracker.MinimumValue;
-            }
-        }
+        public double PheromonesMinimum => m_Tracker.MinimumValue;
 
-        public double PheromonesMaximum
-        {
-            get
-            {
-                return m_Tracker.MaximumValue;
-            }
-        }
+        public double PheromonesMaximum => m_Tracker.MaximumValue;
 
-        public double PheromonesAverage
-        {
-            get
-            {
-                return m_Tracker.AverageValue;
-            }
-        }
+        public double PheromonesAverage => m_Tracker.AverageValue;
 
         #endregion
     }

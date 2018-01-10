@@ -96,61 +96,19 @@ namespace Core2.Selkie.Aco.Anthill
 
         #region IQueen Members
 
-        public ISettings Settings
-        {
-            get
-            {
-                return m_BestTrailFinder.Settings;
-            }
-        }
+        public ISettings Settings => m_BestTrailFinder.Settings;
 
-        public IEnumerable <IAnt> Ants
-        {
-            get
-            {
-                return m_Squad.Ants;
-            }
-        }
+        public IEnumerable <IAnt> Ants => m_Squad.Ants;
 
-        public int NumberOfAnts
-        {
-            get
-            {
-                return m_Squad.NumberOfAnts;
-            }
-        }
+        public int NumberOfAnts => m_Squad.NumberOfAnts;
 
-        public IEnumerable <ITrailBuilder> Alternatives
-        {
-            get
-            {
-                return m_BestTrailFinder.AlternativeTrails;
-            }
-        }
+        public IEnumerable <ITrailBuilder> Alternatives => m_BestTrailFinder.AlternativeTrails;
 
-        public IAnt BestAnt
-        {
-            get
-            {
-                return m_BestTrailFinder.BestAnt;
-            }
-        }
+        public IAnt BestAnt => m_BestTrailFinder.BestAnt;
 
-        public ITrailBuilder BestTrailBuilder
-        {
-            get
-            {
-                return m_BestTrailFinder.BestTrailBuilder;
-            }
-        }
+        public ITrailBuilder BestTrailBuilder => m_BestTrailFinder.BestTrailBuilder;
 
-        public int NumberOfNodes
-        {
-            get
-            {
-                return m_Graph.NumberOfNodes;
-            }
-        }
+        public int NumberOfNodes => m_Graph.NumberOfNodes;
 
         public void UpdateAnts()
         {

@@ -56,29 +56,11 @@ namespace Core2.Selkie.Aco.Trails
 
         #region IColonyBestTrails Members
 
-        public IEnumerable <ITrailInformation> this[int index]
-        {
-            get
-            {
-                return m_Dictonary [ index ];
-            }
-        }
+        public IEnumerable <ITrailInformation> this[int index] => m_Dictonary [ index ];
 
-        public IEnumerable <int> Lengths
-        {
-            get
-            {
-                return m_Dictonary.Keys;
-            }
-        }
+        public IEnumerable <int> Lengths => m_Dictonary.Keys;
 
-        public int Count
-        {
-            get
-            {
-                return m_Dictonary.Count;
-            }
-        }
+        public int Count => m_Dictonary.Count;
 
         public IEnumerable <ITrailInformation> Information { get; private set; }
 

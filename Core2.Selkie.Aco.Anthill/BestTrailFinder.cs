@@ -46,21 +46,9 @@ namespace Core2.Selkie.Aco.Anthill
 
         public ISettings Settings { get; private set; }
 
-        public IEnumerable <ITrailBuilder> AlternativeTrails
-        {
-            get
-            {
-                return m_TrailAlternatives.Trails;
-            }
-        }
+        public IEnumerable <ITrailBuilder> AlternativeTrails => m_TrailAlternatives.Trails;
 
-        public ITrailBuilder BestTrailBuilder
-        {
-            get
-            {
-                return BestAnt.TrailBuilder;
-            }
-        }
+        public ITrailBuilder BestTrailBuilder => BestAnt.TrailBuilder;
 
         public IAnt BestAnt { get; private set; }
 

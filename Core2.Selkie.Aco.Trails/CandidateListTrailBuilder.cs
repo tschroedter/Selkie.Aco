@@ -51,16 +51,10 @@ namespace Core2.Selkie.Aco.Trails
         [UsedImplicitly]
         public int NumberOfCandidates
         {
-            get
-            {
-                return m_NumberOfCandidates;
-            }
-            set
-            {
-                m_NumberOfCandidates = value <= 0 || value > DistanceGraph.NumberOfNodes
-                                           ? 1
-                                           : value;
-            }
+            get => m_NumberOfCandidates;
+            set => m_NumberOfCandidates = value <= 0 || value > DistanceGraph.NumberOfNodes
+                                              ? 1
+                                              : value;
         }
 
         private int m_NumberOfCandidates;

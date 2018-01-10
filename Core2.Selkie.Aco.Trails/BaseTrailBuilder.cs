@@ -382,35 +382,17 @@ namespace Core2.Selkie.Aco.Trails
             BuildDictionaryIndexOfTarget(m_Trail);
         }
 
-        public string Type
-        {
-            get
-            {
-                return typeof( T ).Name;
-            }
-        }
+        public string Type => typeof( T ).Name;
 
         [UsedImplicitly]
         public int Id { get; protected set; }
 
-        public bool IsUnknown
-        {
-            get
-            {
-                return Id == UnknownId;
-            }
-        }
+        public bool IsUnknown => Id == UnknownId;
 
         public IEnumerable <int> Trail
         {
-            get
-            {
-                return m_Trail;
-            }
-            protected set
-            {
-                m_Trail = value.ToArray();
-            }
+            get => m_Trail;
+            protected set => m_Trail = value.ToArray();
         }
 
         public double Length { get; protected set; } = double.MaxValue;

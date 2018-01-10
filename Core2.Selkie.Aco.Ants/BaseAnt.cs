@@ -52,29 +52,11 @@ namespace Core2.Selkie.Aco.Ants
         [NotNull]
         protected IDistanceGraph DistanceGraph { get; private set; }
 
-        public double Alpha
-        {
-            get
-            {
-                return Chromosome.Alpha;
-            }
-        }
+        public double Alpha => Chromosome.Alpha;
 
-        public double Beta
-        {
-            get
-            {
-                return Chromosome.Beta;
-            }
-        }
+        public double Beta => Chromosome.Beta;
 
-        public double Gamma
-        {
-            get
-            {
-                return Chromosome.Gamma;
-            }
-        }
+        public double Gamma => Chromosome.Gamma;
 
         private readonly IOptimizer m_Optimizer;
         private readonly IPheromonesTracker m_Tracker;

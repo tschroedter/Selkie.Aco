@@ -42,13 +42,7 @@ namespace Core2.Selkie.Aco.Anthill
         // ReSharper restore TooManyDependencies
         internal const int DefaultNumberOfAnts = 10;
 
-        public IEnumerable <IAnt> BestAnts
-        {
-            get
-            {
-                return m_BestAnts;
-            }
-        }
+        public IEnumerable <IAnt> BestAnts => m_BestAnts;
 
         private readonly IAntFactory m_AntFactory;
         private readonly IList <IAnt> m_Ants = new List <IAnt>();
@@ -61,21 +55,9 @@ namespace Core2.Selkie.Aco.Anthill
         private readonly IRandom m_Random;
         private readonly IPheromonesTracker m_Tracker;
 
-        public int NumberOfAnts
-        {
-            get
-            {
-                return m_Ants.Count;
-            }
-        }
+        public int NumberOfAnts => m_Ants.Count;
 
-        public IEnumerable <IAnt> Ants
-        {
-            get
-            {
-                return m_Ants;
-            }
-        }
+        public IEnumerable <IAnt> Ants => m_Ants;
 
         public void Dispose()
         {
