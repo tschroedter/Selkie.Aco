@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies> <!-- true => required to copy Nuget DLLs into output folder, alternative use donet publish  -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Core2.Selkie.Windsor" Version="1.0.1" />
+    <PackageReference Include="JetBrains.Annotations" Version="11.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core2.Selkie.Aco.Anthill\Core2.Selkie.Aco.Anthill.csproj" />
+    <ProjectReference Include="..\Core2.Selkie.Aco.Ants\Core2.Selkie.Aco.Ants.csproj" />
+    <ProjectReference Include="..\Core2.Selkie.Aco.Common\Core2.Selkie.Aco.Common.csproj" />
+    <ProjectReference Include="..\Core2.Selkie.Aco.Trails\Core2.Selkie.Aco.Trails.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
