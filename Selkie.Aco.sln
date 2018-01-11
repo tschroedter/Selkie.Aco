@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27205.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuGet.Selkie.Aco", "NuGet.Selkie.Aco\NuGet.Selkie.Aco.csproj", "{0451BAEF-DF2E-4B98-8644-94EE9415E389}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core2.Selkie.Aco.Common", "Core2.Selkie.Aco.Common\Core2.Selkie.Aco.Common.csproj", "{B4592844-0EF0-425B-A002-1C288BC78E43}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E1BA9BD3-BB6E-41E9-9D74-C24457939B49}"
@@ -27,16 +25,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{E97E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core2.Selkie.Aco.Example", "Core2.Selkie.Aco.Example\Core2.Selkie.Aco.Example.csproj", "{D7E55BFC-E846-4BEC-89E0-D7CE716D55BC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core2.Selkie.Aco", "Core2.Selkie.Aco\Core2.Selkie.Aco.csproj", "{75791F9A-60AD-4730-9747-D7653D99AC10}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0451BAEF-DF2E-4B98-8644-94EE9415E389}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B4592844-0EF0-425B-A002-1C288BC78E43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B4592844-0EF0-425B-A002-1C288BC78E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4592844-0EF0-425B-A002-1C288BC78E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -73,6 +69,10 @@ Global
 		{D7E55BFC-E846-4BEC-89E0-D7CE716D55BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7E55BFC-E846-4BEC-89E0-D7CE716D55BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7E55BFC-E846-4BEC-89E0-D7CE716D55BC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75791F9A-60AD-4730-9747-D7653D99AC10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75791F9A-60AD-4730-9747-D7653D99AC10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75791F9A-60AD-4730-9747-D7653D99AC10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75791F9A-60AD-4730-9747-D7653D99AC10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

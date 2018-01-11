@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PackageIconUrl>https://github.com/tschroedter/Selkie/blob/master/LaptopDeskPerson.png</PackageIconUrl>
+    <Copyright>Copyright © Thomas Schroedter 2017</Copyright>
+    <PackageLicenseUrl>https://github.com/tschroedter/Selkie.Aco/blob/dotnetcore2/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/tschroedter/Selkie.Aco/tree/dotnetcore2</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/tschroedter/Selkie.Aco/tree/dotnetcore2</RepositoryUrl>
+    <PackageTags>Selkie Aco Core2</PackageTags>
+    <Authors>Thomas Schroedter</Authors>
+    <Company>Thomas Schroedter</Company>
+    <Product>Thomas Schroedter</Product>
+    <Description>This package contains an Ant Colony Optimazation algorithm to find the shortest path for running survey lines. The algorithm considers both direction for running a line: forward and reverse.</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2POutput</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core2.Selkie.Aco.Anthill\Core2.Selkie.Aco.Anthill.csproj" />
+    <ProjectReference Include="..\Core2.Selkie.Aco.Common\Core2.Selkie.Aco.Common.csproj" />
+  </ItemGroup>
+    
+    <Target Name="IncludeP2POutput">
+        <Message Text="Including 'Core2.Selkie.Aco.Anthill.dll' to NuGet package..." Importance="high" />
+        <ItemGroup>
+            <BuildOutputInPackage Include="$(MSBuildProjectDirectory)\$(OutputPath)Core2.Selkie.Aco.Anthill.dll" />
+            <BuildOutputInPackage Include="$(MSBuildProjectDirectory)\$(OutputPath)Core2.Selkie.Aco.Ants.dll" />
+            <BuildOutputInPackage Include="$(MSBuildProjectDirectory)\$(OutputPath)Core2.Selkie.Aco.Common.dll" />
+            <BuildOutputInPackage Include="$(MSBuildProjectDirectory)\$(OutputPath)Core2.Selkie.Aco.Trails.dll" />
+        </ItemGroup>
+    </Target>
+
+</Project>
